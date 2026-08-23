@@ -5,7 +5,6 @@ import com.hospitality.dto.RoomEvaluationDto;
 import com.hospitality.entity.Hospital;
 import com.hospitality.entity.HospitalSpecialty;
 import com.hospitality.entity.InsurancePolicy;
-import com.hospitality.entity.NetworkHospital;
 import com.hospitality.entity.RoomCategory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

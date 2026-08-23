@@ -3,8 +3,6 @@ package com.hospitality.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "hospitals")
