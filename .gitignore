@@ -1,0 +1,100 @@
+# ==============================================================================
+# Git Ignore Configuration for Hospitality Project
+# ==============================================================================
+
+# Compiled Java Classes & Binaries
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# Maven Build Artifacts
+target/
+**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle Build Artifacts
+.gradle/
+**/build/
+
+# Local Tools & Downloaded Binaries
+tools/
+**/tools/
+
+# Database Files & Persistent Local Volumes
+*.db
+*.mv.db
+*.trace.db
+postgres_data/
+**/postgres_data/
+
+# Log Files
+*.log
+logs/
+**/logs/
+
+# IDE & Editor Specific Configurations
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.settings/
+.project
+.classpath
+.factorypath
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Node / Frontend Build Artifacts (for future frontend)
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+out/
+**/out/
+dist/
+**/dist/
+.npm/
+*.tsbuildinfo
+.eslintcache
+
+# Environment Variables & Local Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# AI Agent / Antigravity IDE Caches
+.agents/
+.gemini/
