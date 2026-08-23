@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Building2, TrendingUp } from 'lucide-react';
 import { matchHospitals } from '@/lib/api/hospitalApi';
+import type { HospitalMatchResult } from '@/lib/types';
 import { HospitalCard } from '@/components/hospitals/HospitalCard';
 import { HospitalCardSkeleton } from '@/components/hospitals/HospitalCardSkeleton';
 import { HospitalFilters } from '@/components/hospitals/HospitalFilters';
@@ -44,7 +45,7 @@ export default function HospitalsPage() {
   }
 
   const results = data ?? [];
-  const hasHighCompatibility = results.some((r) => r.scoreRating === 'HIGH_COMPATIBILITY');
+  const hasHighCompatibility = results.some((r: HospitalMatchResult) => r.scoreRating === 'HIGH_COMPATIBILITY');
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 space-y-6">
@@ -105,7 +106,7 @@ export default function HospitalsPage() {
 
           {/* Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {results.map((result) => (
+            {results.map((result: HospitalMatchResult) => (
               <HospitalCard key={result.hospitalId} result={result} />
             ))}
           </div>

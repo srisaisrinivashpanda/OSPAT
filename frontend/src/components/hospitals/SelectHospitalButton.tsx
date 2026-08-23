@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2, ArrowRight, AlertCircle } from 'lucide-react';
 import { startJourney } from '@/lib/api/journeyApi';
+import type { CareJourney } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 
 interface SelectHospitalButtonProps {
@@ -21,7 +22,7 @@ export function SelectHospitalButton({
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: () => startJourney(patientId, hospitalId),
-    onSuccess: (journey) => {
+    onSuccess: (journey: CareJourney) => {
       router.push(`/journey/${journey.patientId ?? patientId}`);
     },
   });

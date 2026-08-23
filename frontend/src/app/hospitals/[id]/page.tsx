@@ -13,6 +13,7 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { getHospital, matchHospitals } from '@/lib/api/hospitalApi';
+import type { HospitalMatchResult, RoomCategory } from '@/lib/types';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -76,7 +77,7 @@ export default function HospitalDetailPage() {
     queryFn: () => matchHospitals({ patientId: PATIENT_ID }),
   });
 
-  const matchResult = allMatchResults?.find((r) => r.hospitalId === hospitalId) ?? null;
+  const matchResult = allMatchResults?.find((r: HospitalMatchResult) => r.hospitalId === hospitalId) ?? null;
 
   const isLoading = hospitalLoading || matchLoading;
 
@@ -165,7 +166,7 @@ export default function HospitalDetailPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {hospital.roomCategories.map((room) => (
+                      {hospital.roomCategories.map((room: RoomCategory) => (
                         <tr key={room.id} className="hover:bg-slate-50">
                           <td className="px-4 py-3 text-slate-700 font-medium">{room.name}</td>
                           <td className="px-4 py-3 text-right tabular-nums text-slate-700">
@@ -251,7 +252,7 @@ export default function HospitalDetailPage() {
                     <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-3">
                       <h3 className="text-sm font-semibold text-slate-700">Matching Factors</h3>
                       <ul className="space-y-2">
-                        {matchResult.matchingFactors.map((factor, i) => (
+                        {matchResult.matchingFactors.map((factor: string, i: number) => (
                           <li key={i} className="flex items-start gap-2 text-sm text-green-700">
                             <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-green-500" />
                             {factor}
@@ -266,7 +267,7 @@ export default function HospitalDetailPage() {
                     <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-3">
                       <h3 className="text-sm font-semibold text-slate-700">Considerations</h3>
                       <ul className="space-y-2">
-                        {matchResult.considerations.map((c, i) => (
+                        {matchResult.considerations.map((c: string, i: number) => (
                           <li key={i} className="flex items-start gap-2 text-sm text-amber-700">
                             <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-500" />
                             {c}
@@ -360,7 +361,7 @@ export default function HospitalDetailPage() {
               </h2>
               {hospital.specialties.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                  {hospital.specialties.map((spec) => (
+                  {hospital.specialties.map((spec: string) => (
                     <Badge key={spec} variant="secondary">
                       {spec}
                     </Badge>
@@ -379,7 +380,7 @@ export default function HospitalDetailPage() {
               </h2>
               {hospital.roomCategories.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {hospital.roomCategories.map((room) => (
+                  {hospital.roomCategories.map((room: RoomCategory) => (
                     <div
                       key={room.id}
                       className="flex items-center justify-between gap-2 border border-slate-200 rounded-lg px-3 py-2.5"
