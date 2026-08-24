@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Investigation Stage - OSPAT Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "status-warning": "#D97706",
+                    "primary-container": "#0d4e5c",
+                    "tertiary-fixed": "#ffdcc3",
+                    "secondary-container": "#d9e5e7",
+                    "on-tertiary-fixed": "#2f1500",
+                    "background": "#fcf8fb",
+                    "on-primary-container": "#87bece",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#b4ebfc",
+                    "outline-variant": "#c0c8cb",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#673d18",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#0c4e5c",
+                    "tertiary-fixed-dim": "#f7ba8a",
+                    "on-secondary-container": "#5b6668",
+                    "outline": "#70787b",
+                    "surface-variant": "#e4e2e4",
+                    "surface-muted": "#F9FAFB",
+                    "secondary-fixed-dim": "#bdc9cb",
+                    "error": "#ba1a1a",
+                    "primary": "#003641",
+                    "secondary": "#556062",
+                    "surface-container-high": "#eae7ea",
+                    "status-critical": "#D31130",
+                    "inverse-on-surface": "#f3f0f2",
+                    "surface-container-highest": "#e4e2e4",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#fcf8fb",
+                    "primary-fixed-dim": "#98cfe0",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1b1b1d",
+                    "secondary-fixed": "#d9e5e7",
+                    "inverse-surface": "#303032",
+                    "surface-dim": "#dcd9dc",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#e5a97b",
+                    "tertiary-container": "#673d18",
+                    "inverse-primary": "#98cfe0",
+                    "surface-tint": "#2d6674",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#40484b",
+                    "on-secondary-fixed": "#121d1f",
+                    "on-secondary-fixed-variant": "#3d494b",
+                    "status-safe": "#1A8245",
+                    "surface": "#fcf8fb",
+                    "border-subtle": "#E5E7EB",
+                    "surface-container-low": "#f6f3f5",
+                    "surface-container": "#f0edef",
+                    "on-background": "#1b1b1d",
+                    "tertiary": "#4c2704",
+                    "on-primary-fixed": "#001f26"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1200px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px",
+                    "stack-sm": "8px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Manrope"],
+                    "label-caps": ["Inter"],
+                    "display-hero": ["Manrope"],
+                    "metric-value": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-hero": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "metric-value": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #fcf8fb; color: #1b1b1d; }
+    </style>
+</head>
+<body class="antialiased font-body-md text-body-md flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop bg-surface/80 backdrop-blur-md bg-surface shadow-sm docked full-width h-[60px]"><div class="flex items-center gap-6"><a class="font-semibold text-primary text-[16px] leading-[24px] font-['Manrope']" href="#">OSPAT Intelligence</a></div><nav class="hidden md:flex items-center gap-6 mx-auto"><a class="text-on-surface-variant font-['Inter'] text-[14px] leading-[20px] font-normal hover:text-primary transition-colors duration-200" href="#">Insurance</a><a class="text-on-surface-variant font-['Inter'] text-[14px] leading-[20px] font-normal hover:text-primary transition-colors duration-200" href="#">Hospitals</a><a aria-current="page" class="text-primary font-['Inter'] text-[14px] leading-[20px] font-medium border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-200" href="#">Care Journey</a></nav><div class="flex items-center gap-4"><div class="h-8 w-px bg-outline-variant mx-2"></div><button class="bg-white border border-outline-variant text-on-surface font-['Inter'] text-[12px] leading-[16px] px-4 py-1.5 rounded-full font-medium shadow-sm hover:bg-surface-container-low transition-colors">Get Help</button><div class="w-[32px] h-[32px] rounded-full overflow-hidden bg-primary flex items-center justify-center text-white"><span class="material-symbols-outlined text-lg">person</span></div></div></header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[100px] pb-stack-lg max-w-container-max mx-auto w-full px-margin-desktop">
+<!-- Page Header -->
+<div class="mb-stack-lg">
+<h1 class="font-display-hero text-display-hero text-primary mb-stack-sm">Your care journey</h1>
+<p class="text-on-surface-variant text-lg max-w-2xl">See where you are, what matters now, and what comes next.</p>
+</div>
+<!-- Context Row -->
+<div class="flex flex-wrap items-center gap-4 mb-stack-lg bg-white p-4 rounded-lg border border-border-subtle shadow-sm font-label-sm text-label-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span aria-hidden="true" class="material-symbols-outlined text-primary text-lg" data-icon="person">person</span>
+<span class="font-semibold text-primary uppercase tracking-wide text-xs">Patient:</span> Demo User
+            </div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span aria-hidden="true" class="material-symbols-outlined text-primary text-lg" data-icon="local_hospital">local_hospital</span>
+<span class="font-semibold text-primary uppercase tracking-wide text-xs">Hospital:</span> Aster CMI Hospital
+            </div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span aria-hidden="true" class="material-symbols-outlined text-primary text-lg" data-icon="verified_user">verified_user</span>
+<span class="font-semibold text-primary uppercase tracking-wide text-xs">Policy:</span> Active • In network
+            </div>
+</div>
+<!-- Journey Timeline -->
+<div class="mb-stack-lg flex w-full relative">
+<div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-variant -z-10 translate-y-[-50%]"></div>
+<!-- Admission: Completed -->
+<div class="flex-1 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-status-safe text-white flex items-center justify-center mb-2 z-10">
+<span aria-hidden="true" class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Admission</span>
+</div>
+<!-- Investigation: Current -->
+<div class="flex-1 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center mb-2 z-10 shadow-md ring-4 ring-primary-fixed">
+<span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Investigation</span>
+</div>
+<!-- Procedure: Upcoming -->
+<div class="flex-1 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-outline flex items-center justify-center mb-2 z-10 border-2 border-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-medium">Procedure</span>
+</div>
+<!-- Recovery: Upcoming -->
+<div class="flex-1 flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-variant text-outline flex items-center justify-center mb-2 z-10 border-2 border-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-medium">Recovery</span>
+</div>
+</div>
+<!-- Stage Header & Content Wrapper -->
+<div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(13,78,92,0.04)] border border-border-subtle overflow-hidden mb-stack-lg">
+<!-- Stage Header -->
+<div class="p-gutter border-b border-border-subtle bg-surface-muted/30">
+<p class="font-label-caps text-label-caps text-primary mb-2">STAGE 2 OF 4 — CURRENT STAGE</p>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-3">Investigation</h2>
+<p class="text-on-surface-variant max-w-3xl">Investigation is the current stage of your care journey. Review the available information, documentation, and policy considerations relevant to this stage.</p>
+</div>
+<!-- Main Content Area (Two Columns) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+<!-- LEFT COLUMN -->
+<div class="p-gutter md:border-r border-b md:border-b-0 border-border-subtle">
+<h3 class="font-label-caps text-label-caps font-semibold text-primary uppercase tracking-wider mb-4">Policy considerations</h3>
+<ul class="space-y-4"><li class="flex items-start gap-3"><div class="mt-0.5"><span aria-hidden="true" class="material-symbols-outlined text-primary/50 text-xl" data-icon="payments">payments</span></div><div><p class="text-sm font-medium text-on-surface">Coverage</p><p class="text-sm text-on-surface-variant">₹10,00,000</p></div></li><li class="flex items-start gap-3"><div class="mt-0.5"><span aria-hidden="true" class="material-symbols-outlined text-primary/50 text-xl" data-icon="hub">hub</span></div><div><p class="text-sm font-medium text-on-surface">Network</p><p class="text-sm text-on-surface-variant">In network</p></div></li><li class="flex items-start gap-3"><div class="mt-0.5"><span aria-hidden="true" class="material-symbols-outlined text-primary/50 text-xl" data-icon="fact_check">fact_check</span></div><div><p class="text-sm font-medium text-on-surface">Authorization</p><p class="text-sm text-on-surface-variant">See policy details</p></div></li></ul>
+</div>
+<!-- RIGHT COLUMN -->
+<div class="p-gutter">
+<h3 class="font-label-caps text-label-caps font-semibold text-primary uppercase tracking-wider mb-4">What matters now</h3>
+<ul class="space-y-3"><li class="flex items-start gap-3"><div class="text-status-safe mt-0.5"><span aria-hidden="true" class="material-symbols-outlined text-xl" data-icon="check_box">check_box</span></div><span class="text-sm text-on-surface line-through text-on-surface-variant">Review available investigation information</span></li><li class="flex items-start gap-3"><div class="text-status-safe mt-0.5"><span aria-hidden="true" class="material-symbols-outlined text-xl" data-icon="check_box">check_box</span></div><span class="text-sm text-on-surface line-through text-on-surface-variant">Confirm required documentation</span></li><li class="flex items-start gap-3"><div class="text-outline-variant mt-0.5"><span aria-hidden="true" class="material-symbols-outlined text-xl" data-icon="check_box_outline_blank">check_box_outline_blank</span></div><span class="text-sm text-on-surface font-medium">Review applicable policy requirements</span></li><li class="flex items-start gap-3"><div class="text-outline-variant mt-0.5"><span aria-hidden="true" class="material-symbols-outlined text-xl" data-icon="check_box_outline_blank">check_box_outline_blank</span></div><span class="text-sm text-on-surface font-medium">Confirm information needed for the next stage</span></li></ul>
+</div>
+</div>
+<!-- Documents Section (Full Width Bottom) -->
+<div class="p-gutter border-t border-border-subtle bg-surface-muted/10">
+<h3 class="font-label-caps text-label-caps font-semibold text-primary uppercase tracking-wider mb-4">Required documents</h3>
+<div class="space-y-2"><div class="flex items-center justify-between p-3 bg-white rounded border border-border-subtle"><div class="flex items-center gap-3"><span aria-hidden="true" class="material-symbols-outlined text-outline text-lg" data-icon="description">description</span><span class="text-sm font-medium text-on-surface">Investigation reports</span></div><span class="px-2.5 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-full font-label-sm">Available</span></div><div class="flex items-center justify-between p-3 bg-white rounded border border-border-subtle"><div class="flex items-center gap-3"><span aria-hidden="true" class="material-symbols-outlined text-outline text-lg" data-icon="medical_information">medical_information</span><span class="text-sm font-medium text-on-surface">Referral / clinical documents</span></div><span class="px-2.5 py-1 bg-primary-fixed text-on-primary-fixed font-semibold rounded-full font-label-sm">Available</span></div><div class="flex items-center justify-between p-3 bg-white rounded border border-border-subtle"><div class="flex items-center gap-3"><span aria-hidden="true" class="material-symbols-outlined text-outline text-lg" data-icon="pending_actions">pending_actions</span><span class="text-sm font-medium text-on-surface">Authorization information</span></div><span class="px-2.5 py-1 bg-surface-variant text-on-surface-variant font-semibold rounded-full font-label-sm">Pending</span></div></div>
+</div>
+</div>
+<!-- Coming Next -->
+<div class="bg-surface-muted rounded-xl p-gutter border border-border-subtle border-dashed">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-outline mb-2 flex items-center gap-2">
+<span aria-hidden="true" class="material-symbols-outlined" data-icon="skip_next">skip_next</span>
+                Coming next: Procedure
+            </h3>
+<p class="text-on-surface-variant">Information relevant to the next stage will appear here when the journey moves forward.</p>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface-container-low w-full rounded-none"><div class="flex flex-col gap-2"><div class="font-semibold text-primary text-[16px] leading-[24px] font-['Manrope']">OSPAT Intelligence</div><p class="text-[11px] leading-[16px] text-on-surface-variant font-['Inter'] font-normal">© 2024 OSPAT Intelligence. All rights reserved. Decision support only; not medical advice.</p></div><nav class="flex flex-wrap justify-center gap-6"><a class="text-[11px] leading-[16px] text-on-surface-variant font-['Inter'] font-medium hover:text-primary transition-colors" href="#">Privacy Policy</a><a class="text-[11px] leading-[16px] text-on-surface-variant font-['Inter'] font-medium hover:text-primary transition-colors" href="#">Responsible Use</a><a class="text-[11px] leading-[16px] text-on-surface-variant font-['Inter'] font-medium hover:text-primary transition-colors" href="#">Terms of Service</a><a class="text-[11px] leading-[16px] text-on-surface-variant font-['Inter'] font-medium hover:text-primary transition-colors" href="#">Contact Support</a></nav></footer>
+
+
+
+
+</body></html>

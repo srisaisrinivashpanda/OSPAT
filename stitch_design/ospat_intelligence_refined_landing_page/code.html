@@ -1,0 +1,523 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OSPAT Intelligence - Care decisions, made clearer.</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#f3f0f2",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#b4ebfc",
+                        "secondary-fixed": "#d9e5e7",
+                        "surface": "#fcf8fb",
+                        "surface-container": "#f0edef",
+                        "outline": "#70787b",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#673d18",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#2d6674",
+                        "status-warning": "#D97706",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#e5a97b",
+                        "surface-dim": "#dcd9dc",
+                        "surface-bright": "#fcf8fb",
+                        "on-error-container": "#93000a",
+                        "secondary": "#556062",
+                        "on-primary-fixed": "#001f26",
+                        "surface-container-highest": "#e4e2e4",
+                        "primary-container": "#0d4e5c",
+                        "on-secondary-container": "#5b6668",
+                        "on-primary-container": "#87bece",
+                        "on-tertiary-fixed": "#2f1500",
+                        "background": "#fcf8fb",
+                        "on-background": "#1b1b1d",
+                        "on-secondary-fixed": "#121d1f",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "border-subtle": "#E5E7EB",
+                        "surface-container-low": "#f6f3f5",
+                        "surface-variant": "#e4e2e4",
+                        "primary-fixed-dim": "#98cfe0",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#eae7ea",
+                        "surface-muted": "#F9FAFB",
+                        "outline-variant": "#c0c8cb",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1b1b1d",
+                        "tertiary-container": "#673d18",
+                        "inverse-surface": "#303032",
+                        "tertiary-fixed-dim": "#f7ba8a",
+                        "on-primary-fixed-variant": "#0c4e5c",
+                        "on-secondary-fixed-variant": "#3d494b",
+                        "on-surface-variant": "#40484b",
+                        "status-critical": "#D31130",
+                        "error-container": "#ffdad6",
+                        "primary": "#003641",
+                        "status-safe": "#1A8245",
+                        "inverse-primary": "#98cfe0",
+                        "tertiary-fixed": "#ffdcc3",
+                        "tertiary": "#4c2704",
+                        "secondary-container": "#d9e5e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "margin-desktop": "40px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "metric-value": ["Manrope"],
+                        "label-sm": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "metric-value": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "500" }],
+                        "label-sm": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 100ms; }
+        .reveal-delay-2 { transition-delay: 200ms; }
+        .reveal-delay-3 { transition-delay: 300ms; }
+        .reveal-delay-4 { transition-delay: 400ms; }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                transition: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, theme('colors.surface') 0%, theme('colors.surface-container') 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0px 4px 20px rgba(13, 78, 92, 0.04);
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.border-subtle');
+        }
+
+        .editorial-text {
+            color: theme('colors.primary');
+            font-family: theme('fontFamily.headline-lg');
+            font-size: 2.5rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            font-weight: 600;
+        }
+
+        .step-indicator {
+            position: relative;
+        }
+        .step-indicator::after {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 48px;
+            right: -24px;
+            height: 2px;
+            background-color: theme('colors.border-subtle');
+            z-index: 0;
+        }
+        .step-indicator:last-child::after {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .step-indicator::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface dark:bg-inverse-surface border-b border-border-subtle dark:border-outline-variant flat no shadows">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-20">
+<a class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary font-bold" href="#">OSPAT Intelligence</a>
+<div class="hidden md:flex items-center gap-gutter text-lg">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#how-it-works">How it works</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#features">Features</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#responsible-use">Responsible use</a>
+<button class="bg-primary-container text-on-primary font-label-sm px-6 py-3 rounded-full hover:opacity-90 transition-opacity scale-98 transition-transform duration-200 text-base">Get Started</button>
+</div>
+<button class="md:hidden text-on-surface p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative pt-32 pb-24 md:pt-48 md:pb-32 px-margin-desktop overflow-hidden hero-gradient">
+<div class="max-w-container-max mx-auto relative z-10 flex flex-col items-center text-center">
+<h1 class="font-display-hero text-display-hero text-primary max-w-4xl mb-stack-md reveal active font-bold tracking-tight">Care decisions, made clearer.</h1>
+<p class="font-body-md text-on-surface-variant max-w-2xl mb-stack-lg reveal reveal-delay-1 active">
+                Understand your coverage, compare hospital options, and know what matters at every stage of care.
+            </p>
+<div class="flex gap-4 reveal reveal-delay-2 active">
+<button class="bg-primary-container text-on-primary font-label-sm px-8 py-4 rounded-full hover:bg-primary transition-colors text-base">Start with clarity</button>
+</div>
+</div>
+<!-- Premium Product Visual -->
+<div class="mt-20 max-w-5xl mx-auto relative reveal reveal-delay-3 active">
+<div class="bg-surface-container-lowest rounded-3xl card-shadow border border-border-subtle p-8 overflow-hidden relative">
+<div class="absolute -top-40 -left-40 w-96 h-96 bg-primary-fixed-dim rounded-full blur-3xl opacity-10"></div>
+<div class="absolute bottom-0 right-0 w-80 h-80 bg-secondary-container rounded-full blur-3xl opacity-20"></div>
+<div class="relative z-10 grid grid-cols-1 md:grid-cols-4 gap-4">
+<!-- Insurance Flow -->
+<div class="bg-surface p-6 rounded-2xl border border-border-subtle flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-full flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-sm">shield</span>
+</div>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Insurance</span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant mb-1">Coverage</p>
+<p class="font-headline-lg text-primary text-2xl">₹10L</p>
+</div>
+<div class="pt-4 border-t border-border-subtle mt-2">
+<p class="font-label-sm text-on-surface-variant mb-1">Room Limit</p>
+<p class="font-headline-lg text-primary text-xl">₹8,000/day</p>
+</div>
+</div>
+<!-- Hospital Flow -->
+<div class="bg-surface p-6 rounded-2xl border border-border-subtle flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-on-secondary">
+<span class="material-symbols-outlined text-sm">local_hospital</span>
+</div>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Hospital</span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant mb-1">Compatibility Score</p>
+<p class="font-headline-lg text-status-safe text-2xl flex items-center gap-2">86 <span class="material-symbols-outlined text-xl">check_circle</span></p>
+</div>
+<div class="pt-4 border-t border-border-subtle mt-2">
+<p class="font-label-sm text-status-safe font-medium">In Network</p>
+</div>
+</div>
+<!-- Room Flow -->
+<div class="bg-surface p-6 rounded-2xl border border-border-subtle flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-tertiary-container rounded-full flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined text-sm">bed</span>
+</div>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Room</span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant mb-1">Status</p>
+<p class="font-headline-lg text-primary text-xl">Within limit</p>
+</div>
+<div class="pt-4 border-t border-border-subtle mt-2">
+<p class="font-label-sm text-on-surface-variant">Private AC Room</p>
+</div>
+</div>
+<!-- Journey Flow -->
+<div class="bg-surface p-6 rounded-2xl border border-border-subtle flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-fixed-dim rounded-full flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-sm">timeline</span>
+</div>
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Care Journey</span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant mb-1">Current Stage</p>
+<p class="font-headline-lg text-primary text-xl">Admission</p>
+</div>
+<div class="pt-4 border-t border-border-subtle mt-2">
+<p class="font-label-sm text-on-surface-variant">Documents verified</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main>
+<!-- Everything you need -->
+<section class="py-32 px-margin-desktop bg-surface" id="features">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-24 reveal active">
+<h2 class="editorial-text mb-4 font-headline-lg text-headline-lg font-semibold">Everything you need, in one place.</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl mx-auto text-lg">A comprehensive framework designed to bring clarity to every aspect of the patient experience.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+<div class="flex flex-col gap-4 reveal reveal-delay-1 p-8 bg-surface-container-lowest rounded-3xl card-shadow border border-border-subtle active">
+<span class="material-symbols-outlined text-primary-container text-4xl mb-2">policy</span>
+<h3 class="font-headline-lg text-primary uppercase tracking-wider font-bold font-label-caps text-lg">Insurance</h3>
+<p class="font-body-md text-on-surface-variant text-lg">Understand complex policy documents through clear, actionable coverage summaries so you know exactly what is covered before care begins.</p>
+</div>
+<div class="flex flex-col gap-4 reveal reveal-delay-2 p-8 bg-surface-container-lowest rounded-3xl card-shadow border border-border-subtle active">
+<span class="material-symbols-outlined text-secondary text-4xl mb-2">domain</span>
+<h3 class="font-headline-lg text-primary uppercase tracking-wider font-bold font-label-caps text-lg">Hospitals</h3>
+<p class="font-body-md text-on-surface-variant text-lg">Compare medical needs and coverage limits with the most appropriate facilities, reviewing quality metrics and potential out-of-pocket costs.</p>
+<div class="mt-4 pt-4 border-t border-border-subtle">
+<p class="font-label-sm text-on-surface-variant mb-2">Score Breakdown Example:</p>
+<div class="flex gap-4 text-sm text-on-surface-variant">
+<span class="">Network: 40%</span>
+<span class="">Room: 30%</span>
+<span class="">Quality: 30%</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 reveal reveal-delay-3 p-8 bg-surface-container-lowest rounded-3xl card-shadow border border-border-subtle active">
+<span class="material-symbols-outlined text-tertiary-container text-4xl mb-2">bed</span>
+<h3 class="font-headline-lg text-primary uppercase tracking-wider font-bold font-label-caps text-lg">Rooms</h3>
+<p class="font-body-md text-on-surface-variant text-lg">Consider room specifications and availability alongside patient preferences and medical requirements to understand implications for your limits.</p>
+<p class="text-sm text-on-surface-variant italic mt-2">Note: Information provided for planning purposes only; does not guarantee coverage or reimbursement.</p>
+</div>
+<div class="flex flex-col gap-4 reveal reveal-delay-4 p-8 bg-surface-container-lowest rounded-3xl card-shadow border border-border-subtle active">
+<span class="material-symbols-outlined text-primary-fixed-dim text-4xl mb-2">route</span>
+<h3 class="font-headline-lg text-primary uppercase tracking-wider font-bold font-label-caps text-lg">Care Journey</h3>
+<p class="font-body-md text-on-surface-variant text-lg">Navigate the entire care pathway from admission to post-discharge recovery, anticipating needs and helping organize smooth transitions.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- The Caregiver's Companion -->
+<section class="py-32 px-margin-desktop bg-surface-container-low">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="reveal active">
+<h2 class="editorial-text mb-6 font-headline-lg text-headline-lg font-semibold">Peace of mind for those who care most.</h2>
+<p class="font-body-md text-on-surface-variant mb-8 text-lg">
+                Navigating a loved one's health crisis is stressful enough without having to decipher medical billing codes or facility ratings. OSPAT acts as a dedicated companion for caregivers, organizing overwhelming data into clear choices.
+            </p>
+<blockquote class="border-l-4 border-primary-container pl-6 italic text-on-surface-variant text-lg">
+                "When my father needed urgent surgery, OSPAT helped me understand our network options in minutes, not hours. It felt like having a medical advocate right beside me."
+                <footer class="mt-4 font-label-sm text-primary font-semibold text-base">— Sarah M., Caregiver</footer>
+</blockquote>
+</div>
+<div class="bg-surface-container-lowest rounded-3xl p-10 card-shadow reveal reveal-delay-2 relative overflow-hidden active">
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-secondary-fixed-dim rounded-full blur-3xl opacity-30"></div>
+<div class="relative z-10 flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-border-subtle pb-6">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">family_restroom</span>
+</div>
+<div>
+<h4 class="font-headline-lg text-primary text-xl font-semibold">Caregiver Dashboard</h4>
+<p class="font-label-sm text-on-surface-variant text-sm">Real-time status updates</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center bg-surface p-4 rounded-xl">
+<span class="text-on-surface">Approval Status</span>
+<span class="text-status-safe font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Approved</span>
+</div>
+<div class="flex justify-between items-center bg-surface p-4 rounded-xl">
+<span class="text-on-surface">Estimated Cost</span>
+<span class="text-primary font-semibold">₹1,250</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Expanded How it Works -->
+<section class="py-32 px-margin-desktop bg-surface" id="how-it-works">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-20 reveal active">
+<h2 class="editorial-text mb-4 font-headline-lg text-headline-lg font-semibold">How OSPAT Works</h2>
+<p class="font-body-md text-on-surface-variant text-lg">Four simple steps from confusion to clarity.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="step-indicator flex flex-col items-center text-center reveal reveal-delay-1 active">
+<div class="w-16 h-16 rounded-full bg-surface-container border-2 border-primary-container flex items-center justify-center mb-6 relative z-10 text-primary font-headline-lg">1</div>
+<h4 class="font-headline-lg text-primary mb-2">Upload</h4>
+<p class="font-body-md text-on-surface-variant text-base">Upload your insurance policy document or card. We securely read and organize the details.</p>
+</div>
+<div class="step-indicator flex flex-col items-center text-center reveal reveal-delay-2 active">
+<div class="w-16 h-16 rounded-full bg-surface-container border-2 border-primary-container flex items-center justify-center mb-6 relative z-10 text-primary font-headline-lg">2</div>
+<h4 class="font-headline-lg text-primary mb-2">Compare</h4>
+<p class="font-body-md text-on-surface-variant text-base">We compare your coverage against local hospitals to help find suitable options for your needs.</p>
+</div>
+<div class="step-indicator flex flex-col items-center text-center reveal reveal-delay-3 active">
+<div class="w-16 h-16 rounded-full bg-surface-container border-2 border-primary-container flex items-center justify-center mb-6 relative z-10 text-primary font-headline-lg">3</div>
+<h4 class="font-headline-lg text-primary mb-2">Review</h4>
+<p class="font-body-md text-on-surface-variant text-base">Review clear, side-by-side information on potential out-of-pocket costs and facility ratings.</p>
+</div>
+<div class="step-indicator flex flex-col items-center text-center reveal reveal-delay-4 active">
+<div class="w-16 h-16 rounded-full bg-surface-container border-2 border-primary-container flex items-center justify-center mb-6 relative z-10 text-primary font-headline-lg">4</div>
+<h4 class="font-headline-lg text-primary mb-2">Navigate</h4>
+<p class="font-body-md text-on-surface-variant text-base">Proceed with confidence, utilizing our tools to navigate the care timeline seamlessly.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Explained Simply -->
+<section class="py-32 px-margin-desktop bg-surface-container-highest">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="order-2 md:order-1 bg-surface-container-lowest rounded-3xl p-8 card-shadow reveal reveal-delay-1 active">
+<div class="bg-surface p-4 rounded-xl mb-6 border border-border-subtle">
+<p class="font-label-caps text-on-surface-variant mb-2 text-sm">Complex Policy Clause</p>
+<p class="font-body-md text-on-surface text-base opacity-60">"The insured is responsible for coinsurance amounts equal to 20% of the allowed amount for covered services up to the out-of-pocket maximum, after which the plan pays 100%..."</p>
+</div>
+<div class="flex justify-center my-4">
+<span class="material-symbols-outlined text-primary-container animate-bounce">arrow_downward</span>
+</div>
+<div class="bg-primary-fixed-dim bg-opacity-20 p-6 rounded-xl border border-primary-fixed">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm">info</span>
+<p class="font-label-caps text-primary text-sm">Plain Language Explanation</p>
+</div>
+<p class="font-body-md text-primary font-medium text-lg">You pay 20% of the bill until you hit your yearly limit. After that, insurance pays everything.</p>
+</div>
+</div>
+<div class="order-1 md:order-2 reveal active">
+<h2 class="editorial-text mb-6 font-headline-lg text-headline-lg font-semibold">Complex information, explained simply.</h2>
+<p class="font-body-md text-on-surface-variant mb-6 text-lg">
+                OSPAT translates dense medical and insurance jargon into plain language. We explain the specific rules that apply to your situation, helping you understand what it means for your care.
+            </p>
+<ul class="space-y-4 mb-8">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check</span>
+<span class="text-on-surface-variant text-lg">Clear explanations of medical billing terms</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-1">check</span>
+<span class="text-on-surface-variant text-lg">Simple breakdown of clauses and cost estimations</span>
+</li>
+</ul>
+<p class="text-sm text-on-surface-variant italic">Features AI-assisted explanations powered by Google Gemini to help clarify complex documents.</p>
+</div>
+</div>
+</section>
+<!-- Trust & Privacy -->
+<section class="py-24 px-margin-desktop bg-[#001f26] text-white" id="responsible-use">
+<div class="max-w-container-max mx-auto text-center reveal active">
+<span class="material-symbols-outlined text-4xl text-primary-fixed mb-6">lock</span>
+<h2 class="font-headline-lg text-3xl mb-6">Built for clarity, not decisions made for you.</h2>
+<p class="font-body-md text-primary-fixed-dim max-w-2xl mx-auto mb-10 text-lg">
+            Health information is deeply personal. OSPAT provides information to support your decisions, while employing stringent security measures.
+        </p>
+<div class="bg-surface-tint bg-opacity-20 max-w-3xl mx-auto rounded-2xl p-8 mb-10 text-left border border-primary-container">
+<h3 class="text-primary-fixed font-bold mb-4 text-xl">OSPAT does not:</h3>
+<ul class="space-y-3">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-status-warning mt-1 text-sm">close</span>
+<span class="text-primary-fixed-dim">Make medical decisions or provide medical advice</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-status-warning mt-1 text-sm">close</span>
+<span class="text-primary-fixed-dim">Guarantee coverage or reimbursement from insurers</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-status-warning mt-1 text-sm">close</span>
+<span class="text-primary-fixed-dim">Sell or share your personal health data with third parties</span>
+</li>
+</ul>
+</div>
+<div class="flex justify-center gap-8">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed">verified_user</span>
+<span class="font-label-sm text-primary-fixed-dim text-base">Secure Processing</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed">enhanced_encryption</span>
+<span class="font-label-sm text-primary-fixed-dim text-base">E2E Encrypted</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24 px-margin-desktop bg-surface-container-low text-center">
+<div class="max-w-3xl mx-auto reveal active">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-stack-md">Ready to navigate your care?</h2>
+<button class="bg-primary-container text-on-primary font-label-sm px-10 py-4 rounded-full hover:bg-primary transition-colors text-lg">Start with clarity</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface-container-low dark:bg-surface-container-lowest border-t border-border-subtle flat no shadows">
+<div class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary">OSPAT Intelligence</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant dark:text-surface-variant text-center md:text-left">
+            © 2024 OSPAT Intelligence. All rights reserved. Information support only; not medical advice.
+        </div>
+<div class="flex gap-4">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary opacity-80 hover:opacity-100 transition-opacity font-label-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary opacity-80 hover:opacity-100 transition-opacity font-label-sm" href="#responsible-use">Responsible Use</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary opacity-80 hover:opacity-100 transition-opacity font-label-sm" href="#">Terms of Service</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-inverse-primary opacity-80 hover:opacity-100 transition-opacity font-label-sm" href="#">Contact Support</a>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Respect prefers-reduced-motion
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            if (!prefersReducedMotion) {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.1
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.reveal').forEach((el) => {
+                    observer.observe(el);
+                });
+            } else {
+                document.querySelectorAll('.reveal').forEach((el) => {
+                    el.classList.add('active');
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                    el.style.transition = 'none';
+                });
+            }
+        });
+    </script>
+
+
+</body></html>

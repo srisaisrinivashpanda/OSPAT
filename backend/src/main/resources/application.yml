@@ -32,10 +32,16 @@ spring:
       max-file-size: 25MB
       max-request-size: 25MB
 
-# AI & Ollama Configuration
+# AI & Multi-Provider Configuration (Gemini, Ollama, Heuristic)
 hospitality:
   ai:
-    provider: ${AI_PROVIDER:ollama} # ollama or fallback
+    provider: ${AI_PROVIDER:gemini} # gemini, ollama, or heuristic
+    gemini:
+      api-key: ${GEMINI_API_KEY:}
+      model: ${GEMINI_MODEL:gemini-2.5-flash}
+      base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com}
+      connect-timeout-ms: ${GEMINI_CONNECT_TIMEOUT_MS:5000}
+      read-timeout-ms: ${GEMINI_READ_TIMEOUT_MS:20000}
     ollama:
       base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
       model: ${OLLAMA_MODEL:qwen2.5:7b}
