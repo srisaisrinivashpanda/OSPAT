@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OSPAT - Hospital Matching</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f9f9f6",
+                    "tertiary": "#934624",
+                    "on-secondary-container": "#656464",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "on-secondary-fixed-variant": "#474646",
+                    "surface": "#f9f9f6",
+                    "surface-dim": "#dadad7",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e2e3e0",
+                    "on-tertiary-fixed": "#370e00",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#eeeeeb",
+                    "outline-variant": "#bcc9c7",
+                    "tertiary-fixed": "#ffdbce",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#2f312f",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#00504a",
+                    "secondary-container": "#e5e2e1",
+                    "primary-fixed-dim": "#65d9cd",
+                    "surface-bright": "#f9f9f6",
+                    "on-surface-variant": "#3d4947",
+                    "on-surface": "#1a1c1b",
+                    "primary-fixed": "#83f5ea",
+                    "outline": "#6d7a77",
+                    "amber-accent": "#F4B740",
+                    "error": "#ba1a1a",
+                    "lavender-surface": "#F1EEFF",
+                    "on-tertiary-fixed-variant": "#783111",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#f3fffc",
+                    "on-background": "#1a1c1b",
+                    "on-tertiary-container": "#fffbff",
+                    "tertiary-container": "#b25d3a",
+                    "surface-variant": "#e2e3e0",
+                    "surface-container-low": "#f4f4f1",
+                    "surface-tint": "#006a63",
+                    "tertiary-fixed-dim": "#ffb599",
+                    "secondary": "#5f5e5e",
+                    "surface-container-high": "#e8e8e5",
+                    "on-primary-fixed": "#00201d",
+                    "primary-container": "#00837a",
+                    "mint-surface": "#DDF5F0",
+                    "inverse-on-surface": "#f1f1ee",
+                    "secondary-fixed": "#e5e2e1",
+                    "inverse-primary": "#65d9cd",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "blue-surface": "#EAF3FF",
+                    "primary": "#006861"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "24px",
+                    "section-gap": "160px",
+                    "margin-page": "64px",
+                    "gutter": "32px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-section": [
+                            "Inter"
+                    ],
+                    "display-hero-mobile": [
+                            "Inter"
+                    ],
+                    "title-lg": [
+                            "Inter"
+                    ],
+                    "display-hero": [
+                            "Inter"
+                    ],
+                    "headline-section-mobile": [
+                            "Inter"
+                    ],
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "body-xl": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-section": [
+                            "64px",
+                            {
+                                    "lineHeight": "72px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display-hero-mobile": [
+                            "48px",
+                            {
+                                    "lineHeight": "52px",
+                                    "letterSpacing": "-0.03em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "title-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-hero": [
+                            "120px",
+                            {
+                                    "lineHeight": "116px",
+                                    "letterSpacing": "-0.04em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "headline-section-mobile": [
+                            "40px",
+                            {
+                                    "lineHeight": "48px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-caps": [
+                            "14px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.08em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-xl": [
+                            "24px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .score-ring {
+            transition: stroke-dasharray 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg antialiased">
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-on-background/80 backdrop-blur-xl font-body-lg text-body-lg fixed top-0 w-full h-16 border-b border-outline-variant/10 z-50">
+<div class="flex justify-between items-center px-margin-page max-w-[1440px] mx-auto w-full h-full">
+<div class="font-title-lg text-title-lg font-bold tracking-tight text-primary dark:text-primary-fixed">
+                OSPAT Intelligence
+            </div>
+<nav class="hidden md:flex gap-gutter items-center h-full">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 h-full flex items-center" href="#">Overview</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 h-full flex items-center" href="#">Policy</a>
+<a class="text-primary dark:text-primary-fixed font-semibold border-b-2 border-primary dark:border-primary-fixed pb-1 h-full flex items-center" href="#">Hospitals</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 h-full flex items-center" href="#">Care Journey</a>
+</nav>
+<div class="flex items-center gap-4 hover:text-primary dark:hover:text-primary-fixed transition-all">
+<button aria-label="Account">
+<span class="material-symbols-outlined text-3xl">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32">
+<!-- Hero Section -->
+<section class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-page pt-16 pb-section-gap">
+<div class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 md:col-span-10 flex flex-col justify-center">
+<span class="font-label-caps text-label-caps text-tertiary mb-6 tracking-[0.2em]">HOSPITAL MATCHING</span>
+<h1 class="font-display-hero-mobile text-display-hero-mobile md:font-display-hero md:text-display-hero text-on-surface mb-12 uppercase">FIND CARE THAT FITS.</h1>
+<!-- Search Bar -->
+<div class="relative w-full max-w-4xl border-b-2 border-outline focus-within:border-primary transition-colors duration-300 pb-4 mt-8 flex flex-col md:flex-row items-start md:items-end gap-6">
+<div class="flex-1 w-full flex gap-4">
+<input class="w-1/2 bg-transparent border-none focus:ring-0 text-headline-section-mobile font-headline-section-mobile text-on-surface placeholder:text-surface-dim p-0" placeholder="Location..." type="text"/>
+<div class="w-px bg-outline-variant h-10 my-auto"></div>
+<input class="w-1/2 bg-transparent border-none focus:ring-0 text-headline-section-mobile font-headline-section-mobile text-on-surface placeholder:text-surface-dim p-0" placeholder="Specialty..." type="text"/>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-8 py-4 uppercase tracking-widest hover:bg-on-primary-fixed-variant transition-colors whitespace-nowrap self-stretch md:self-auto flex items-center justify-center gap-2">
+                            FIND MATCHES
+                            <span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Top Match Section -->
+<section class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-page pb-section-gap">
+<div class="bg-surface-container-low p-8 md:p-16 flex flex-col lg:flex-row gap-16 relative overflow-hidden">
+<!-- Abstract BG Elements -->
+<div class="absolute top-0 right-0 w-full h-full bg-primary/5 blur-3xl opacity-50"></div>
+<div class="flex-1 z-10 lg:w-1/2">
+<span class="font-label-caps text-label-caps text-primary bg-primary-container/10 px-4 py-2 mb-8 inline-block tracking-widest">APEX MATCH</span>
+<h2 class="font-headline-section-mobile text-headline-section-mobile md:font-headline-section md:text-headline-section text-on-surface mb-6 uppercase">Apex Multi-Specialty Hospital</h2>
+<p class="font-body-xl text-body-xl text-on-surface-variant mb-16 max-w-2xl leading-relaxed">
+                        Based on your policy parameters and clinical requirements, Apex provides the most optimal alignment for cardiovascular care in your network.
+                    </p>
+<div class="flex flex-wrap gap-x-16 gap-y-8 border-t border-outline-variant/30 pt-12">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-3 tracking-widest">NETWORK ALIGNMENT</div>
+<div class="font-headline-section-mobile text-headline-section-mobile text-on-surface">40<span class="text-body-xl text-surface-dim font-normal">/40</span></div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-3 tracking-widest">ROOM PREFERENCE</div>
+<div class="font-headline-section-mobile text-headline-section-mobile text-on-surface">30<span class="text-body-xl text-surface-dim font-normal">/30</span></div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-3 tracking-widest">SPECIALTY OVERLAP</div>
+<div class="font-headline-section-mobile text-headline-section-mobile text-tertiary">10<span class="text-body-xl text-surface-dim font-normal">/20</span></div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-3 tracking-widest">POLICY COMPLIANCE</div>
+<div class="font-headline-section-mobile text-headline-section-mobile text-on-surface">10<span class="text-body-xl text-surface-dim font-normal">/10</span></div>
+</div>
+</div>
+</div>
+<div class="lg:w-1/2 flex flex-col items-center justify-center z-10">
+<div class="relative w-[320px] h-[320px] md:w-[480px] md:h-[480px]">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#e5e2e1" stroke-width="2"></circle>
+<circle class="score-ring" cx="50" cy="50" data-score="254" fill="none" r="45" stroke="#006861" stroke-dasharray="0 283" stroke-linecap="square" stroke-width="2"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-hero text-display-hero text-on-surface leading-none mb-4 tracking-tighter">90</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant tracking-[0.3em] uppercase">COMPATIBILITY SCORE</span>
+</div>
+</div>
+<button class="mt-16 bg-primary text-on-primary font-label-caps text-label-caps px-12 py-5 uppercase tracking-widest hover:bg-on-primary-fixed-variant transition-colors w-full md:w-auto">
+                        Review Alignment Data
+                    </button>
+</div>
+</div>
+</section>
+<!-- Intelligence Section -->
+<section class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-page pb-section-gap">
+<div class="border-b border-outline-variant/30 pb-8 mb-16">
+<h3 class="font-headline-section-mobile text-headline-section-mobile text-on-surface uppercase tracking-tight">WHY THIS MATCHES</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-16">
+<div class="animate-slide-up delay-100 flex gap-6">
+<div class="font-display-hero-mobile text-display-hero-mobile text-surface-dim leading-none font-bold">01</div>
+<div>
+<h4 class="font-title-lg text-title-lg font-bold text-on-surface mb-4">In-Network Facility</h4>
+<p class="text-body-lg text-on-surface-variant">Fully covered under your primary health plan tier, eliminating out-of-network penalties and unexpected billing.</p>
+</div>
+</div>
+<div class="animate-slide-up delay-200 flex gap-6">
+<div class="font-display-hero-mobile text-display-hero-mobile text-surface-dim leading-none font-bold">02</div>
+<div>
+<h4 class="font-title-lg text-title-lg font-bold text-on-surface mb-4">Private Room Availability</h4>
+<p class="text-body-lg text-on-surface-variant">Confirmed availability for single-occupancy recovery rooms matching your specific policy limits and preferences.</p>
+</div>
+</div>
+<div class="animate-slide-up delay-300 flex gap-6">
+<div class="font-display-hero-mobile text-display-hero-mobile text-surface-dim leading-none font-bold">03</div>
+<div>
+<h4 class="font-title-lg text-title-lg font-bold text-tertiary mb-4">Specialty Overlap</h4>
+<p class="text-body-lg text-on-surface-variant">While cardiovascular capabilities are present, advanced thoracic surgeons are limited in availability this quarter.</p>
+</div>
+</div>
+<div class="animate-slide-up delay-400 flex gap-6">
+<div class="font-display-hero-mobile text-display-hero-mobile text-surface-dim leading-none font-bold">04</div>
+<div>
+<h4 class="font-title-lg text-title-lg font-bold text-on-surface mb-4">Proximity</h4>
+<p class="text-body-lg text-on-surface-variant">Located within a 15-mile radius of your registered home address, minimizing travel disruption for long-term care.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Other Options -->
+<section class="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-page pb-section-gap">
+<div class="border-b border-outline-variant/30 pb-8 mb-16">
+<h3 class="font-headline-section-mobile text-headline-section-mobile text-on-surface uppercase tracking-tight">ALTERNATIVE ALIGNMENTS</h3>
+</div>
+<div class="flex flex-col gap-12">
+<!-- Option Row -->
+<div class="flex flex-col xl:flex-row items-start xl:items-center justify-between group py-8 border-b border-outline-variant/20 hover:border-primary transition-colors cursor-pointer gap-8">
+<div class="flex items-center gap-12 w-full xl:w-auto">
+<div class="relative w-24 h-24 flex-shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#e5e2e1" stroke-width="4"></circle>
+<circle cx="50" cy="50" fill="none" r="45" stroke="#006861" stroke-dasharray="230 283" stroke-linecap="square" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-title-lg text-title-lg font-bold text-on-surface">78</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 flex-1">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">FACILITY</div>
+<h4 class="font-title-lg text-title-lg font-bold text-on-surface group-hover:text-primary transition-colors">Metro Care Institute</h4>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">LOCATION &amp; STATUS</div>
+<div class="text-on-surface font-body-lg text-body-lg">Downtown • Partial Network</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">ANALYSIS</div>
+<div class="text-on-surface-variant font-body-lg text-body-lg">Strong specialty match, partial network alignment.</div>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-4xl text-surface-dim group-hover:text-primary transition-colors self-end xl:self-center">arrow_forward</span>
+</div>
+<!-- Option Row -->
+<div class="flex flex-col xl:flex-row items-start xl:items-center justify-between group py-8 border-b border-outline-variant/20 hover:border-amber-accent transition-colors cursor-pointer gap-8">
+<div class="flex items-center gap-12 w-full xl:w-auto">
+<div class="relative w-24 h-24 flex-shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#e5e2e1" stroke-width="4"></circle>
+<circle cx="50" cy="50" fill="none" r="45" stroke="#F4B740" stroke-dasharray="190 283" stroke-linecap="square" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-title-lg text-title-lg font-bold text-on-surface">65</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 flex-1">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">FACILITY</div>
+<h4 class="font-title-lg text-title-lg font-bold text-on-surface group-hover:text-amber-accent transition-colors">St. Jude Medical Center</h4>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">LOCATION &amp; STATUS</div>
+<div class="text-on-surface font-body-lg text-body-lg">Westside • Full Network</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">ANALYSIS</div>
+<div class="text-on-surface-variant font-body-lg text-body-lg">Full network match, room constraints apply.</div>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-4xl text-surface-dim group-hover:text-amber-accent transition-colors self-end xl:self-center">arrow_forward</span>
+</div>
+<!-- Option Row -->
+<div class="flex flex-col xl:flex-row items-start xl:items-center justify-between group py-8 border-b border-outline-variant/20 hover:border-tertiary transition-colors cursor-pointer gap-8">
+<div class="flex items-center gap-12 w-full xl:w-auto">
+<div class="relative w-24 h-24 flex-shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#e5e2e1" stroke-width="4"></circle>
+<circle cx="50" cy="50" fill="none" r="45" stroke="#934624" stroke-dasharray="150 283" stroke-linecap="square" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-title-lg text-title-lg font-bold text-on-surface">52</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 flex-1">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">FACILITY</div>
+<h4 class="font-title-lg text-title-lg font-bold text-on-surface group-hover:text-tertiary transition-colors">Zenith Health</h4>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">LOCATION &amp; STATUS</div>
+<div class="text-on-surface font-body-lg text-body-lg">North Suburbs • Out of Network</div>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 tracking-widest">ANALYSIS</div>
+<div class="text-on-surface-variant font-body-lg text-body-lg">Out of network, specialized care only.</div>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-4xl text-surface-dim group-hover:text-tertiary transition-colors self-end xl:self-center">arrow_forward</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-on-background w-full py-gutter px-margin-page border-t border-outline-variant/10">
+<div class="flex flex-col md:flex-row justify-between items-start gap-gutter max-w-[1440px] mx-auto">
+<div class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps max-w-xl">
+                © 2024 OSPAT Healthcare Intelligence. All clinical insights are subject to rigorous scientific validation and expert oversight. Data privacy is integrated by design.
+            </div>
+<div class="flex gap-8 flex-wrap">
+<a class="font-label-caps text-label-caps text-on-surface-variant/60 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant/60 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant/60 hover:text-primary transition-colors" href="#">Clinical Methodology</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant/60 hover:text-primary transition-colors" href="#">Security</a>
+</div>
+</div>
+</footer>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate score ring on load
+            setTimeout(() => {
+                const ring = document.querySelector('.score-ring');
+                if (ring) {
+                    const targetScore = ring.getAttribute('data-score');
+                    ring.style.strokeDasharray = `${targetScore} 283`;
+                }
+            }, 300);
+            
+            // Intersection Observer for slide up animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.animate-slide-up').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OSPAT - Policy Intelligence</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "background": "#f9f9f6",
+                            "tertiary": "#934624",
+                            "on-secondary-container": "#656464",
+                            "on-secondary-fixed": "#1c1b1b",
+                            "on-secondary-fixed-variant": "#474646",
+                            "surface": "#f9f9f6",
+                            "surface-dim": "#dadad7",
+                            "on-error-container": "#93000a",
+                            "surface-container-highest": "#e2e3e0",
+                            "on-tertiary-fixed": "#370e00",
+                            "secondary-fixed-dim": "#c8c6c5",
+                            "surface-container-lowest": "#ffffff",
+                            "surface-container": "#eeeeeb",
+                            "outline-variant": "#bcc9c7",
+                            "tertiary-fixed": "#ffdbce",
+                            "on-secondary": "#ffffff",
+                            "inverse-surface": "#2f312f",
+                            "on-error": "#ffffff",
+                            "on-primary-fixed-variant": "#00504a",
+                            "secondary-container": "#e5e2e1",
+                            "primary-fixed-dim": "#65d9cd",
+                            "surface-bright": "#f9f9f6",
+                            "on-surface-variant": "#3d4947",
+                            "on-surface": "#1a1c1b",
+                            "primary-fixed": "#83f5ea",
+                            "outline": "#6d7a77",
+                            "amber-accent": "#F4B740",
+                            "error": "#ba1a1a",
+                            "lavender-surface": "#F1EEFF",
+                            "on-tertiary-fixed-variant": "#783111",
+                            "on-primary": "#ffffff",
+                            "on-primary-container": "#f3fffc",
+                            "on-background": "#1a1c1b",
+                            "on-tertiary-container": "#fffbff",
+                            "tertiary-container": "#b25d3a",
+                            "surface-variant": "#e2e3e0",
+                            "surface-container-low": "#f4f4f1",
+                            "surface-tint": "#006a63",
+                            "tertiary-fixed-dim": "#ffb599",
+                            "secondary": "#5f5e5e",
+                            "surface-container-high": "#e8e8e5",
+                            "on-primary-fixed": "#00201d",
+                            "primary-container": "#00837a",
+                            "mint-surface": "#DDF5F0",
+                            "inverse-on-surface": "#f1f1ee",
+                            "secondary-fixed": "#e5e2e1",
+                            "inverse-primary": "#65d9cd",
+                            "error-container": "#ffdad6",
+                            "on-tertiary": "#ffffff",
+                            "blue-surface": "#EAF3FF",
+                            "primary": "#006861"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "margin-mobile": "24px",
+                            "section-gap": "160px",
+                            "margin-page": "64px",
+                            "gutter": "32px",
+                            "unit": "8px"
+                    },
+                    "fontFamily": {
+                            "body-lg": [
+                                    "Inter", "sans-serif"
+                            ],
+                            "headline-section": [
+                                    "Inter", "sans-serif"
+                            ],
+                            "display-hero-mobile": [
+                                    "Inter", "sans-serif"
+                            ],
+                            "title-lg": [
+                                    "Inter", "sans-serif"
+                            ],
+                            "display-hero": [
+                                    "Inter", "sans-serif"
+                            ],
+                            "headline-section-mobile": [
+                                    "Inter", "sans-serif"
+                            ],
+                            "label-caps": [
+                                    "Inter", "sans-serif"
+                            ],
+                            "body-xl": [
+                                    "Inter", "sans-serif"
+                            ]
+                    },
+                    "fontSize": {
+                            "body-lg": [
+                                    "18px",
+                                    {
+                                            "lineHeight": "28px",
+                                            "fontWeight": "400"
+                                    }
+                            ],
+                            "headline-section": [
+                                    "56px",
+                                    {
+                                            "lineHeight": "64px",
+                                            "letterSpacing": "-0.02em",
+                                            "fontWeight": "600"
+                                    }
+                            ],
+                            "display-hero-mobile": [
+                                    "48px",
+                                    {
+                                            "lineHeight": "52px",
+                                            "letterSpacing": "-0.03em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "title-lg": [
+                                    "32px",
+                                    {
+                                            "lineHeight": "40px",
+                                            "fontWeight": "500"
+                                    }
+                            ],
+                            "display-hero": [
+                                    "120px",
+                                    {
+                                            "lineHeight": "112px",
+                                            "letterSpacing": "-0.04em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "headline-section-mobile": [
+                                    "32px",
+                                    {
+                                            "lineHeight": "40px",
+                                            "letterSpacing": "-0.01em",
+                                            "fontWeight": "600"
+                                    }
+                            ],
+                            "label-caps": [
+                                    "12px",
+                                    {
+                                            "lineHeight": "16px",
+                                            "letterSpacing": "0.08em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "body-xl": [
+                                    "22px",
+                                    {
+                                            "lineHeight": "32px",
+                                            "fontWeight": "400"
+                                    }
+                            ]
+                    }
+            },
+            },
+        }
+    </script>
+<!-- Custom Motion Styles -->
+<style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 150ms; }
+        .stagger-2 { transition-delay: 300ms; }
+        .stagger-3 { transition-delay: 450ms; }
+        .stagger-4 { transition-delay: 600ms; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg antialiased selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar Shared Component -->
+<header class="fixed top-0 w-full h-16 bg-surface/80 dark:bg-on-background/80 backdrop-blur-xl border-b border-outline-variant/10 z-50">
+<div class="flex justify-between items-center px-margin-page max-w-[1440px] mx-auto w-full h-full">
+<!-- Brand -->
+<div class="font-title-lg text-title-lg font-bold tracking-tight text-primary dark:text-primary-fixed">
+                OSPAT Intelligence
+            </div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 font-body-lg text-body-lg" href="#">Overview</a>
+<a class="text-primary dark:text-primary-fixed font-semibold border-b-2 border-primary dark:border-primary-fixed pb-1 font-body-lg text-body-lg" href="#">Policy</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 font-body-lg text-body-lg" href="#">Hospitals</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 font-body-lg text-body-lg" href="#">Care Journey</a>
+</nav>
+<!-- Trailing Actions -->
+<div class="flex items-center">
+<button class="hover:text-primary dark:hover:text-primary-fixed transition-all active:opacity-70 duration-200 text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined filled text-[32px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-40 pb-section-gap max-w-[1440px] mx-auto px-margin-mobile md:px-margin-page">
+<!-- Hero Section -->
+<section class="mb-section-gap reveal active">
+<div class="mb-8">
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">POLICY INTELLIGENCE</span>
+</div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-[120px] md:leading-[112px] md:tracking-[-0.04em] font-bold text-on-surface md:w-10/12">
+                UNDERSTAND WHAT YOUR POLICY MEANS.
+            </h1>
+</section>
+<!-- Immersive Upload Section -->
+<section class="mb-section-gap reveal stagger-1 relative overflow-hidden rounded-2xl">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-60 mix-blend-multiply" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPLoC9FvNXhnbA3nE9fIDA-s7T2a9tL3ugw4EaAIIv-3CVtppgow0x0RcVIzYbDfhAw9lrI1jA9n1H-ifTUu7-_LcJORyH9BuY9WdErehRd1DWon8GXbaSxHwIxALu71VTEZ-GrFnm8eoRzjSk7lhim2Nlzdnv0ftKOcdNAqWjLvQm0JEuDBWbe1-I3DjgVyJDDANBi3gG10vJiqMH5IH1OHgvPc5gzzM9wIJrtm2apJDdzxgo6OxE')"></div>
+<div class="relative bg-mint-surface/60 backdrop-blur-md border border-primary/10 rounded-2xl p-16 md:p-40 flex flex-col items-center justify-center text-center group cursor-pointer transition-all hover:bg-mint-surface/80">
+<div class="bg-surface p-6 rounded-full shadow-sm mb-8 text-primary group-hover:scale-105 transition-transform duration-700 ease-out">
+<span class="material-symbols-outlined text-[48px]">document_scanner</span>
+</div>
+<h2 class="font-headline-section text-headline-section text-on-surface mb-6">Extract Intelligence</h2>
+<p class="font-body-xl text-body-xl text-on-surface-variant max-w-2xl mx-auto">
+                    Drag and drop your insurance PDF to instantly extract clinical insights, hospital network coverage, and definitive coverage limits.
+                </p>
+<button class="mt-12 px-10 py-5 bg-primary text-on-primary rounded-full font-body-lg text-body-lg hover:bg-primary-container transition-colors shadow-lg hover:shadow-xl">
+                    Select Document
+                </button>
+</div>
+</section>
+<!-- Typographic Results Section (The "Non-Card") -->
+<section class="mb-section-gap reveal stagger-2">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-x-gutter gap-y-24">
+<!-- Data Point 1 -->
+<div class="border-t-2 border-primary/20 pt-8">
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-6">Sum Insured</div>
+<div class="text-[64px] leading-[72px] font-bold tracking-tight text-primary">₹5,00,000</div>
+</div>
+<!-- Data Point 2 -->
+<div class="border-t-2 border-outline-variant/30 pt-8">
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-6">Room Limit</div>
+<div class="text-[64px] leading-[72px] font-bold tracking-tight text-on-surface">₹5,000<span class="text-[32px] leading-[40px] font-medium text-on-surface-variant/50">/Day</span></div>
+</div>
+<!-- Data Point 3 -->
+<div class="border-t-2 border-outline-variant/30 pt-8">
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-6">Network Hospitals</div>
+<div class="text-[64px] leading-[72px] font-bold tracking-tight text-on-surface">8 <span class="text-[32px] leading-[40px] font-medium text-on-surface-variant/50">Top-Tier</span></div>
+</div>
+<!-- Data Point 4 -->
+<div class="border-t-2 border-outline-variant/30 pt-8">
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-6">Key Exclusions</div>
+<div class="text-[64px] leading-[72px] font-bold tracking-tight text-tertiary">4 <span class="text-[32px] leading-[40px] font-medium text-on-surface-variant/50">Items</span></div>
+</div>
+</div>
+</section>
+<!-- Network Section: Flowing Visualization -->
+<section class="mb-section-gap reveal stagger-3">
+<div class="text-center mb-16">
+<h3 class="font-headline-section text-headline-section text-on-surface">WHERE YOUR POLICY CONNECTS.</h3>
+<p class="font-body-xl text-body-xl text-on-surface-variant mt-6 max-w-3xl mx-auto">
+                    Premium healthcare facilities within your direct billing network, mapped to your specific coverage tiers.
+                </p>
+</div>
+<div class="relative py-12">
+<!-- Connecting Lines (Abstracted with borders) -->
+<div class="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
+<div class="w-full h-px bg-primary absolute top-1/2 -translate-y-1/2"></div>
+<div class="w-px h-full bg-primary absolute left-1/2 -translate-x-1/2"></div>
+</div>
+<div class="relative z-10 flex flex-wrap justify-center gap-8 items-center max-w-5xl mx-auto">
+<div class="px-8 py-6 bg-surface-container-high rounded-full border border-outline-variant/20 shadow-sm transition-transform hover:-translate-y-1">
+<span class="font-title-lg text-title-lg text-on-surface">Columbia Asia Hospital</span>
+</div>
+<div class="px-10 py-8 bg-mint-surface rounded-full border-2 border-primary shadow-md transform scale-110 z-20 transition-transform hover:scale-125">
+<span class="font-title-lg text-title-lg font-bold text-primary">Apex Multi-Specialty Hospital</span>
+</div>
+<div class="px-8 py-6 bg-surface-container-high rounded-full border border-outline-variant/20 shadow-sm transition-transform hover:-translate-y-1">
+<span class="font-title-lg text-title-lg text-on-surface">Manipal Hospitals</span>
+</div>
+<div class="px-8 py-6 bg-surface-container-high rounded-full border border-outline-variant/20 shadow-sm transition-transform hover:-translate-y-1">
+<span class="font-title-lg text-title-lg text-on-surface">Fortis Healthcare</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Exclusions Section: Editorial List -->
+<section class="mb-section-gap reveal stagger-4">
+<div class="max-w-4xl mx-auto">
+<h3 class="font-headline-section text-headline-section text-on-surface mb-16 border-b-2 border-on-surface pb-8">WHAT TO WATCH FOR.</h3>
+<ul class="flex flex-col gap-12">
+<li class="flex items-start gap-8 group">
+<span class="font-display-hero text-display-hero text-outline-variant/30 font-light group-hover:text-tertiary transition-colors duration-500">01</span>
+<div class="pt-4">
+<h4 class="font-title-lg text-title-lg text-on-surface mb-4">Cosmetic &amp; Aesthetic Treatments</h4>
+<p class="font-body-xl text-body-xl text-on-surface-variant leading-relaxed">Procedures primarily focused on altering physical appearance without underlying medical necessity are strictly excluded from baseline coverage.</p>
+</div>
+</li>
+<li class="flex items-start gap-8 group">
+<span class="font-display-hero text-display-hero text-outline-variant/30 font-light group-hover:text-tertiary transition-colors duration-500">02</span>
+<div class="pt-4">
+<h4 class="font-title-lg text-title-lg text-on-surface mb-4">Non-Medical Consumables</h4>
+<p class="font-body-xl text-body-xl text-on-surface-variant leading-relaxed">Administrative charges, registration fees, and non-therapeutic items provided during hospital stay must be settled out-of-pocket.</p>
+</div>
+</li>
+<li class="flex items-start gap-8 group">
+<span class="font-display-hero text-display-hero text-outline-variant/30 font-light group-hover:text-tertiary transition-colors duration-500">03</span>
+<div class="pt-4">
+<h4 class="font-title-lg text-title-lg text-on-surface mb-4">Pre-existing Conditions</h4>
+<p class="font-body-xl text-body-xl text-on-surface-variant leading-relaxed">Conditions formally diagnosed prior to policy inception remain subject to a mandatory 24-month waiting period before claims can be processed.</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+<!-- Disclaimer -->
+<section class="text-center reveal mb-24">
+<p class="font-label-caps text-label-caps text-on-surface-variant/60 max-w-3xl mx-auto">
+                * Data presented is derived from automated intelligence extraction and is intended for indicative purposes only. Always consult your final policy schedule for definitive legal coverage terms.
+            </p>
+</section>
+</main>
+<!-- Footer Shared Component -->
+<footer class="w-full py-gutter px-margin-page bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant/10">
+<div class="flex flex-col md:flex-row justify-between items-start gap-gutter max-w-[1440px] mx-auto">
+<div class="text-on-surface-variant dark:text-outline-variant font-label-caps text-label-caps max-w-lg leading-relaxed">
+                © 2024 OSPAT Healthcare Intelligence. All clinical insights are subject to rigorous scientific validation and expert oversight. Data privacy is integrated by design.
+            </div>
+<div class="flex flex-wrap gap-8">
+<a class="text-on-surface-variant/60 hover:text-primary transition-colors font-label-caps text-label-caps" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant/60 hover:text-primary transition-colors font-label-caps text-label-caps" href="#">Terms of Service</a>
+<a class="text-on-surface-variant/60 hover:text-primary transition-colors font-label-caps text-label-caps" href="#">Clinical Methodology</a>
+<a class="text-on-surface-variant/60 hover:text-primary transition-colors font-label-caps text-label-caps" href="#">Security</a>
+</div>
+</div>
+</footer>
+<!-- Intersection Observer for Scroll Animations -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(element => {
+                if(!element.classList.contains('active')) {
+                    observer.observe(element);
+                }
+            });
+        });
+    </script>
+</body></html>

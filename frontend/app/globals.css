@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #f9f9f6;
+  --color-surface: #f9f9f6;
+  --color-surface-dim: #dadad7;
+  --color-surface-bright: #f9f9f6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f4f1;
+  --color-surface-container: #eeeeeb;
+  --color-surface-container-high: #e8e8e5;
+  --color-surface-container-highest: #e2e3e0;
+  --color-on-surface: #1a1c1b;
+  --color-on-surface-variant: #3d4947;
+  --color-inverse-surface: #2f312f;
+  --color-inverse-on-surface: #f1f1ee;
+  --color-outline: #6d7a77;
+  --color-outline-variant: #bcc9c7;
+  --color-surface-tint: #006a63;
+  --color-primary: #006861;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #00837a;
+  --color-on-primary-container: #f3fffc;
+  --color-inverse-primary: #65d9cd;
+  --color-primary-fixed: #83f5ea;
+  --color-primary-fixed-dim: #65d9cd;
+  --color-on-primary-fixed: #00201d;
+  --color-on-primary-fixed-variant: #00504a;
+  --color-secondary: #5f5e5e;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #e5e2e1;
+  --color-on-secondary-container: #656464;
+  --color-tertiary: #934624;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #b25d3a;
+  --color-on-tertiary-container: #fffbff;
+  --color-mint-surface: #DDF5F0;
+  --color-blue-surface: #EAF3FF;
+  --color-lavender-surface: #F1EEFF;
+  --color-amber-accent: #F4B740;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --spacing-margin-page: 64px;
+  --spacing-margin-mobile: 24px;
+  --spacing-gutter: 32px;
+  --spacing-section-gap: 128px;
+
+  --font-inter: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+  --background: #f9f9f6;
+  --foreground: #1a1c1b;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Material Symbols configuration */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Exact Clinical Editorial Design Tokens */
+.font-display-hero {
+  font-size: 96px;
+  line-height: 104px;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+.font-display-hero-mobile {
+  font-size: 48px;
+  line-height: 52px;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.font-headline-section {
+  font-size: 56px;
+  line-height: 64px;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.font-headline-section-mobile {
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.font-title-lg {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
+}
+
+.font-body-xl {
+  font-size: 22px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+.font-body-lg {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+}
+
+.font-label-caps {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Stitch Motion & Transition Animations */
+.score-ring {
+  transition: stroke-dasharray 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(0.9);
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(0, 104, 97, 0.45);
+  }
+  70% {
+    transform: scale(1);
+    opacity: 0;
+    box-shadow: 0 0 0 28px rgba(0, 104, 97, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0;
+    box-shadow: 0 0 0 0 rgba(0, 104, 97, 0);
+  }
+}
+
+.pulse-ring {
+  animation: pulseRing 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes dashProgress {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.progress-line-anim {
+  animation: dashProgress 2.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+@keyframes drawCheckmark {
+  from {
+    stroke-dashoffset: 50;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.check-anim {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawCheckmark 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes revealIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 1;
+  animation: revealIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.stagger-1 { animation-delay: 80ms; }
+.stagger-2 { animation-delay: 160ms; }
+.stagger-3 { animation-delay: 240ms; }
+.stagger-4 { animation-delay: 320ms; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f4f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bcc9c7;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6d7a77;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
