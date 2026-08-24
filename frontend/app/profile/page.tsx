@@ -12,9 +12,24 @@ export default function ProfilePage() {
   const [smsAlerts, setSmsAlerts] = useState(true);
   const [showSignOutNotice, setShowSignOutNotice] = useState(false);
 
+  const [userProfile, setUserProfile] = useState<{ fullName: string; email: string; phone: string }>({
+    fullName: 'Demo User',
+    email: 'demo.patient@ospat-intelligence.health',
+    phone: '+91 98765 43210',
+  });
+
   useEffect(() => {
     async function loadProfileData() {
       try {
+        const saved = localStorage.getItem('ospat_user_profile');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setUserProfile({
+            fullName: parsed.fullName || 'Demo User',
+            email: parsed.email || 'demo.patient@ospat-intelligence.health',
+            phone: parsed.phone || '+91 98765 43210',
+          });
+        }
         const activePol = await api.getActivePolicy(1);
         setPolicy(activePol);
       } catch (e) {
@@ -51,16 +66,16 @@ export default function ProfilePage() {
               </div>
               <div className="flex-grow text-center md:text-left">
                 <h3 className="text-xl font-bold text-on-surface mb-1">
-                  {policy?.patientName || 'Demo User'}
+                  {userProfile.fullName || policy?.patientName || 'Demo User'}
                 </h3>
                 <div className="flex flex-col gap-1 text-sm text-secondary">
                   <div className="flex items-center justify-center md:justify-start gap-2">
                     <span className="material-symbols-outlined text-[18px]">mail</span>
-                    <span>demo.patient@ospat-intelligence.health</span>
+                    <span>{userProfile.email}</span>
                   </div>
                   <div className="flex items-center justify-center md:justify-start gap-2">
                     <span className="material-symbols-outlined text-[18px]">call</span>
-                    <span>+91 98765 43210</span>
+                    <span>{userProfile.phone}</span>
                   </div>
                 </div>
               </div>

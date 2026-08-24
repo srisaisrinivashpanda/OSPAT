@@ -157,7 +157,7 @@ export default function InsurancePage() {
 
       <main className="flex-grow max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-10 w-full">
         {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md mb-10">
+        <header className="mb-10">
           <div>
             <h1 className="font-display-hero text-3xl md:text-display-hero text-primary mb-2 font-bold tracking-tight">
               Your coverage
@@ -166,14 +166,6 @@ export default function InsurancePage() {
               Understand the important parts of your policy, all in one place.
             </p>
           </div>
-          <button
-            onClick={openUploadModal}
-            className="flex items-center justify-center gap-2 bg-primary-container text-on-primary font-label-sm px-6 py-3 rounded-full hover:opacity-90 transition-opacity shadow-sm"
-            type="button"
-          >
-            <span className="material-symbols-outlined text-sm">upload_file</span>
-            Upload a policy
-          </button>
         </header>
 
         {/* Active Policy Summary & Coverage Hero Bento */}
@@ -259,7 +251,7 @@ export default function InsurancePage() {
                 <span className="material-symbols-outlined">local_hospital</span>
               </div>
               <h4 className="font-label-caps text-xs text-on-surface-variant uppercase tracking-wider mb-1 font-semibold">
-                Network
+                Hospital Network
               </h4>
               <p className="font-metric-value text-2xl text-primary font-bold mb-1">In network</p>
               <p className="font-label-sm text-xs text-on-surface-variant">
