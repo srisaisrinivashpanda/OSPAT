@@ -7,8 +7,8 @@ import com.hospitality.exception.ResourceNotFoundException;
 import com.hospitality.matching.HospitalMatchingEngine;
 import com.hospitality.repository.HospitalRepository;
 import com.hospitality.repository.InsurancePolicyRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,14 +16,23 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class HospitalService {
 
     private final HospitalRepository hospitalRepository;
     private final InsurancePolicyRepository policyRepository;
     private final HospitalMatchingEngine matchingEngine;
-    private final AIService aiService;
+    private final AIService heuristicAIService;
+
+    public HospitalService(HospitalRepository hospitalRepository,
+                           InsurancePolicyRepository policyRepository,
+                           HospitalMatchingEngine matchingEngine,
+                           @Qualifier("heuristicAIService") AIService heuristicAIService) {
+        this.hospitalRepository = hospitalRepository;
+        this.policyRepository = policyRepository;
+        this.matchingEngine = matchingEngine;
+        this.heuristicAIService = heuristicAIService;
+    }
 
     @Transactional(readOnly = true)
     public List<HospitalDto> getAllHospitals() {
@@ -67,8 +76,8 @@ public class HospitalService {
                         || h.getLocation().toLowerCase().contains(location.toLowerCase()))
                 .map(h -> {
                     HospitalMatchResultDto match = matchingEngine.matchHospital(finalPolicy, h, specialty);
-                    // Generate safe, non-technical explanation
-                    String explanation = aiService.generateHospitalMatchExplanation(
+                    // Generate safe, non-technical deterministic explanation
+                    String explanation = heuristicAIService.generateHospitalMatchExplanation(
                             finalPolicy != null ? finalPolicy.getInsurerName() : null,
                             h.getName(),
                             match);
