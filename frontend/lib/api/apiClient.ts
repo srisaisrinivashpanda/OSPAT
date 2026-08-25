@@ -12,7 +12,18 @@ import {
   AIExplainResponseDto,
 } from '../types';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+function sanitizeApiBase(rawUrl?: string): string {
+  if (!rawUrl || typeof rawUrl !== 'string') return 'http://localhost:8080';
+  let cleaned = rawUrl.trim();
+  // Extract the first valid http(s) origin if duplicated or accidentally concatenated
+  const match = cleaned.match(/^(https?:\/\/[a-zA-Z0-9.\-_]+(?::\d+)?)/);
+  if (match) {
+    cleaned = match[1];
+  }
+  return cleaned.replace(/\/+$/, '');
+}
+
+const API_BASE = sanitizeApiBase(process.env.NEXT_PUBLIC_API_URL);
 
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
