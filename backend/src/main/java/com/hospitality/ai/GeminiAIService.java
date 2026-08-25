@@ -91,12 +91,20 @@ public class GeminiAIService implements AIService {
         try {
             log.info("Calling Google Gemini API ({}) for hospital match explanation", model);
             String prompt = String.format(
-                    "You are an insurance decision-support assistant. In 2 concise sentences, summarize why %s scored a deterministic compatibility of %d%% based on provided %s policy data. Key factors: %s. Considerations: %s. Use safe, non-committal language ('Based on provided policy data...', 'Listed as network hospital...', 'Within stated room limit...'). Do NOT guarantee insurance coverage, cashless approval, or claim settlement.",
+                    "You are an insurance decision-support assistant writing a calm, factual, caregiver-friendly explanation for %s (Compatibility Score: %d%%) under %s policy. " +
+                    "Write approximately 3-5 concise sentences covering: " +
+                    "1. Why this hospital matches or has trade-offs (Network status: %s, Room compliance: %s). " +
+                    "2. Network/cashless admission implications (or reimbursement requirements if out-of-network). " +
+                    "3. Room limit financial implications (warning about out-of-pocket costs and potential proportionate deductions if choosing rooms above the cap). " +
+                    "4. Specialty alignment (%s). " +
+                    "5. Conclude with a clear 'What to confirm:' section with 1-2 actionable questions for the hospital TPA / cashless desk. " +
+                    "Tone: calm, reassuring, factual, non-alarming. Do NOT give medical advice. Do NOT guarantee coverage or claim approval.",
                     hospitalName != null ? hospitalName : "this hospital",
                     matchResult != null ? matchResult.getCompatibilityScore() : 0,
-                    insurerName != null ? insurerName : "stated",
-                    matchResult != null ? String.join("; ", matchResult.getMatchingFactors()) : "None",
-                    matchResult != null && !matchResult.getConsiderations().isEmpty() ? String.join("; ", matchResult.getConsiderations()) : "None"
+                    insurerName != null ? insurerName : "your active",
+                    matchResult != null ? matchResult.getNetworkStatus() : "UNKNOWN",
+                    matchResult != null && Boolean.TRUE.equals(matchResult.getHasEligibleRoom()) ? "Within policy room limit" : "Exceeds daily room cap",
+                    matchResult != null && matchResult.getSpecialties() != null && !matchResult.getSpecialties().isEmpty() ? String.join(", ", matchResult.getSpecialties().stream().limit(3).toList()) : "General Clinical Care"
             );
 
             Map<String, Object> contentPart = Map.of("text", prompt);
