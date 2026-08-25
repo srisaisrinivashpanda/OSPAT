@@ -18,6 +18,7 @@ export default function HospitalsPage() {
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<'SCORE' | 'NAME'>('SCORE');
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [showScoreInfo, setShowScoreInfo] = useState(false);
   const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {
@@ -182,29 +183,176 @@ export default function HospitalsPage() {
           </div>
         </section>
 
-        {/* Results Summary */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="font-headline-lg text-lg md:text-xl text-primary font-bold">
-            Hospitals matching your policy — {filteredMatches.length} facilities
-          </h2>
-          <div className="flex items-center gap-2 font-label-sm text-xs text-on-surface-variant">
-            <span>Sort by:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-transparent font-semibold text-primary border-none cursor-pointer focus:outline-none"
+        {/* Results Summary & How Score is Calculated Trigger */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <div>
+            <h2 className="font-headline-lg text-lg md:text-xl text-primary font-bold">
+              {loading ? (
+                <span>Hospitals matching your policy</span>
+              ) : (
+                <span>Hospitals matching your policy — {filteredMatches.length} facilities</span>
+              )}
+            </h2>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 font-label-sm text-xs text-on-surface-variant">
+            <button
+              type="button"
+              onClick={() => setShowScoreInfo(!showScoreInfo)}
+              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border transition-all duration-200 cursor-pointer font-medium ${
+                showScoreInfo
+                  ? 'bg-primary text-white border-primary shadow-xs'
+                  : 'bg-surface-container-lowest text-primary border-border-subtle hover:border-primary/40'
+              }`}
             >
-              <option value="SCORE">Best Match</option>
-              <option value="NAME">Name (A-Z)</option>
-            </select>
+              <span className="material-symbols-outlined text-[16px]">info</span>
+              <span>How is this score calculated?</span>
+              <span className="material-symbols-outlined text-[14px]">
+                {showScoreInfo ? 'expand_less' : 'expand_more'}
+              </span>
+            </button>
+
+            <div className="flex items-center gap-1.5">
+              <span>Sort by:</span>
+              <select
+                value={sortBy}
+                disabled={loading}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="bg-surface-container-lowest border border-border-subtle rounded-lg px-2.5 py-1.5 font-semibold text-primary cursor-pointer focus:outline-none disabled:opacity-50"
+              >
+                <option value="SCORE">Best Match</option>
+                <option value="NAME">Name (A-Z)</option>
+              </select>
+            </div>
           </div>
         </div>
 
+        {/* Expandable "How your compatibility score is calculated" Panel */}
+        {showScoreInfo && (
+          <div className="mb-8 p-5 sm:p-6 bg-surface-container-lowest rounded-2xl border border-primary/20 card-shadow transition-all duration-200 animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-border-subtle">
+              <div>
+                <h3 className="font-label-caps text-xs text-primary font-bold uppercase tracking-wider">
+                  How your compatibility score is calculated
+                </h3>
+                <p className="font-body-md text-xs text-on-surface-variant mt-0.5">
+                  OSPAT evaluates each hospital against your policy rules using a transparent, weighted deterministic model:
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowScoreInfo(false)}
+                className="text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container transition-colors"
+                aria-label="Close calculation explanation"
+              >
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Factor 1: Network (40%) */}
+              <div className="p-3.5 bg-surface rounded-xl border border-border-subtle flex flex-col gap-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-semibold text-on-surface">Network</span>
+                  <span className="font-bold text-primary">40%</span>
+                </div>
+                <div className="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '40%' }}></div>
+                </div>
+                <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                  Whether the hospital is in your insurer&apos;s network for cashless admission.
+                </p>
+              </div>
+
+              {/* Factor 2: Room Rent (30%) */}
+              <div className="p-3.5 bg-surface rounded-xl border border-border-subtle flex flex-col gap-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-semibold text-on-surface">Room Rent</span>
+                  <span className="font-bold text-primary">30%</span>
+                </div>
+                <div className="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '30%' }}></div>
+                </div>
+                <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                  Whether available room categories fit within your policy room limit without proportionate deduction.
+                </p>
+              </div>
+
+              {/* Factor 3: Specialty (20%) */}
+              <div className="p-3.5 bg-surface rounded-xl border border-border-subtle flex flex-col gap-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-semibold text-on-surface">Specialty</span>
+                  <span className="font-bold text-primary">20%</span>
+                </div>
+                <div className="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '20%' }}></div>
+                </div>
+                <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                  How well the hospital&apos;s available specialties align with the care requirement.
+                </p>
+              </div>
+
+              {/* Factor 4: Policy Terms (10%) */}
+              <div className="p-3.5 bg-surface rounded-xl border border-border-subtle flex flex-col gap-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="font-semibold text-on-surface">Policy Terms</span>
+                  <span className="font-bold text-primary">10%</span>
+                </div>
+                <div className="w-full bg-surface-container rounded-full h-2 overflow-hidden">
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '10%' }}></div>
+                </div>
+                <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                  Other relevant policy constraints and eligibility conditions.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-border-subtle flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px] text-on-surface-variant">
+              <span className="inline-flex items-center gap-1 font-medium text-primary">
+                <span className="material-symbols-outlined text-[15px]">verified</span>
+                Scores are calculated from your policy and hospital data using OSPAT&apos;s deterministic matching engine.
+              </span>
+              <span className="font-bold text-on-surface">TOTAL: 100%</span>
+            </div>
+          </div>
+        )}
+
         {/* Hospital Result Cards Grid */}
         {loading ? (
-          <div className="py-20 text-center text-on-surface-variant">
-            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p>Evaluating hospital compatibility...</p>
+          <div className="space-y-6">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className="bg-surface-container-lowest rounded-2xl border border-border-subtle p-6 animate-pulse"
+              >
+                <div className="flex flex-col md:flex-row justify-between gap-6">
+                  <div className="flex-grow space-y-4">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2">
+                        <div className="h-6 w-56 md:w-72 bg-surface-container rounded-md"></div>
+                        <div className="h-4 w-36 bg-surface-container rounded-md"></div>
+                      </div>
+                      <div className="md:hidden w-12 h-12 rounded-full bg-surface-container"></div>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="h-6 w-28 bg-surface-container rounded-full"></div>
+                      <div className="h-6 w-36 bg-surface-container rounded-full"></div>
+                    </div>
+                    <div className="h-16 bg-surface-container/60 rounded-xl"></div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                      <div className="h-12 bg-surface-container/40 rounded-lg"></div>
+                      <div className="h-12 bg-surface-container/40 rounded-lg"></div>
+                      <div className="h-12 bg-surface-container/40 rounded-lg"></div>
+                      <div className="h-12 bg-surface-container/40 rounded-lg"></div>
+                    </div>
+                  </div>
+                  <div className="hidden md:flex flex-col items-end justify-between min-w-[200px] border-t md:border-t-0 md:border-l border-border-subtle pt-4 md:pt-0 md:pl-6 space-y-4">
+                    <div className="w-16 h-16 rounded-full bg-surface-container"></div>
+                    <div className="h-10 w-full bg-surface-container rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : filteredMatches.length === 0 ? (
           <div className="bg-surface-container-lowest p-12 rounded-2xl border border-border-subtle text-center text-on-surface-variant">
@@ -229,6 +377,12 @@ export default function HospitalsPage() {
                   ? 'bg-status-warning/10 text-status-warning'
                   : 'bg-status-critical/10 text-status-critical';
 
+                const scoreRatingText = isHigh
+                  ? 'HIGH COMPATIBILITY'
+                  : isMod
+                  ? 'GOOD COMPATIBILITY'
+                  : 'REVIEW POLICY TERMS';
+
                 return (
                   <article
                     key={hospital.hospitalId}
@@ -247,9 +401,12 @@ export default function HospitalsPage() {
                             </div>
                           </div>
                           {/* Mobile Score Badge */}
-                          <div className="md:hidden">
+                          <div className="md:hidden text-right">
                             <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-base ${scoreColor}`}>
                               {hospital.compatibilityScore}
+                            </div>
+                            <div className={`font-label-sm text-[10px] font-bold mt-1 ${scoreColor}`}>
+                              {scoreRatingText}
                             </div>
                           </div>
                         </div>
@@ -286,7 +443,7 @@ export default function HospitalsPage() {
                       </div>
 
                       {/* Desktop Score Column */}
-                      <div className="hidden md:flex flex-col items-end min-w-[200px] border-l border-border-subtle pl-6">
+                      <div className="hidden md:flex flex-col items-end min-w-[210px] border-l border-border-subtle pl-6">
                         <div className="font-label-caps text-xs text-on-surface-variant mb-1 tracking-widest font-semibold">
                           COMPATIBILITY SCORE
                         </div>
@@ -294,8 +451,8 @@ export default function HospitalsPage() {
                           <span className="font-metric-value text-3xl font-bold">{hospital.compatibilityScore}</span>
                           <span className="font-body-md text-sm text-on-surface-variant">/100</span>
                         </div>
-                        <div className={`font-label-sm text-xs px-2.5 py-1 rounded-full mt-2 font-medium ${scoreBg}`}>
-                          {hospital.scoreRating ? hospital.scoreRating.replace('_', ' ') : 'Match Rating'}
+                        <div className={`font-label-sm text-[11px] px-3 py-1 rounded-full mt-2 font-bold tracking-wide uppercase ${scoreBg}`}>
+                          {scoreRatingText}
                         </div>
                       </div>
                     </div>
@@ -319,58 +476,60 @@ export default function HospitalsPage() {
                         </summary>
 
                         <div className="mt-4 pl-6">
-                          <div className="space-y-3 max-w-md">
-                            <div>
-                              <div className="flex justify-between font-label-sm text-xs mb-1">
-                                <span className="text-on-surface-variant">Network Status (40%)</span>
-                                <span className="font-semibold text-status-safe">{hospital.networkScore}/40</span>
-                              </div>
-                              <div className="w-full bg-surface-container rounded-full h-1.5">
-                                <div
-                                  className="bg-status-safe h-1.5 rounded-full"
-                                  style={{ width: `${(hospital.networkScore / 40) * 100}%` }}
-                                ></div>
-                              </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl text-xs">
+                            <div className="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center">
+                              <span className="text-on-surface flex items-center gap-1.5 font-medium">
+                                <span className={`material-symbols-outlined text-[16px] ${hospital.networkScore >= 35 ? 'text-status-safe' : 'text-status-warning'}`}>
+                                  {hospital.networkScore >= 35 ? 'check_circle' : 'warning'}
+                                </span>
+                                {hospital.networkStatus === 'IN_NETWORK' ? 'In network' : 'Out of network'}
+                              </span>
+                              <span className={`font-bold ${hospital.networkScore >= 35 ? 'text-status-safe' : 'text-status-warning'}`}>
+                                {hospital.networkScore}/40
+                              </span>
                             </div>
 
-                            <div>
-                              <div className="flex justify-between font-label-sm text-xs mb-1">
-                                <span className="text-on-surface-variant">Room Rent Cap (30%)</span>
-                                <span className="font-semibold text-status-safe">{hospital.roomScore}/30</span>
-                              </div>
-                              <div className="w-full bg-surface-container rounded-full h-1.5">
-                                <div
-                                  className="bg-status-safe h-1.5 rounded-full"
-                                  style={{ width: `${(hospital.roomScore / 30) * 100}%` }}
-                                ></div>
-                              </div>
+                            <div className="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center">
+                              <span className="text-on-surface flex items-center gap-1.5 font-medium">
+                                <span className={`material-symbols-outlined text-[16px] ${hospital.roomScore >= 25 ? 'text-status-safe' : 'text-status-warning'}`}>
+                                  {hospital.roomScore >= 25 ? 'check_circle' : 'warning'}
+                                </span>
+                                {hospital.roomScore >= 25 ? 'Room categories within limit' : 'Room limit considerations'}
+                              </span>
+                              <span className={`font-bold ${hospital.roomScore >= 25 ? 'text-status-safe' : 'text-status-warning'}`}>
+                                {hospital.roomScore}/30
+                              </span>
                             </div>
 
-                            <div>
-                              <div className="flex justify-between font-label-sm text-xs mb-1">
-                                <span className="text-on-surface-variant">Clinical Specialty (20%)</span>
-                                <span className="font-semibold text-status-warning">{hospital.specialtyScore}/20</span>
-                              </div>
-                              <div className="w-full bg-surface-container rounded-full h-1.5">
-                                <div
-                                  className="bg-status-warning h-1.5 rounded-full"
-                                  style={{ width: `${(hospital.specialtyScore / 20) * 100}%` }}
-                                ></div>
-                              </div>
+                            <div className="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center">
+                              <span className="text-on-surface flex items-center gap-1.5 font-medium">
+                                <span className={`material-symbols-outlined text-[16px] ${hospital.specialtyScore >= 18 ? 'text-status-safe' : hospital.specialtyScore >= 10 ? 'text-primary' : 'text-status-warning'}`}>
+                                  {hospital.specialtyScore >= 18 ? 'check_circle' : hospital.specialtyScore >= 10 ? 'info' : 'warning'}
+                                </span>
+                                Specialty alignment
+                              </span>
+                              <span className="font-bold text-on-surface">
+                                {hospital.specialtyScore}/20
+                              </span>
                             </div>
 
-                            <div>
-                              <div className="flex justify-between font-label-sm text-xs mb-1">
-                                <span className="text-on-surface-variant">Policy Baseline (10%)</span>
-                                <span className="font-semibold text-status-safe">{hospital.policyConstraintScore}/10</span>
-                              </div>
-                              <div className="w-full bg-surface-container rounded-full h-1.5">
-                                <div
-                                  className="bg-status-safe h-1.5 rounded-full"
-                                  style={{ width: `${(hospital.policyConstraintScore / 10) * 100}%` }}
-                                ></div>
-                              </div>
+                            <div className="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center">
+                              <span className="text-on-surface flex items-center gap-1.5 font-medium">
+                                <span className="material-symbols-outlined text-status-safe text-[16px]">check_circle</span>
+                                Policy constraints satisfied
+                              </span>
+                              <span className="font-bold text-status-safe">
+                                {hospital.policyConstraintScore}/10
+                              </span>
                             </div>
+                          </div>
+
+                          <div className="mt-3 pt-2 text-xs text-on-surface-variant flex items-center gap-2">
+                            <span className="font-semibold text-on-surface">Total compatibility:</span>
+                            <span className="font-bold text-primary text-sm">{hospital.compatibilityScore}/100</span>
+                            <span className="text-[11px] text-on-surface-variant">
+                              ({hospital.networkScore} + {hospital.roomScore} + {hospital.specialtyScore} + {hospital.policyConstraintScore} = {hospital.compatibilityScore})
+                            </span>
                           </div>
 
                           {hospital.matchingFactors && hospital.matchingFactors.length > 0 && (

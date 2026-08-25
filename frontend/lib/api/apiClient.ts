@@ -30,18 +30,44 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+// In-memory client cache for fast navigation and reducing duplicate network requests
+const clientCache = {
+  activePolicy: new Map<number, { data: PolicyResponseDto | null; timestamp: number }>(),
+  matches: new Map<string, { data: HospitalMatchResultDto[]; timestamp: number }>(),
+  hospitals: new Map<number, { data: HospitalDto | null; timestamp: number }>(),
+};
+
+const CACHE_TTL_MS = 60_000; // 60 seconds
+
 export const api = {
+  // Clear cache if policy changes
+  invalidateCache() {
+    clientCache.activePolicy.clear();
+    clientCache.matches.clear();
+    clientCache.hospitals.clear();
+  },
+
   // Policies
-  async getActivePolicy(patientId: number = 1): Promise<PolicyResponseDto | null> {
+  async getActivePolicy(patientId: number = 1, forceRefresh = false): Promise<PolicyResponseDto | null> {
+    const cached = clientCache.activePolicy.get(patientId);
+    if (!forceRefresh && cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      return cached.data;
+    }
+
     try {
       const res = await fetch(`${API_BASE}/api/policies/patient/${patientId}/active`, {
         cache: 'no-store',
       });
-      if (res.status === 404) return null;
-      return handleResponse<PolicyResponseDto>(res);
+      if (res.status === 404) {
+        clientCache.activePolicy.set(patientId, { data: null, timestamp: Date.now() });
+        return null;
+      }
+      const data = await handleResponse<PolicyResponseDto>(res);
+      clientCache.activePolicy.set(patientId, { data, timestamp: Date.now() });
+      return data;
     } catch (e) {
       console.warn('Failed to fetch active policy:', e);
-      return null;
+      return cached ? cached.data : null;
     }
   },
 
@@ -65,6 +91,7 @@ export const api = {
   },
 
   async uploadPolicyPdf(file: File, patientId: number = 1): Promise<ExtractedPolicyDto> {
+    api.invalidateCache();
     const formData = new FormData();
     formData.append('file', file);
     formData.append('patientId', patientId.toString());
@@ -77,6 +104,7 @@ export const api = {
   },
 
   async confirmPolicy(id: number, request: PolicyUpdateRequestDto): Promise<PolicyResponseDto> {
+    api.invalidateCache();
     const res = await fetch(`${API_BASE}/api/policies/${id}/confirm`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -98,20 +126,36 @@ export const api = {
     }
   },
 
-  async getHospitalById(id: number): Promise<HospitalDto | null> {
+  async getHospitalById(id: number, forceRefresh = false): Promise<HospitalDto | null> {
+    const cached = clientCache.hospitals.get(id);
+    if (!forceRefresh && cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      return cached.data;
+    }
+
     try {
       const res = await fetch(`${API_BASE}/api/hospitals/${id}`, {
         cache: 'no-store',
       });
-      if (res.status === 404) return null;
-      return handleResponse<HospitalDto>(res);
+      if (res.status === 404) {
+        clientCache.hospitals.set(id, { data: null, timestamp: Date.now() });
+        return null;
+      }
+      const data = await handleResponse<HospitalDto>(res);
+      clientCache.hospitals.set(id, { data, timestamp: Date.now() });
+      return data;
     } catch (e) {
       console.warn(`Failed to fetch hospital ${id}:`, e);
-      return null;
+      return cached ? cached.data : null;
     }
   },
 
-  async matchHospitals(request: HospitalMatchRequestDto = { patientId: 1 }): Promise<HospitalMatchResultDto[]> {
+  async matchHospitals(request: HospitalMatchRequestDto = { patientId: 1 }, forceRefresh = false): Promise<HospitalMatchResultDto[]> {
+    const cacheKey = JSON.stringify(request);
+    const cached = clientCache.matches.get(cacheKey);
+    if (!forceRefresh && cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      return cached.data;
+    }
+
     try {
       const res = await fetch(`${API_BASE}/api/hospitals/match`, {
         method: 'POST',
@@ -119,10 +163,12 @@ export const api = {
         body: JSON.stringify(request),
         cache: 'no-store',
       });
-      return handleResponse<HospitalMatchResultDto[]>(res);
+      const data = await handleResponse<HospitalMatchResultDto[]>(res);
+      clientCache.matches.set(cacheKey, { data, timestamp: Date.now() });
+      return data;
     } catch (e) {
       console.warn('Failed to execute hospital matching:', e);
-      return [];
+      return cached ? cached.data : [];
     }
   },
 

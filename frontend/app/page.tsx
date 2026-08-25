@@ -498,19 +498,14 @@ export default function LandingPage() {
               whileInView="visible"
               viewport={{ once: false, amount: 0.2 }}
               variants={fadeVariants}
+              className="flex flex-col justify-center"
             >
-              <h2 className="editorial-text mb-6 text-3xl md:text-headline-lg font-semibold text-[#111827]">
+              <h2 className="editorial-text mb-5 text-3xl md:text-headline-lg font-semibold text-[#111827]">
                 Peace of mind for those who care most.
               </h2>
-              <p className="font-body-md text-slate-600 mb-8 text-lg">
+              <p className="font-body-md text-slate-600 text-base md:text-lg leading-relaxed">
                 Navigating a loved one&apos;s hospital admission is stressful enough without having to decipher medical billing codes or policy sub-limits. OSPAT acts as a dedicated companion for caregivers, organizing complex data into clear choices.
               </p>
-              <blockquote className="border-l-4 border-[#0d4e5c] pl-6 italic text-slate-700 text-base md:text-lg">
-                &ldquo;When my father needed urgent surgery, OSPAT helped me understand our network options in minutes, not hours. It felt like having an insurance advocate right beside me.&rdquo;
-                <footer className="mt-4 font-label-sm text-[#0d4e5c] font-semibold text-base not-italic">
-                  — Sarah M., Caregiver
-                </footer>
-              </blockquote>
             </motion.div>
 
             <motion.div

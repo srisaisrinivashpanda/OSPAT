@@ -17,21 +17,26 @@ export default function HospitalDetailPage() {
   const [matchResult, setMatchResult] = useState<HospitalMatchResultDto | null>(null);
   const [policy, setPolicy] = useState<PolicyResponseDto | null>(null);
   const [aiExplanation, setAiExplanation] = useState<AIExplainResponseDto | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [journeyCreating, setJourneyCreating] = useState(false);
 
   useEffect(() => {
     if (!hospitalId) return;
+    let isMounted = true;
 
     async function loadData() {
       try {
         setLoading(true);
+        // Phase 1: Fast immediate load of hospital, match score, and active policy
         const [hData, allMatches, activePolicy] = await Promise.all([
           api.getHospitalById(hospitalId),
           api.matchHospitals({ patientId: 1 }),
           api.getActivePolicy(1),
         ]);
+
+        if (!isMounted) return;
 
         setHospital(hData);
         setPolicy(activePolicy);
@@ -46,19 +51,35 @@ export default function HospitalDetailPage() {
           setSelectedRoomId(hData.roomCategories[0].id);
         }
 
-        // Fetch AI plain-language explanation
-        const explainRes = await api.explainMatchOrStage({
-          hospitalId: hospitalId,
-          policyId: activePolicy?.id,
-        });
-        setAiExplanation(explainRes);
+        // IMMEDIATELY unblock the page for instantaneous UX
+        setLoading(false);
+
+        // Phase 2: Asynchronously fetch AI explanation in the background without blocking the UI
+        setAiLoading(true);
+        try {
+          const explainRes = await api.explainMatchOrStage({
+            hospitalId: hospitalId,
+            policyId: activePolicy?.id,
+          });
+          if (isMounted && explainRes) {
+            setAiExplanation(explainRes);
+          }
+        } catch (aiErr) {
+          console.warn('AI explanation background error:', aiErr);
+        } finally {
+          if (isMounted) setAiLoading(false);
+        }
       } catch (e) {
         console.warn('Failed to load hospital details:', e);
-      } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
+
     loadData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [hospitalId]);
 
   const handleSelectForAdmission = async () => {
@@ -75,6 +96,28 @@ export default function HospitalDetailPage() {
   const formatCurrency = (val?: number) => {
     if (val === undefined || val === null) return '₹0';
     return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+  };
+
+  const getFallbackExplanation = () => {
+    if (!hospital) return 'Evaluating hospital compatibility based on standard policy parameters.';
+    const insurer = policy?.insurerName || 'your insurer';
+    const hosp = hospital.name || 'This hospital';
+    const isNetwork = matchResult?.isNetworkMatch ?? (matchResult?.networkStatus === 'IN_NETWORK' ? true : false);
+    const hasRoom = matchResult?.hasEligibleRoom ?? true;
+    const scoreVal = matchResult?.compatibilityScore ?? 90;
+    const lowestRoom = matchResult?.lowestEligibleRoomCost 
+      ? `₹${matchResult.lowestEligibleRoomCost.toLocaleString('en-IN')}/day` 
+      : 'standard limits';
+
+    if (isNetwork && hasRoom) {
+      return `${hosp} is a strong fit for your policy with an overall compatibility score of ${scoreVal}%. As an in-network provider for ${insurer}, planned cashless hospitalization is supported subject to insurer pre-authorization. Available room categories include options starting from ${lowestRoom}, fitting comfortably within your policy limit. If you choose a room category above the stated cap, additional out-of-pocket room differentials and proportionate deductions may apply.\n\nWhat to confirm:\nAsk the hospital cashless/TPA desk to verify room category availability, confirm your policy pre-authorization checklist, and confirm that all primary treatment components fall under the network agreement.`;
+    } else if (isNetwork && !hasRoom) {
+      return `${hosp} is listed as an in-network hospital under ${insurer} (Score: ${scoreVal}%), meaning cashless pre-authorization can be initiated. However, available room tariffs currently exceed your stated policy room limit. Choosing a room above your daily limit will require paying the daily rate difference out-of-pocket and may trigger proportionate deductions across doctor fees and procedure charges.\n\nWhat to confirm:\nAsk the hospital admission desk whether lower-tier standard or twin-sharing rooms are available, or request an itemized pre-admission estimate of expected out-of-pocket room deductions.`;
+    } else if (!isNetwork && hasRoom) {
+      return `${hosp} offers room categories starting from ${lowestRoom} that comply with your policy daily limit (Score: ${scoreVal}%). However, because this facility is currently out-of-network for ${insurer}, cashless admission is unavailable and upfront payment will be required. You will need to file a post-discharge reimbursement claim with your insurer along with original bills and diagnostic reports.\n\nWhat to confirm:\nAsk the hospital billing department for upfront deposit and payment timeline requirements, and verify required claim documentation and claim submission deadlines with your insurer.`;
+    } else {
+      return `${hosp} is currently out-of-network for ${insurer}, and available room tariffs exceed your stated daily room limit (Score: ${scoreVal}%). Cashless hospitalization is unavailable, requiring full upfront out-of-pocket payment before filing for reimbursement. Additionally, exceeding room-rent caps may lead to significant proportionate deductions during claim settlement.\n\nWhat to confirm:\nRequest a comprehensive cost estimate from hospital billing, confirm non-network reimbursement terms with your insurer, and evaluate whether an in-network facility with matching room limits is available.`;
+    }
   };
 
   if (loading) {
@@ -240,63 +283,129 @@ export default function HospitalDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           {/* Main Decision-Support Column */}
           <div className="lg:col-span-8 flex flex-col gap-6">
-            {/* Why this hospital fits */}
+            {/* Why this hospital fits (Deterministic Evidence + AI Caregiver Insight) */}
             <section className="bg-surface-container-lowest rounded-2xl p-6 border border-border-subtle card-shadow flex flex-col gap-5">
               <div>
-                <h2 className="font-headline-lg text-lg md:text-xl text-on-surface font-semibold flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary">lightbulb</span>
-                  Why this hospital fits your policy
-                </h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="font-headline-lg text-lg md:text-xl text-on-surface font-semibold flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary">verified</span>
+                    Deterministic Match Evidence
+                  </h2>
+                  <span className="font-label-sm text-xs text-on-surface-variant font-medium bg-surface-container px-3 py-1 rounded-full">
+                    Score: {score}/100
+                  </span>
+                </div>
                 <p className="font-body-md text-xs text-on-surface-variant mt-1">
-                  Based on your active policy limits ({policy?.insurerName || 'Active Insurance'}) and hospital room tariffs, this facility was evaluated across 4 objective parameters:
+                  Evaluated from your active policy limits ({policy?.insurerName || 'Active Insurance'}) and hospital room tariffs across 4 objective parameters:
                 </p>
               </div>
 
               {/* 4 Factor Breakdown */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-border-subtle">
                 <div className="p-3 bg-surface rounded-xl border border-border-subtle flex flex-col gap-1">
-                  <span className="font-label-sm text-xs text-on-surface-variant">Network (40%)</span>
-                  <span className="font-body-md text-sm font-bold text-status-safe">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-label-sm text-on-surface-variant font-medium">Network</span>
+                    <span className="font-label-sm font-bold text-on-surface">40%</span>
+                  </div>
+                  <span className={`font-body-md text-sm font-bold ${(matchResult?.networkScore ?? 40) >= 35 ? 'text-status-safe' : 'text-status-warning'}`}>
                     {matchResult?.networkScore ?? 40} / 40
                   </span>
+                  <div className="w-full bg-surface-container rounded-full h-1 mt-1">
+                    <div className={`${(matchResult?.networkScore ?? 40) >= 35 ? 'bg-status-safe' : 'bg-status-warning'} h-1 rounded-full`} style={{ width: `${((matchResult?.networkScore ?? 40) / 40) * 100}%` }}></div>
+                  </div>
                 </div>
+
                 <div className="p-3 bg-surface rounded-xl border border-border-subtle flex flex-col gap-1">
-                  <span className="font-label-sm text-xs text-on-surface-variant">Room Rent (30%)</span>
-                  <span className="font-body-md text-sm font-bold text-status-safe">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-label-sm text-on-surface-variant font-medium">Room Rent</span>
+                    <span className="font-label-sm font-bold text-on-surface">30%</span>
+                  </div>
+                  <span className={`font-body-md text-sm font-bold ${(matchResult?.roomScore ?? 30) >= 25 ? 'text-status-safe' : 'text-status-warning'}`}>
                     {matchResult?.roomScore ?? 30} / 30
                   </span>
+                  <div className="w-full bg-surface-container rounded-full h-1 mt-1">
+                    <div className={`${(matchResult?.roomScore ?? 30) >= 25 ? 'bg-status-safe' : 'bg-status-warning'} h-1 rounded-full`} style={{ width: `${((matchResult?.roomScore ?? 30) / 30) * 100}%` }}></div>
+                  </div>
                 </div>
+
                 <div className="p-3 bg-surface rounded-xl border border-border-subtle flex flex-col gap-1">
-                  <span className="font-label-sm text-xs text-on-surface-variant">Specialty (20%)</span>
-                  <span className="font-body-md text-sm font-bold text-status-warning">
-                    {matchResult?.specialtyScore ?? 16} / 20
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-label-sm text-on-surface-variant font-medium">Specialty</span>
+                    <span className="font-label-sm font-bold text-on-surface">20%</span>
+                  </div>
+                  <span className={`font-body-md text-sm font-bold ${(matchResult?.specialtyScore ?? 10) >= 18 ? 'text-status-safe' : (matchResult?.specialtyScore ?? 10) >= 10 ? 'text-primary' : 'text-status-warning'}`}>
+                    {matchResult?.specialtyScore ?? 10} / 20
                   </span>
+                  <div className="w-full bg-surface-container rounded-full h-1 mt-1">
+                    <div className={`${(matchResult?.specialtyScore ?? 10) >= 18 ? 'bg-status-safe' : (matchResult?.specialtyScore ?? 10) >= 10 ? 'bg-primary' : 'bg-status-warning'} h-1 rounded-full`} style={{ width: `${((matchResult?.specialtyScore ?? 10) / 20) * 100}%` }}></div>
+                  </div>
                 </div>
+
                 <div className="p-3 bg-surface rounded-xl border border-border-subtle flex flex-col gap-1">
-                  <span className="font-label-sm text-xs text-on-surface-variant">Policy Rules (10%)</span>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-label-sm text-on-surface-variant font-medium">Policy Rules</span>
+                    <span className="font-label-sm font-bold text-on-surface">10%</span>
+                  </div>
                   <span className="font-body-md text-sm font-bold text-status-safe">
-                    {matchResult?.policyConstraintScore ?? 8} / 10
+                    {matchResult?.policyConstraintScore ?? 10} / 10
                   </span>
+                  <div className="w-full bg-surface-container rounded-full h-1 mt-1">
+                    <div className="bg-status-safe h-1 rounded-full" style={{ width: `${((matchResult?.policyConstraintScore ?? 10) / 10) * 100}%` }}></div>
+                  </div>
                 </div>
               </div>
 
-              {/* Plain-Language Caregiver Summary */}
-              {(aiExplanation || matchResult?.caregiverSummary) && (
-                <div className="pt-4 border-t border-border-subtle bg-primary-fixed/10 p-4 rounded-xl border border-primary-fixed/30">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="material-symbols-outlined text-primary text-sm">psychology</span>
+              {/* Clean Caregiver Insight Section */}
+              <div className="pt-4 border-t border-border-subtle bg-primary-fixed/10 p-5 rounded-xl border border-primary-fixed/30 flex flex-col gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-base">psychology</span>
                     <h4 className="font-label-caps text-xs text-primary font-bold uppercase tracking-wider">
-                      Caregiver Summary ({aiExplanation?.providerUsed ? `Powered by ${aiExplanation.providerUsed}` : 'Decision Support'})
+                      Caregiver Insight
                     </h4>
                   </div>
-                  <p className="font-body-md text-xs md:text-sm text-on-surface leading-relaxed">
-                    {aiExplanation?.explanation || matchResult?.caregiverSummary}
-                  </p>
-                  <p className="text-[10px] text-on-surface-variant italic mt-1.5">
-                    {aiExplanation?.disclaimer || 'Indicative summary for decision support only.'}
-                  </p>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
+                    {aiLoading ? (
+                      <>
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+                        AI Insight loading...
+                      </>
+                    ) : aiExplanation ? (
+                      'AI-assisted explanation'
+                    ) : (
+                      'Decision-support explanation'
+                    )}
+                  </span>
                 </div>
-              )}
+
+                <div className="font-body-md text-xs md:text-sm text-on-surface leading-relaxed space-y-2.5">
+                  {(aiExplanation?.explanation || matchResult?.caregiverSummary || getFallbackExplanation())
+                    .split('\n\n')
+                    .map((paragraph, idx) => {
+                      if (paragraph.startsWith('What to confirm:')) {
+                        return (
+                          <div
+                            key={idx}
+                            className="mt-2 p-3 bg-surface-container-lowest/90 rounded-lg border border-primary/20 flex flex-col gap-1"
+                          >
+                            <span className="font-semibold text-primary text-xs flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[14px]">fact_check</span>
+                              What to confirm:
+                            </span>
+                            <p className="text-xs text-on-surface-variant leading-relaxed">
+                              {paragraph.replace(/^What to confirm:\s*/, '')}
+                            </p>
+                          </div>
+                        );
+                      }
+                      return <p key={idx}>{paragraph}</p>;
+                    })}
+                </div>
+
+                <p className="text-[10px] text-on-surface-variant italic pt-1.5 border-t border-primary/10">
+                  {aiExplanation?.disclaimer || 'Indicative summary for decision support only. Medical evaluation and claim admissibility subject to insurer policy terms.'}
+                </p>
+              </div>
             </section>
 
             {/* Interactive "Choose your room" Cost & Policy Limit Simulator */}
