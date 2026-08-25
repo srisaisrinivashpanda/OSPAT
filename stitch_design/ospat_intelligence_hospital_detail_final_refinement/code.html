@@ -1,0 +1,383 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Hospital Detail - OSPAT Intelligence</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1b1b1d",
+                      "primary-fixed-dim": "#98cfe0",
+                      "outline": "#70787b",
+                      "primary-fixed": "#b4ebfc",
+                      "surface-container-highest": "#e4e2e4",
+                      "inverse-primary": "#98cfe0",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#bdc9cb",
+                      "surface-dim": "#dcd9dc",
+                      "inverse-surface": "#303032",
+                      "on-background": "#1b1b1d",
+                      "inverse-on-surface": "#f3f0f2",
+                      "on-primary-fixed-variant": "#0c4e5c",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#4c2704",
+                      "surface-container-low": "#f6f3f5",
+                      "border-subtle": "#E5E7EB",
+                      "on-secondary-container": "#5b6668",
+                      "status-safe": "#1A8245",
+                      "background": "#fcf8fb",
+                      "on-secondary-fixed": "#121d1f",
+                      "surface-bright": "#fcf8fb",
+                      "surface": "#fcf8fb",
+                      "tertiary-fixed-dim": "#f7ba8a",
+                      "on-tertiary-container": "#e5a97b",
+                      "on-surface-variant": "#40484b",
+                      "secondary": "#556062",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#673d18",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#0d4e5c",
+                      "surface-muted": "#F9FAFB",
+                      "surface-variant": "#e4e2e4",
+                      "primary": "#003641",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#ffdcc3",
+                      "on-tertiary-fixed-variant": "#673d18",
+                      "status-critical": "#D31130",
+                      "on-primary-fixed": "#001f26",
+                      "outline-variant": "#c0c8cb",
+                      "error": "#ba1a1a",
+                      "status-warning": "#D97706",
+                      "on-primary-container": "#87bece",
+                      "secondary-fixed": "#d9e5e7",
+                      "surface-container": "#f0edef",
+                      "surface-container-high": "#eae7ea",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#3d494b",
+                      "secondary-container": "#d9e5e7",
+                      "surface-tint": "#2d6674",
+                      "on-tertiary-fixed": "#2f1500"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-lg": "32px",
+                      "margin-mobile": "16px",
+                      "stack-md": "16px",
+                      "unit": "8px",
+                      "container-max": "1200px",
+                      "gutter": "24px",
+                      "stack-sm": "8px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "display-hero": [
+                              "Manrope"
+                      ],
+                      "headline-lg": [
+                              "Manrope"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Manrope"
+                      ],
+                      "metric-value": [
+                              "Manrope"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-hero": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "metric-value": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "letterSpacing": "-0.03em",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-border-subtle sticky top-0 z-50 w-full px-margin-desktop h-[60px] flex justify-between items-center max-w-container-max mx-auto shadow-sm">
+  <div class="font-headline-lg text-[16px] leading-[24px] text-primary font-semibold tracking-tight">OSPAT Intelligence</div>
+  <nav class="hidden md:flex items-center gap-gutter mx-auto">
+    <a class="text-on-surface-variant font-body-md text-[14px] leading-[20px] hover:text-primary transition-colors duration-200" href="#">Insurance</a>
+    <a class="text-primary font-medium border-b-2 border-primary pb-1 font-body-md text-[14px] leading-[20px]" href="#">Hospitals</a>
+    <a class="text-on-surface-variant font-body-md text-[14px] leading-[20px] hover:text-primary transition-colors duration-200" href="#">Care Journey</a>
+  </nav>
+  <div class="flex items-center gap-4">
+    <button class="text-on-surface-variant font-label-sm text-[12px] font-medium leading-[16px] hover:text-primary transition-colors border border-border-subtle px-4 py-1.5 rounded-full">Get Help</button>
+    <button class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-[18px]" data-icon="person">person</span>
+    </button>
+  </div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-desktop py-stack-lg flex flex-col gap-stack-lg">
+<!-- Context Bar -->
+<div class="flex items-center gap-2">
+<a class="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_back">arrow_back</span>
+                Back to hospitals
+            </a>
+</div>
+<!-- Hospital Title Section -->
+<section class="flex flex-col md:flex-row justify-between items-start gap-gutter pb-stack-md border-b border-border-subtle">
+<div class="flex flex-col gap-unit">
+<h1 class="font-display-hero text-display-hero text-on-surface font-bold">Aster CMI Hospital</h1>
+<div class="flex flex-wrap items-center gap-x-4 gap-y-2 font-label-sm text-label-sm text-on-surface-variant">
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span>
+                        Hebbal, Bengaluru
+                    </span>
+<span class="inline-flex items-center gap-1 text-status-safe bg-status-safe/10 px-2 py-1 rounded-full font-medium"><span class="w-2 h-2 rounded-full bg-status-safe"></span>Within stated limit</span>
+</div>
+</div>
+<!-- Compatibility Score -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-[0_4px_20px_rgba(13,78,92,0.04)] border border-border-subtle flex items-center gap-4 min-w-[240px]">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+<path class="text-surface-container-highest stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="text-primary-container stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="86, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<span class="absolute font-metric-value text-metric-value text-primary-container">86</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-1">Compatibility</div>
+<div class="font-body-md text-body-md font-medium text-primary-container">High compatibility</div>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Left Column (Primary Info) -->
+<div class="lg:col-span-2 flex flex-col gap-stack-lg">
+<!-- Why this hospital fits -->
+<section class="bg-surface-container-lowest rounded-xl p-6 border border-border-subtle shadow-[0_4px_20px_rgba(13,78,92,0.04)]">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-4 flex items-center gap-2 font-semibold">
+<span class="material-symbols-outlined text-primary" data-icon="lightbulb">lightbulb</span>
+                        Why this hospital fits
+                    </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Based on the available policy and hospital information, this hospital matches several of the factors used by OSPAT.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border-subtle">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Network</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">40/40</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Room</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">30/30</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Specialty</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">16/20</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Policy</span>
+<span class="font-body-md text-body-md font-medium text-on-surface">8/10</span>
+</div>
+</div>
+</section>
+<!-- Room Options -->
+<section>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-4">Room Options</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-6 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="info">info</span>
+                        Based on your policy limit of ₹8,000/day
+                    </p>
+<div class="flex flex-col gap-4">
+<!-- General Room -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-border-subtle flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-primary-container transition-colors">
+<div>
+<h3 class="font-body-md text-body-md font-semibold text-on-surface text-headline-lg-mobile">General Room</h3>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">Multi-bed accommodation</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<div class="font-body-md text-body-md font-semibold text-on-surface text-lg">₹3,000/day</div>
+<div class="font-label-sm text-label-sm text-status-safe flex items-center justify-end gap-1"><span class="w-2 h-2 rounded-full bg-status-safe"></span>Within stated limit</div>
+</div>
+</div>
+</div>
+<!-- Private Room -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-primary-container ring-1 ring-primary-container shadow-[0_4px_20px_rgba(13,78,92,0.04)] flex flex-col sm:flex-row justify-between sm:items-center gap-4 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="pl-2">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface flex items-center gap-2 text-headline-lg-mobile">
+                                    Private Room
+</h3>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">Single bed, private washroom. This room is within the stated daily room limit identified in your policy.</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<div class="font-body-md text-body-md font-semibold text-on-surface text-lg">₹6,500/day</div>
+<div class="font-label-sm text-label-sm text-status-safe flex items-center justify-end gap-1"><span class="w-2 h-2 rounded-full bg-status-safe"></span>Within stated limit</div>
+</div>
+</div>
+</div>
+<!-- Premium Room -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-border-subtle flex flex-col sm:flex-row justify-between sm:items-center gap-4 opacity-75">
+<div>
+<h3 class="font-body-md text-body-md font-semibold text-on-surface text-headline-lg-mobile">Premium Room</h3>
+<div class="font-label-sm text-label-sm text-status-warning mt-1 flex items-start gap-1 max-w-sm"><span class="w-2 h-2 rounded-full bg-status-warning mt-1.5 shrink-0"></span>This room is above the stated daily room limit. Other associated charges may be affected depending on policy terms.</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<div class="text-right">
+<div class="font-body-md text-body-md font-semibold text-on-surface text-lg">₹12,000/day</div>
+<div class="font-label-sm text-label-sm text-status-warning flex items-center justify-end gap-1"><span class="w-2 h-2 rounded-full bg-status-warning"></span>Above stated limit</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- In Simple Terms (AI Explanation) -->
+<section class="bg-surface-container-low rounded-xl p-6 border border-border-subtle">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="psychiatry">psychiatry</span>
+                        IN SIMPLE TERMS
+                    </h3>
+<p class="font-body-md text-body-md text-on-surface">The Private Room is within your stated ₹8,000 daily room limit. This makes it compatible with the room constraint identified in your policy. Other associated charges may still depend on the policy terms.</p>
+</section>
+</div>
+<!-- Right Column (Secondary Info) -->
+<div class="flex flex-col gap-stack-md">
+<!-- CTA Card -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-border-subtle shadow-sm sticky top-24">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Ready to proceed?</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-6">Select Aster CMI for your upcoming care journey and proceed to view detailed estimates.</p>
+<button class="w-full bg-primary-container text-on-primary font-body-md text-body-md font-medium h-12 rounded-lg flex items-center justify-center gap-2 hover:bg-primary transition-colors">
+                        Continue to care journey
+                        <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Hospital Information -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-border-subtle">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-4">Hospital Information</h3>
+<ul class="flex flex-col gap-4">
+<li class="flex items-start gap-3 border-b border-border-subtle pb-4 last:border-0 last:pb-0">
+<span class="material-symbols-outlined text-primary-container opacity-80" data-icon="map">map</span>
+<div>
+<div class="font-label-sm text-label-sm font-medium text-on-surface">Address</div>
+<div class="font-body-md text-body-md text-on-surface-variant">No. 43/2, New Airport Road, NH-7, Sahakara Nagar, Hebbal, Bengaluru 560092</div>
+</div>
+</li>
+<li class="flex items-start gap-3 border-b border-border-subtle pb-4 last:border-0 last:pb-0">
+<span class="material-symbols-outlined text-primary-container opacity-80" data-icon="call">call</span>
+<div>
+<div class="font-label-sm text-label-sm font-medium text-on-surface">Contact</div>
+<div class="font-body-md text-body-md text-on-surface-variant">+91 80 4342 0100</div>
+</div>
+</li>
+</ul>
+</div>
+<!-- Specialties -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-border-subtle">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-4">Key Specialties</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm border border-border-subtle">Cardiology</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm border border-border-subtle">Neurology</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm border border-border-subtle">Orthopedics</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm border border-border-subtle">General Medicine</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm border border-border-subtle">Oncology</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-low border-t border-border-subtle mt-auto"><div class="w-full py-stack-lg px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-gutter">
+    <div class="flex flex-col items-center md:items-start gap-1">
+      <span class="font-headline-lg text-[16px] leading-[24px] font-semibold text-primary">OSPAT Intelligence</span>
+      <span class="font-body-md text-[11px] leading-[16px] text-on-surface-variant text-center md:text-left">© 2024 OSPAT Intelligence. All rights reserved. Decision support only; not medical advice.</span>
+    </div>
+    <nav class="flex flex-wrap justify-center gap-4 font-body-md text-[11px] leading-[16px] font-medium text-on-surface-variant">
+      <a class="hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+      <a class="hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">Responsible Use</a>
+      <a class="hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+      <a class="hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">Contact Support</a>
+    </nav>
+  </div></footer>
+
+
+
+
+
+
+</body></html>

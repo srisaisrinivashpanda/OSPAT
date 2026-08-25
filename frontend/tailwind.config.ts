@@ -1,0 +1,116 @@
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#003641',
+        'primary-container': '#0d4e5c',
+        'on-primary': '#ffffff',
+        'on-primary-container': '#87bece',
+        'inverse-primary': '#98cfe0',
+        'primary-fixed': '#b4ebfc',
+        'primary-fixed-dim': '#98cfe0',
+        'on-primary-fixed': '#001f26',
+        'on-primary-fixed-variant': '#0c4e5c',
+
+        'secondary': '#556062',
+        'secondary-container': '#d9e5e7',
+        'on-secondary': '#ffffff',
+        'on-secondary-container': '#5b6668',
+        'secondary-fixed': '#d9e5e7',
+        'secondary-fixed-dim': '#bdc9cb',
+        'on-secondary-fixed': '#121d1f',
+        'on-secondary-fixed-variant': '#3d494b',
+
+        'tertiary': '#4c2704',
+        'tertiary-container': '#673d18',
+        'on-tertiary': '#ffffff',
+        'on-tertiary-container': '#e5a97b',
+        'tertiary-fixed': '#ffdcc3',
+        'tertiary-fixed-dim': '#f7ba8a',
+        'on-tertiary-fixed': '#2f1500',
+        'on-tertiary-fixed-variant': '#673d18',
+
+        'surface': '#fcf8fb',
+        'surface-dim': '#dcd9dc',
+        'surface-bright': '#fcf8fb',
+        'surface-container-lowest': '#ffffff',
+        'surface-container-low': '#f6f3f5',
+        'surface-container': '#f0edef',
+        'surface-container-high': '#eae7ea',
+        'surface-container-highest': '#e4e2e4',
+        'surface-variant': '#e4e2e4',
+        'surface-muted': '#F9FAFB',
+        'surface-tint': '#2d6674',
+
+        'on-surface': '#1b1b1d',
+        'on-surface-variant': '#40484b',
+        'inverse-surface': '#303032',
+        'inverse-on-surface': '#f3f0f2',
+
+        'background': '#fcf8fb',
+        'on-background': '#1b1b1d',
+
+        'outline': '#70787b',
+        'outline-variant': '#c0c8cb',
+        'border-subtle': '#E5E7EB',
+
+        'status-safe': '#1A8245',
+        'status-warning': '#D97706',
+        'status-critical': '#D31130',
+
+        'error': '#ba1a1a',
+        'on-error': '#ffffff',
+        'error-container': '#ffdad6',
+        'on-error-container': '#93000a',
+      },
+      borderRadius: {
+        'DEFAULT': '0.25rem',
+        'sm': '0.25rem',
+        'md': '0.5rem',
+        'lg': '0.5rem',
+        'xl': '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+        'full': '9999px',
+      },
+      spacing: {
+        'unit': '8px',
+        'stack-sm': '8px',
+        'stack-md': '16px',
+        'stack-lg': '32px',
+        'margin-mobile': '16px',
+        'margin-desktop': '40px',
+        'container-max': '1200px',
+        'gutter': '24px',
+      },
+      fontFamily: {
+        'headline-lg': ['Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'headline-lg-mobile': ['Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'display-hero': ['Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'hero-display': ['"Plus Jakarta Sans"', 'Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'editorial-handwritten': ['Caveat', 'Kalam', 'cursive'],
+        'handwriting': ['Caveat', 'Kalam', 'cursive'],
+        'editorial-serif': ['"Playfair Display"', '"Instrument Serif"', 'Georgia', 'serif'],
+        'metric-value': ['Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'body-md': ['Inter', 'Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'label-sm': ['Manrope', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'label-caps': ['Manrope', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'sans': ['Manrope', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
+      boxShadow: {
+        'elevation-1': '0px 4px 20px rgba(13, 78, 92, 0.04)',
+        'card': '0px 4px 20px rgba(13, 78, 92, 0.04)',
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;

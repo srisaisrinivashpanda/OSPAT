@@ -1,6 +1,9 @@
 package com.hospitality;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hospitality.ai.DelegatingAIService;
+import com.hospitality.ai.GeminiAIService;
+import com.hospitality.ai.HeuristicAIService;
 import com.hospitality.ai.HeuristicPolicyExtractor;
 import com.hospitality.ai.OllamaAIService;
 import com.hospitality.dto.ExtractedPolicyDto;
@@ -16,17 +19,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PolicyExtractionValidationTest {
 
-    private OllamaAIService aiService;
-    private HeuristicPolicyExtractor heuristicExtractor;
-    private ObjectMapper objectMapper;
+    private DelegatingAIService aiService;
+    private HeuristicAIService heuristicAIService;
+    private OllamaAIService ollamaAIService;
+    private GeminiAIService geminiAIService;
 
     @BeforeEach
     void setUp() {
-        objectMapper = new ObjectMapper();
-        heuristicExtractor = new HeuristicPolicyExtractor();
-        aiService = new OllamaAIService(new RestTemplateBuilder(), objectMapper, heuristicExtractor, 500, 500);
-        ReflectionTestUtils.setField(aiService, "ollamaBaseUrl", "http://localhost:11434");
-        ReflectionTestUtils.setField(aiService, "ollamaModel", "qwen2.5:7b");
+        ObjectMapper objectMapper = new ObjectMapper();
+        HeuristicPolicyExtractor heuristicExtractor = new HeuristicPolicyExtractor();
+        heuristicAIService = new HeuristicAIService(heuristicExtractor);
+
+        geminiAIService = new GeminiAIService(new RestTemplateBuilder(), objectMapper, 500, 500);
+        ReflectionTestUtils.setField(geminiAIService, "apiKey", "");
+
+        ollamaAIService = new OllamaAIService(new RestTemplateBuilder(), objectMapper, 500, 500);
+        ReflectionTestUtils.setField(ollamaAIService, "ollamaBaseUrl", "http://localhost:11434");
+        ReflectionTestUtils.setField(ollamaAIService, "ollamaModel", "qwen2.5:7b");
+
+        aiService = new DelegatingAIService(geminiAIService, ollamaAIService, heuristicAIService);
+        ReflectionTestUtils.setField(aiService, "configuredProvider", "ollama");
     }
 
     @Test

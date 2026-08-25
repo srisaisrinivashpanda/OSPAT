@@ -40,13 +40,15 @@ public class HospitalService {
     }
 
     @Transactional(readOnly = true)
-    public List<HospitalMatchResultDto> matchHospitals(Long policyId, Long patientId, String specialty, String location) {
+    public List<HospitalMatchResultDto> matchHospitals(Long policyId, Long patientId, String specialty,
+            String location) {
         InsurancePolicy policy = null;
         if (policyId != null) {
             policy = policyRepository.findById(policyId).orElse(null);
         }
         if (policy == null && patientId != null) {
-            List<InsurancePolicy> confirmed = policyRepository.findByPatientIdAndConfirmedTrueOrderByUpdatedAtDesc(patientId);
+            List<InsurancePolicy> confirmed = policyRepository
+                    .findByPatientIdAndConfirmedTrueOrderByUpdatedAtDesc(patientId);
             if (!confirmed.isEmpty()) {
                 policy = confirmed.get(0);
             } else {
@@ -61,22 +63,22 @@ public class HospitalService {
         List<Hospital> hospitals = hospitalRepository.findAllByOrderByCreatedAtAsc();
 
         List<HospitalMatchResultDto> results = hospitals.stream()
-                .filter(h -> location == null || location.isBlank() || h.getLocation().toLowerCase().contains(location.toLowerCase()))
+                .filter(h -> location == null || location.isBlank()
+                        || h.getLocation().toLowerCase().contains(location.toLowerCase()))
                 .map(h -> {
                     HospitalMatchResultDto match = matchingEngine.matchHospital(finalPolicy, h, specialty);
                     // Generate safe, non-technical explanation
                     String explanation = aiService.generateHospitalMatchExplanation(
                             finalPolicy != null ? finalPolicy.getInsurerName() : null,
                             h.getName(),
-                            match
-                    );
+                            match);
                     match.setCaregiverSummary(explanation);
                     return match;
                 })
                 .sorted(Comparator.comparing(HospitalMatchResultDto::getCompatibilityScore).reversed())
                 .toList();
 
-        log.info("Computed matching results for policy id {} across {} hospitals", 
+        log.info("Computed matching results for policy id {} across {} hospitals",
                 policy != null ? policy.getId() : "null", results.size());
         return results;
     }

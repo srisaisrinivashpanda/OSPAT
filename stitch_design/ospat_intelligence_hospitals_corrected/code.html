@@ -1,0 +1,517 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Hospitals - OSPAT Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-tertiary": "#ffffff",
+                "on-secondary-fixed-variant": "#3d494b",
+                "status-safe": "#1A8245",
+                "status-warning": "#D97706",
+                "on-background": "#1b1b1d",
+                "tertiary-container": "#673d18",
+                "primary": "#003641",
+                "on-surface": "#1b1b1d",
+                "primary-fixed-dim": "#98cfe0",
+                "secondary-fixed-dim": "#bdc9cb",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6",
+                "secondary": "#556062",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#fcf8fb",
+                "secondary-container": "#d9e5e7",
+                "inverse-on-surface": "#f3f0f2",
+                "background": "#fcf8fb",
+                "outline-variant": "#c0c8cb",
+                "on-primary-container": "#87bece",
+                "tertiary": "#4c2704",
+                "on-tertiary-fixed-variant": "#673d18",
+                "surface-variant": "#e4e2e4",
+                "on-tertiary-container": "#e5a97b",
+                "surface-dim": "#dcd9dc",
+                "on-surface-variant": "#40484b",
+                "tertiary-fixed": "#ffdcc3",
+                "surface-container-high": "#eae7ea",
+                "on-secondary-container": "#5b6668",
+                "on-error": "#ffffff",
+                "status-critical": "#D31130",
+                "outline": "#70787b",
+                "inverse-primary": "#98cfe0",
+                "on-secondary-fixed": "#121d1f",
+                "on-tertiary-fixed": "#2f1500",
+                "inverse-surface": "#303032",
+                "surface-container": "#f0edef",
+                "tertiary-fixed-dim": "#f7ba8a",
+                "primary-fixed": "#b4ebfc",
+                "surface": "#fcf8fb",
+                "on-secondary": "#ffffff",
+                "on-error-container": "#93000a",
+                "on-primary-fixed": "#001f26",
+                "on-primary-fixed-variant": "#0c4e5c",
+                "surface-container-low": "#f6f3f5",
+                "border-subtle": "#E5E7EB",
+                "secondary-fixed": "#d9e5e7",
+                "on-primary": "#ffffff",
+                "surface-tint": "#2d6674",
+                "surface-container-highest": "#e4e2e4",
+                "surface-muted": "#F9FAFB",
+                "primary-container": "#0d4e5c"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "unit": "8px",
+                "margin-desktop": "40px",
+                "stack-sm": "8px",
+                "container-max": "1200px",
+                "stack-lg": "32px",
+                "stack-md": "16px",
+                "margin-mobile": "16px",
+                "gutter": "24px"
+        },
+        "fontFamily": {
+                "headline-lg-mobile": [
+                        "Manrope"
+                ],
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "label-caps": [
+                        "Inter"
+                ],
+                "display-hero": [
+                        "Manrope"
+                ],
+                "label-sm": [
+                        "Inter"
+                ],
+                "metric-value": [
+                        "Manrope"
+                ]
+        },
+        "fontSize": {
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-hero": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-sm": [
+                        "13px",
+                        {
+                                "lineHeight": "18px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "metric-value": [
+                        "40px",
+                        {
+                                "lineHeight": "48px",
+                                "letterSpacing": "-0.03em",
+                                "fontWeight": "500"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .card-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .metric-card {
+            box-shadow: 0px 4px 20px rgba(13, 78, 92, 0.04);
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .metric-card:hover {
+            border-color: #0d4e5c;
+            box-shadow: 0px 8px 30px rgba(13, 78, 92, 0.08);
+        }
+
+        .breakdown-bar {
+            height: 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (Generated from Shared Components) -->
+<header class="bg-surface-container-lowest border-b border-border-subtle sticky top-0 z-50 h-[60px]">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop h-16 flex items-center justify-between">
+    <div class="text-[16px] font-semibold font-headline-lg text-primary tracking-tight leading-[24px]">
+      OSPAT Intelligence
+    </div>
+    <nav class="hidden md:flex items-center justify-center flex-grow gap-8">
+      <a href="#" class="text-[14px] font-body-md text-on-surface-variant hover:text-primary transition-colors leading-[20px]">Insurance</a>
+      <a href="#" class="text-[14px] font-medium font-body-md text-primary border-b-2 border-primary pb-1 leading-[20px]">Hospitals</a>
+      <a href="#" class="text-[14px] font-body-md text-on-surface-variant hover:text-primary transition-colors leading-[20px]">Care Journey</a>
+    </nav>
+    <div class="flex items-center gap-4">
+      <div class="h-8 w-px bg-border-subtle hidden md:block"></div>
+      <button class="px-4 py-1.5 border border-border-subtle rounded-full text-[12px] font-medium font-body-md text-on-surface-variant hover:bg-surface-container transition-colors">
+        Get Help
+      </button>
+      <div class="w-[32px] h-[32px] rounded-full bg-primary flex items-center justify-center text-on-primary">
+        <span class="material-symbols-outlined text-[20px]">person</span>
+      </div>
+    </div>
+  </div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Page Header -->
+<section class="mb-stack-lg card-reveal">
+<h1 class="font-display-hero text-display-hero text-primary mb-stack-sm tracking-tight">Hospitals that fit your coverage</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+                Compare hospitals using your insurance information, care needs, and room considerations.
+            </p>
+</section>
+<!-- Current Context Bar -->
+<section class="mb-stack-lg bg-surface-container-lowest border border-border-subtle rounded-xl p-stack-md flex flex-col md:flex-row gap-gutter justify-between items-start md:items-center card-reveal delay-1 metric-card">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">YOUR COVERAGE</div>
+<div class="font-body-md text-body-md font-semibold text-primary">₹10,00,000</div>
+</div>
+</div>
+<div class="hidden md:block w-px h-10 bg-border-subtle"></div>
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bed</span>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">ROOM LIMIT</div>
+<div class="font-body-md text-body-md font-semibold text-primary">₹8,000/day</div>
+</div>
+</div>
+<div class="hidden md:block w-px h-10 bg-border-subtle"></div>
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">NETWORK</div>
+<div class="font-body-md text-body-md font-semibold text-primary">In network</div>
+</div>
+</div>
+</section>
+<!-- Search & Filters -->
+<section class="mb-stack-lg flex flex-col md:flex-row gap-stack-md card-reveal delay-2">
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-colors font-body-md text-body-md" placeholder="Search by hospital name or location" type="text">
+</div>
+<div class="flex gap-stack-sm overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+<button class="whitespace-nowrap px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-label-sm text-label-sm flex items-center gap-2 hover:bg-surface-container transition-colors">
+                    Network <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="whitespace-nowrap px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-label-sm text-label-sm flex items-center gap-2 hover:bg-surface-container transition-colors">
+                    Specialty <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="whitespace-nowrap px-4 py-3 bg-surface-container-lowest border border-border-subtle rounded-lg font-label-sm text-label-sm flex items-center gap-2 hover:bg-surface-container transition-colors">
+                    Room <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</section>
+<!-- Results Summary -->
+<div class="flex justify-between items-end mb-stack-md card-reveal delay-2">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Hospitals matching your information — 12 hospitals</h2>
+<div class="hidden md:flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
+                Sorted by: <span class="font-semibold text-primary">Best match</span> <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+</div>
+<!-- Hospital Result Cards -->
+<div class="grid grid-cols-1 gap-stack-lg">
+<!-- Card 1 -->
+<article class="bg-surface-container-lowest rounded-xl border border-border-subtle p-stack-md md:p-gutter metric-card card-reveal delay-3">
+<div class="flex flex-col md:flex-row justify-between gap-gutter">
+<div class="flex-grow">
+<div class="flex items-start justify-between mb-stack-sm">
+<div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold md:text-headline-lg">Aster CMI Hospital</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-md text-body-md mt-1 leading-relaxed">
+<span class="material-symbols-outlined text-[18px]">location_on</span> Bengaluru
+                                </div>
+</div>
+<div class="md:hidden">
+<div class="w-12 h-12 rounded-full border-4 border-status-safe flex items-center justify-center font-bold text-status-safe">
+                                    86
+                                </div>
+</div>
+</div>
+<div class="flex flex-wrap gap-stack-sm mb-stack-md mt-stack-md">
+<span class="inline-flex items-center gap-1 bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-status-safe"></span> In network
+                            </span>
+<span class="inline-flex items-center gap-1 bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">check_circle</span> Within stated limit
+                            </span>
+<span class="inline-flex items-center gap-1 bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm">
+                                Specialty: General care
+                            </span>
+</div>
+</div>
+<div class="hidden md:flex flex-col items-end min-w-[200px] border-l border-border-subtle pl-gutter">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1 tracking-widest">COMPATIBILITY SCORE</div>
+<div class="flex items-baseline gap-1 text-status-safe">
+<span class="font-metric-value text-metric-value">86</span>
+<span class="font-body-md text-body-md">/100</span>
+</div>
+<div class="font-label-sm text-label-sm text-status-safe bg-status-safe/10 px-2 py-1 rounded mt-2">High compatibility</div>
+</div>
+</div>
+<div class="mt-stack-md pt-stack-md border-t border-border-subtle">
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none font-label-sm text-label-sm text-primary hover:text-primary-container transition-colors focus:outline-none font-semibold">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] group-open:rotate-180 transition-transform">expand_more</span>
+                                Why this matches
+                            </span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-primary-container transition-colors hidden md:block">
+                                View hospital →
+                            </button>
+</summary>
+<div class="mt-stack-md pl-6">
+<div class="space-y-4 max-w-md">
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">Network (40%)</span>
+<span class="font-semibold text-status-safe">40/40</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-status-safe h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">Room (30%)</span>
+<span class="font-semibold text-status-safe">30/30</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-status-safe h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">Specialty (20%)</span>
+<span class="font-semibold text-status-warning">16/20</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-status-warning h-1.5 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">Policy (10%)</span>
+<span class="font-semibold text-status-safe">8/10</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-status-safe h-1.5 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-stack-md bg-primary text-on-primary px-4 py-3 rounded-lg font-label-sm text-label-sm md:hidden">
+                                View hospital →
+                            </button>
+</div>
+</details>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl border border-border-subtle p-stack-md md:p-gutter metric-card card-reveal delay-3">
+<div class="flex flex-col md:flex-row justify-between gap-gutter">
+<div class="flex-grow">
+<div class="flex items-start justify-between mb-stack-sm">
+<div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold md:text-headline-lg">Manipal Hospital</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-md text-body-md mt-1 leading-relaxed">
+<span class="material-symbols-outlined text-[18px]">location_on</span> Bengaluru
+                                </div>
+</div>
+<div class="md:hidden">
+<div class="w-12 h-12 rounded-full border-4 border-status-warning flex items-center justify-center font-bold text-status-warning">
+                                    74
+                                </div>
+</div>
+</div>
+<div class="flex flex-wrap gap-stack-sm mb-stack-md mt-stack-md">
+<span class="inline-flex items-center gap-1 bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-status-safe"></span> In network
+                            </span>
+<span class="inline-flex items-center gap-1 bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-status-warning">warning</span> Above stated limit
+                            </span>
+</div>
+</div>
+<div class="hidden md:flex flex-col items-end min-w-[200px] border-l border-border-subtle pl-gutter">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1 tracking-widest">COMPATIBILITY SCORE</div>
+<div class="flex items-baseline gap-1 text-status-warning">
+<span class="font-metric-value text-metric-value">74</span>
+<span class="font-body-md text-body-md">/100</span>
+</div>
+<div class="font-label-sm text-label-sm text-status-warning bg-status-warning/10 px-2 py-1 rounded mt-2">Moderate compatibility</div>
+</div>
+</div>
+<div class="mt-stack-md pt-stack-md border-t border-border-subtle">
+<details class="group">
+<summary class="flex justify-between items-center cursor-pointer list-none font-label-sm text-label-sm text-primary hover:text-primary-container transition-colors focus:outline-none font-semibold">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] group-open:rotate-180 transition-transform">expand_more</span>
+                                Why this matches
+                            </span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-primary-container transition-colors hidden md:block">
+                                View hospital →
+                            </button>
+</summary>
+<div class="mt-stack-md pl-6">
+<div class="space-y-4 max-w-md">
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">Network (40%)</span>
+<span class="font-semibold text-status-safe">40/40</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-status-safe h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-on-surface-variant">Room (30%)</span>
+<span class="font-semibold text-status-warning">15/30</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-1.5">
+<div class="bg-status-warning h-1.5 rounded-full" style="width: 50%"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-stack-md bg-primary text-on-primary px-4 py-3 rounded-lg font-label-sm text-label-sm md:hidden">
+                                View hospital →
+                            </button>
+</div>
+</details>
+</div>
+</article>
+</div>
+<div class="mt-stack-lg text-center opacity-70 card-reveal delay-3">
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                Compatibility is calculated using your available policy and hospital information. Network 40% · Room 30% · Specialty 20% · Policy 10%
+            </p>
+</div>
+</main>
+<!-- Footer (Generated from Shared Components) -->
+<footer class="bg-surface-container-low border-t border-border-subtle py-12 mt-stack-lg">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-start gap-8">
+    <div class="space-y-2">
+      <div class="text-[16px] font-semibold font-headline-lg text-primary leading-[24px]">OSPAT Intelligence</div>
+      <p class="text-[11px] font-normal font-body-md text-on-surface-variant leading-[16px]">
+        © 2024 OSPAT Intelligence. All rights reserved. Decision support only; not medical advice.
+      </p>
+    </div>
+    <nav class="flex flex-wrap gap-x-6 gap-y-2">
+      <a href="#" class="text-[11px] font-medium font-body-md text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Privacy Policy</a>
+      <a href="#" class="text-[11px] font-medium font-body-md text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Responsible Use</a>
+      <a href="#" class="text-[11px] font-medium font-body-md text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Terms of Service</a>
+      <a href="#" class="text-[11px] font-medium font-body-md text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Contact Support</a>
+    </nav>
+  </div>
+</footer>
+<script>
+        // Simple counter animation for the score
+        document.addEventListener('DOMContentLoaded', () => {
+            const scoreElements = document.querySelectorAll('.font-metric-value');
+            scoreElements.forEach(el => {
+                const finalValue = parseInt(el.textContent, 10);
+                if (isNaN(finalValue)) return;
+                
+                let startValue = 0;
+                const duration = 1500; // ms
+                const startTime = performance.now();
+                
+                function updateCounter(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function (easeOutQuart)
+                    const ease = 1 - Math.pow(1 - progress, 4);
+                    
+                    const currentValue = Math.floor(startValue + (finalValue - startValue) * ease);
+                    el.textContent = currentValue;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        el.textContent = finalValue;
+                    }
+                }
+                
+                requestAnimationFrame(updateCounter);
+            });
+        });
+    </script>
+
+
+
+
+
+
+</body></html>

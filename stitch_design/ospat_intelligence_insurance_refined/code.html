@@ -1,0 +1,437 @@
+<!DOCTYPE html><html class="light scroll-smooth" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Insurance - OSPAT Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#f7ba8a",
+                        "surface-container": "#f0edef",
+                        "on-tertiary-fixed-variant": "#673d18",
+                        "primary-fixed-dim": "#98cfe0",
+                        "on-primary-fixed-variant": "#0c4e5c",
+                        "on-secondary-container": "#5b6668",
+                        "tertiary-container": "#673d18",
+                        "status-critical": "#D31130",
+                        "tertiary-fixed": "#ffdcc3",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#87bece",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f3f0f2",
+                        "secondary": "#556062",
+                        "tertiary": "#4c2704",
+                        "on-primary-fixed": "#001f26",
+                        "on-secondary-fixed-variant": "#3d494b",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#0d4e5c",
+                        "inverse-primary": "#98cfe0",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e4e2e4",
+                        "secondary-fixed": "#d9e5e7",
+                        "outline-variant": "#c0c8cb",
+                        "on-surface": "#1b1b1d",
+                        "surface-dim": "#dcd9dc",
+                        "on-surface-variant": "#40484b",
+                        "status-warning": "#D97706",
+                        "surface-container-high": "#eae7ea",
+                        "error": "#ba1a1a",
+                        "outline": "#70787b",
+                        "surface": "#fcf8fb",
+                        "primary": "#003641",
+                        "inverse-surface": "#303032",
+                        "background": "#fcf8fb",
+                        "border-subtle": "#E5E7EB",
+                        "surface-container-low": "#f6f3f5",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#d9e5e7",
+                        "status-safe": "#1A8245",
+                        "on-tertiary-fixed": "#2f1500",
+                        "on-background": "#1b1b1d",
+                        "surface-muted": "#F9FAFB",
+                        "on-tertiary-container": "#e5a97b",
+                        "surface-container-highest": "#e4e2e4",
+                        "surface-tint": "#2d6674",
+                        "on-secondary-fixed": "#121d1f",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fcf8fb",
+                        "primary-fixed": "#b4ebfc"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    spacing: {
+                        "margin-desktop": "40px",
+                        "stack-lg": "32px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "container-max": "1200px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "metric-value": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "headline-lg-mobile": ["Manrope"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "metric-value": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    },
+                    boxShadow: {
+                        'elevation-1': '0px 4px 20px rgba(13, 78, 92, 0.04)'
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 100ms; }
+        .reveal-delay-2 { transition-delay: 200ms; }
+        .reveal-delay-3 { transition-delay: 300ms; }
+        .reveal-delay-4 { transition-delay: 400ms; }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                transition: none;
+                opacity: 1;
+                transform: none;
+            }
+        }
+        
+        .card-shadow {
+            box-shadow: 0px 4px 20px rgba(13, 78, 92, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased pt-20 overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface border-b border-border-subtle h-[60px]"><div class="flex justify-between items-center h-full px-margin-desktop max-w-container-max mx-auto"><div class="flex items-center"><a class="font-headline-lg text-[16px] font-semibold text-primary leading-[24px]" href="#">OSPAT Intelligence</a></div><div class="hidden md:flex gap-8 items-center h-full mx-auto"><a class="text-primary font-medium border-b-2 border-primary h-full flex items-center transition-colors text-[14px] font-body-md leading-[20px]" href="#">Insurance</a><a class="text-on-surface-variant font-normal hover:text-primary h-full flex items-center transition-colors text-[14px] font-body-md leading-[20px]" href="#">Hospitals</a><a class="text-on-surface-variant font-normal hover:text-primary h-full flex items-center transition-colors text-[14px] font-body-md leading-[20px]" href="#">Care Journey</a></div><div class="flex items-center gap-6"><div class="h-full flex items-center border-l border-border-subtle pl-6 mr-2"><button class="border border-border-subtle text-on-surface-variant font-medium px-4 py-1.5 rounded-full hover:bg-surface-container-low transition-colors text-[12px] font-body-md">Get Help</button></div><div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary cursor-pointer hover:opacity-90 transition-opacity"><span class="material-symbols-outlined text-[20px]">person</span></div></div></div></nav>
+<!-- Main Content -->
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+<!-- Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md mb-12 reveal active">
+<div>
+<h1 class="font-display-hero text-headline-lg-mobile md:text-display-hero text-primary mb-2">Your coverage</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Understand the important parts of your policy, all in one place.</p>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary-container text-on-primary font-label-sm px-6 py-3 rounded-full hover:opacity-90 transition-opacity" id="uploadBtn" onclick="openModal()">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 0;">upload_file</span>
+                Upload a policy
+            </button>
+</header>
+<!-- Active Policy Summary & Coverage Hero Bento -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16 reveal reveal-delay-1 active">
+<!-- Policy Summary Card -->
+<div class="bg-surface-container-lowest rounded-3xl p-8 border border-border-subtle card-shadow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block mb-1">Insurer</span>
+<h2 class="font-headline-lg text-2xl text-primary mb-6">Star Health</h2>
+</div>
+<div class="flex items-center gap-1.5 bg-status-safe/10 text-status-safe px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<div class="w-2 h-2 rounded-full bg-status-safe"></div>
+                            Active
+                        </div>
+</div>
+<div class="mb-8">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block mb-1">Policy Name</span>
+<p class="font-body-md text-lg text-on-surface font-semibold">Family Health Optima</p>
+</div>
+</div>
+<div class="pt-6 border-t border-border-subtle">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block mb-1">Policy Period</span>
+<p class="font-body-md text-body-md text-on-surface">01 Apr 2026 — 31 Mar 2027</p>
+</div>
+</div>
+<!-- Coverage Hero Card -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-3xl p-10 border border-border-subtle card-shadow flex flex-col justify-center relative overflow-hidden">
+<div class="absolute top-0 right-0 w-80 h-80 bg-primary-fixed/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+<div class="relative z-10">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block mb-2">Total Coverage Amount</span>
+<div class="font-metric-value text-5xl md:text-display-hero text-primary mb-4 flex items-baseline gap-2">
+                        ₹10,00,000
+                    </div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: &quot;FILL&quot; 1; font-size: 18px;">verified_user</span>
+<span class="">Base sum insured. Restoration benefits may apply.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Constraints Grid -->
+<div class="reveal reveal-delay-2 mb-16 active">
+<h3 class="font-headline-lg text-headline-lg-mobile text-primary mb-6">Key Constraints</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-border-subtle card-shadow">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center mb-6 text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;">bed</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-2">Room Limit</h4>
+<p class="font-metric-value text-2xl text-primary mb-1">₹8,000<span class="text-sm font-normal text-on-surface-variant font-body-md">/day</span></p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-border-subtle card-shadow">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center mb-6 text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;">local_hospital</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-2">Network</h4>
+<p class="font-metric-value text-2xl text-primary mb-1">In network</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Preferred for cashless</p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-border-subtle card-shadow">
+<div class="w-12 h-12 rounded-full bg-status-warning/10 flex items-center justify-center mb-6 text-status-warning">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;">warning</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-2">Exclusions</h4>
+<p class="font-metric-value text-2xl text-primary mb-1">3 identified</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Identified in policy</p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-border-subtle card-shadow">
+<div class="w-12 h-12 rounded-full bg-status-safe/10 flex items-center justify-center mb-6 text-status-safe">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;">check_circle</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-2">Status</h4>
+<p class="font-metric-value text-2xl text-primary mb-1">Active</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Premium paid</p>
+</div>
+</div>
+</div>
+<!-- Important Considerations Section -->
+<div class="reveal reveal-delay-3 mb-16 active">
+<h3 class="font-headline-lg text-headline-lg-mobile text-primary mb-6">Important considerations</h3>
+<div class="space-y-4">
+<!-- Accordion Item 1 -->
+<details class="group bg-surface-container-lowest rounded-2xl border border-border-subtle card-shadow overflow-hidden">
+<summary class="flex justify-between items-center cursor-pointer p-6 font-body-md font-semibold text-on-surface hover:bg-surface transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">info</span>
+                    Room-related conditions
+                </div>
+<span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform duration-200">expand_more</span>
+</summary>
+<div class="p-6 pt-0 border-t border-border-subtle text-on-surface-variant bg-surface">
+<p class="mt-4">If a room with a higher rent than the eligible limit is chosen, proportionate deductions will apply to associated medical expenses, including doctor's fees and diagnostic tests.</p>
+</div>
+</details>
+<!-- Accordion Item 2 -->
+<details class="group bg-surface-container-lowest rounded-2xl border border-border-subtle card-shadow overflow-hidden">
+<summary class="flex justify-between items-center cursor-pointer p-6 font-body-md font-semibold text-on-surface hover:bg-surface transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">info</span>
+                    Pre-authorization requirements
+                </div>
+<span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform duration-200">expand_more</span>
+</summary>
+<div class="p-6 pt-0 border-t border-border-subtle text-on-surface-variant bg-surface">
+<p class="mt-4">Planned hospitalizations require pre-authorization at least 48 hours in advance. Emergency admissions must be notified within 24 hours of hospitalization.</p>
+</div>
+</details>
+<!-- Accordion Item 3 -->
+<details class="group bg-surface-container-lowest rounded-2xl border border-border-subtle card-shadow overflow-hidden">
+<summary class="flex justify-between items-center cursor-pointer p-6 font-body-md font-semibold text-on-surface hover:bg-surface transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">info</span>
+                    Policy exclusions
+                </div>
+<span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform duration-200">expand_more</span>
+</summary>
+<div class="p-6 pt-0 border-t border-border-subtle text-on-surface-variant bg-surface">
+<p class="mt-4">Coverage does not extend to cosmetic surgery, experimental treatments, or non-medical expenses as detailed in Section 4 of the policy wording.</p>
+</div>
+</details>
+</div>
+</div>
+<!-- Your Policy Section -->
+<div class="reveal reveal-delay-4 mb-24 active">
+<h3 class="font-headline-lg text-headline-lg-mobile text-primary mb-6">Your policy</h3>
+<div class="bg-surface-container-lowest rounded-2xl border border-border-subtle p-4 flex items-center justify-between card-shadow">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-primary-fixed/20 rounded-lg flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<p class="font-body-md font-semibold text-on-surface">Family_Health_Optima.pdf</p>
+<p class="font-label-sm text-on-surface-variant">Uploaded on Oct 15, 2024</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-primary hover:text-primary-container font-label-sm font-medium transition-colors">View document</button>
+<button class="text-on-surface-variant hover:text-primary font-label-sm font-medium transition-colors" onclick="openModal()">Replace policy</button>
+</div>
+</div>
+</div>
+<!-- Next Steps CTA -->
+<div class="bg-surface-container-low rounded-3xl p-12 text-center border border-border-subtle reveal active">
+<h2 class="font-headline-lg text-3xl text-primary mb-4">Ready to compare hospitals?</h2>
+<p class="font-body-md text-on-surface-variant mb-8 max-w-xl mx-auto">Use your extracted policy details to find the most suitable hospitals in your network and estimate potential costs.</p>
+<button class="bg-primary-container text-on-primary font-label-sm px-8 py-4 rounded-full hover:bg-primary transition-colors text-base inline-flex items-center gap-2">
+            Find hospitals
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</main><footer class="bg-surface-container-low border-t border-outline-variant/20 py-8 mt-24"><div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-start md:items-center gap-6"><div class="flex flex-col gap-1"><span class="font-headline-lg text-[16px] font-semibold text-primary leading-[24px]">OSPAT Intelligence</span><p class="font-body-md text-[11px] font-normal text-on-surface-variant opacity-75 leading-[16px]">© 2024 OSPAT Intelligence. All rights reserved. Decision support only; not medical advice.</p></div><nav class="flex flex-wrap gap-x-8 gap-y-2"><a href="#" class="font-body-md text-[11px] font-medium text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Privacy Policy</a><a href="#" class="font-body-md text-[11px] font-medium text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Responsible Use</a><a href="#" class="font-body-md text-[11px] font-medium text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Terms of Service</a><a href="#" class="font-body-md text-[11px] font-medium text-on-surface-variant hover:text-primary transition-colors leading-[16px]">Contact Support</a></nav></div></footer>
+<!-- Upload Policy Modal -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4" id="uploadModal">
+<div class="absolute inset-0 bg-on-background/40 backdrop-blur-sm" onclick="closeModal()"></div>
+<div class="bg-surface-container-lowest rounded-3xl shadow-2xl border border-border-subtle w-full max-w-lg relative z-10 overflow-hidden" id="modalContent">
+<!-- Modal Header -->
+<div class="px-8 py-6 border-b border-border-subtle flex justify-between items-center">
+<h3 class="font-headline-lg text-xl text-primary">Upload policy document</h3>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors" onclick="closeModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Upload State -->
+<div class="p-8" id="uploadState">
+<div class="border-2 border-dashed border-border-subtle rounded-2xl p-10 text-center hover:bg-surface-container-low transition-colors cursor-pointer group" onclick="startProcessing()">
+<div class="w-16 h-16 bg-surface-variant rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-fixed/20 transition-colors text-primary-container">
+<span class="material-symbols-outlined text-2xl">cloud_upload</span>
+</div>
+<p class="font-body-md font-semibold text-primary mb-1">Click to upload or drag and drop</p>
+<p class="font-label-sm text-on-surface-variant">PDF, JPG, or PNG (max. 10MB)</p>
+</div>
+</div>
+<!-- Processing State -->
+<div class="p-12 text-center hidden" id="processingState">
+<div class="relative w-24 h-24 mx-auto mb-6">
+<!-- Spinner -->
+<svg class="animate-spin text-primary-container w-full h-full" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-3xl" id="processIcon">document_scanner</span>
+</div>
+</div>
+<h4 class="font-headline-lg text-lg text-primary mb-2" id="processTitle">Analyzing document</h4>
+<p class="font-body-md text-on-surface-variant" id="processDesc">Reading policy details...</p>
+</div>
+<!-- Success State -->
+<div class="p-12 text-center hidden" id="successState">
+<div class="w-24 h-24 bg-status-safe/10 rounded-full flex items-center justify-center mx-auto mb-6 text-status-safe">
+<span class="material-symbols-outlined text-5xl">check_circle</span>
+</div>
+<h4 class="font-headline-lg text-2xl text-primary mb-2">Policy updated</h4>
+<p class="font-body-md text-on-surface-variant mb-8">We've successfully extracted the key details from your document.</p>
+<button class="bg-primary-container text-on-primary font-label-sm w-full py-3 rounded-full hover:bg-primary transition-colors text-base" onclick="closeModal()">View updated coverage</button>
+</div>
+</div>
+</div>
+<!-- Footer -->
+
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            if (!prefersReducedMotion) {
+                const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.reveal').forEach((el) => {
+                    observer.observe(el);
+                });
+            } else {
+                document.querySelectorAll('.reveal').forEach((el) => {
+                    el.classList.add('active');
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                    el.style.transition = 'none';
+                });
+            }
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('uploadModal');
+        const uploadState = document.getElementById('uploadState');
+        const processingState = document.getElementById('processingState');
+        const successState = document.getElementById('successState');
+        const processTitle = document.getElementById('processTitle');
+        const processDesc = document.getElementById('processDesc');
+        const processIcon = document.getElementById('processIcon');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Reset states
+            uploadState.classList.remove('hidden');
+            processingState.classList.add('hidden');
+            successState.classList.add('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        function startProcessing() {
+            uploadState.classList.add('hidden');
+            processingState.classList.remove('hidden');
+            
+            const steps = [
+                { title: 'Reading document', desc: 'Extracting text and structure...', icon: 'document_scanner' },
+                { title: 'Finding clauses', desc: 'Identifying limits and exclusions...', icon: 'search' },
+                { title: 'Organizing details', desc: 'Structuring your coverage data...', icon: 'account_tree' },
+                { title: 'Almost ready', desc: 'Finalizing summary...', icon: 'task_alt' }
+            ];
+
+            let step = 0;
+            const interval = setInterval(() => {
+                step++;
+                if (step < steps.length) {
+                    processTitle.textContent = steps[step].title;
+                    processDesc.textContent = steps[step].desc;
+                    processIcon.textContent = steps[step].icon;
+                } else {
+                    clearInterval(interval);
+                    processingState.classList.add('hidden');
+                    successState.classList.remove('hidden');
+                }
+            }, 1200); // Simulate processing time
+        }
+    </script>
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Profile - OSPAT Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#98cfe0",
+                        "status-critical": "#D31130",
+                        "inverse-surface": "#303032",
+                        "outline-variant": "#c0c8cb",
+                        "surface-tint": "#2d6674",
+                        "status-warning": "#D97706",
+                        "on-primary-fixed": "#001f26",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#98cfe0",
+                        "primary-fixed": "#b4ebfc",
+                        "on-secondary-container": "#5b6668",
+                        "on-tertiary-container": "#e5a97b",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#40484b",
+                        "on-primary-container": "#87bece",
+                        "error": "#ba1a1a",
+                        "border-subtle": "#E5E7EB",
+                        "on-secondary-fixed-variant": "#3d494b",
+                        "on-background": "#1b1b1d",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e4e2e4",
+                        "tertiary": "#4c2704",
+                        "background": "#fcf8fb",
+                        "surface-dim": "#dcd9dc",
+                        "secondary-fixed": "#d9e5e7",
+                        "surface-container-high": "#eae7ea",
+                        "surface-muted": "#F9FAFB",
+                        "surface-container-low": "#f6f3f5",
+                        "status-safe": "#1A8245",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#673d18",
+                        "inverse-on-surface": "#f3f0f2",
+                        "surface-bright": "#fcf8fb",
+                        "on-secondary-fixed": "#121d1f",
+                        "secondary": "#556062",
+                        "surface": "#fcf8fb",
+                        "outline": "#70787b",
+                        "on-surface": "#1b1b1d",
+                        "tertiary-fixed-dim": "#f7ba8a",
+                        "on-primary-fixed-variant": "#0c4e5c",
+                        "on-error-container": "#93000a",
+                        "primary": "#003641",
+                        "secondary-container": "#d9e5e7",
+                        "primary-container": "#0d4e5c",
+                        "tertiary-fixed": "#ffdcc3",
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-container": "#673d18",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#bdc9cb",
+                        "surface-container": "#f0edef",
+                        "surface-variant": "#e4e2e4",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "stack-lg": "32px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "metric-value": ["Manrope"],
+                        "label-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-hero": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "metric-value": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "500" }],
+                        "label-sm": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-hero": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface/80 dark:bg-primary/90 backdrop-blur-md fixed top-0 w-full z-50 border-b border-outline-variant/30 flex justify-between items-center h-[60px] px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto left-0 right-0">
+    <div class="flex items-center">
+        <a class="font-['Manrope'] text-[16px] font-semibold leading-[24px] text-primary dark:text-primary-fixed no-underline" href="#">
+            OSPAT Intelligence
+        </a>
+    </div>
+    <nav class="hidden md:flex items-center gap-stack-md absolute left-1/2 -translate-x-1/2">
+        <a class="font-['Inter'] text-[14px] font-normal leading-[20px] text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors px-3 py-2" href="#">Insurance</a>
+        <a class="font-['Inter'] text-[14px] font-normal leading-[20px] text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors px-3 py-2" href="#">Hospitals</a>
+        <a class="font-['Inter'] text-[14px] font-normal leading-[20px] text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors px-3 py-2" href="#">Care Journey</a>
+    </nav>
+    <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center border-l border-outline-variant/30 pl-4 mr-2">
+            <button class="bg-surface-container-lowest text-secondary border border-outline-variant px-4 py-1.5 rounded-full font-['Inter'] text-[12px] font-medium hover:bg-surface-container-high transition-colors">
+                Get Help
+            </button>
+        </div>
+        <button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center overflow-hidden">
+            <span class="material-symbols-outlined !text-[20px]">person</span>
+        </button>
+        <button class="md:hidden text-primary p-2">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+    </div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[100px] pb-margin-desktop px-margin-mobile md:px-margin-desktop w-full mx-auto max-w-4xl">
+<!-- Page Header -->
+<header class="mb-12 text-center md:text-left">
+<h1 class="font-headline-lg text-primary mb-2">Your profile</h1>
+<p class="text-secondary font-body-md">Manage your account information and preferences.</p>
+</header>
+<div class="space-y-6">
+<!-- Profile Information Section -->
+<section class="border-b border-outline-variant/30 pb-8"><h2 class="font-label-caps text-secondary mb-4 tracking-wider">PROFILE</h2><div class="bg-surface-container-low rounded-xl p-6 flex flex-col md:flex-row items-center md:items-start gap-6"><div class="w-20 h-20 rounded-full overflow-hidden border-2 border-primary/10"><img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCubprxGP1XKh94TBI7UsPTMhqkzmPgtXw3NCxi_SueFUSGjkzhOgSK0lGhYbSkVRLL_AXb2JCKYf3P6AIPjek1M2C_-G_xfuTYlcw-5qo_mwEEsud3Av-IC1nr7k6an1E9Y4yJIrNZmB6v1pdTg6-1s6ElZ6LOOQZ4PhWONZaSuCdY4tKmn538RUo5HYUaUPHAwEGkPGgOMTW5LEBkMJKZ9SR761eD3CKpzkmiEf9Hu8hH-xL-O6Y9"></div><div class="flex-grow text-center md:text-left"><h3 class="text-[20px] font-semibold text-on-surface mb-1">Demo User</h3><div class="flex flex-col gap-1"><div class="flex items-center justify-center md:justify-start gap-2 text-secondary"><span class="material-symbols-outlined text-[18px]">mail</span><span class="font-body-md">demo@example.com</span></div><div class="flex items-center justify-center md:justify-start gap-2 text-secondary"><span class="material-symbols-outlined text-[18px]">call</span><span class="font-body-md">+91 XXXXX XXXXX</span></div></div></div><button class="px-4 py-2 border border-outline-variant rounded-lg text-primary font-label-sm font-semibold hover:bg-primary-container/10 transition-colors">Edit profile</button></div></section>
+<!-- Account Section -->
+<section class="border-b border-outline-variant/30 pb-8"><h2 class="font-label-caps text-secondary mb-4 tracking-wider">ACCOUNT</h2><div class="bg-surface-container-low rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6"><div class="flex flex-col"><span class="font-label-sm text-secondary mb-1">Account status</span><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-status-safe font-label-sm"></span><span class="font-body-md text-on-surface font-semibold">Active</span></div></div><div class="flex flex-col"><span class="font-label-sm text-secondary mb-1">Member since</span><span class="font-body-md text-on-surface font-semibold">2024</span></div></div></section>
+<!-- Privacy & Security Section -->
+<section class="border-b border-outline-variant/30 pb-8"><h2 class="font-label-caps text-secondary mb-4 tracking-wider">PRIVACY &amp; SECURITY</h2><div class="bg-surface-container-low rounded-xl overflow-hidden"><a class="flex items-center gap-4 p-4 hover:bg-surface-container-high transition-colors border-b border-outline-variant/20" href="#"><div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary"><span class="material-symbols-outlined">shield</span></div><div class="flex-grow"><div class="font-label-sm text-on-surface font-semibold">Privacy settings</div><div class="text-[13px] text-secondary">Manage your data sharing and visibility</div></div><span class="material-symbols-outlined text-secondary">chevron_right</span></a><a class="flex items-center gap-4 p-4 hover:bg-surface-container-high transition-colors border-b border-outline-variant/20" href="#"><div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary"><span class="material-symbols-outlined">lock</span></div><div class="flex-grow"><div class="font-label-sm text-on-surface font-semibold">Data security</div><div class="text-[13px] text-secondary">Your information is protected and handled securely</div></div><span class="material-symbols-outlined text-secondary">chevron_right</span></a><a class="flex items-center gap-4 p-4 hover:bg-surface-container-high transition-colors" href="#"><div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary"><span class="material-symbols-outlined">info</span></div><div class="flex-grow"><div class="font-label-sm text-on-surface font-semibold">Responsible use</div><div class="text-[13px] text-secondary">Learn how OSPAT is intended to be used</div></div><span class="material-symbols-outlined text-secondary">chevron_right</span></a></div></section>
+<!-- Preferences Section -->
+<section class="border-b border-outline-variant/30 pb-8"><h2 class="font-label-caps text-secondary mb-4 tracking-wider">PREFERENCES</h2><div class="bg-surface-container-low rounded-xl overflow-hidden"><div class="flex items-center justify-between p-4 border-b border-outline-variant/20"><div class="font-body-md text-on-surface font-medium">Email notifications</div><button class="text-primary font-label-sm font-semibold">On</button></div><div class="flex items-center justify-between p-4"><div class="font-body-md text-on-surface font-medium">Email notifications</div><div class="font-body-md text-on-surface font-medium">Language</div></div></div></section>
+<!-- Sign Out Section -->
+<section class="pt-4"><div class="mt-8 pt-8 border-t border-outline-variant/30"><h2 class="font-label-caps text-secondary mb-2 tracking-wider">SIGN OUT</h2><p class="font-body-md text-secondary mb-6">Sign out of your OSPAT Intelligence account on this device.</p><button class="px-6 py-2 border border-status-critical/30 text-status-critical rounded-lg hover:bg-error-container transition-colors font-label-sm font-semibold">Sign out</button></div></section>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface w-full py-12 border-t border-outline-variant/20 mt-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-stack-md">
+        <div class="flex flex-col gap-2">
+            <span class="font-['Manrope'] text-[16px] font-semibold leading-[24px] text-primary dark:text-primary-fixed">
+                OSPAT Intelligence
+            </span>
+            <span class="font-['Inter'] text-[11px] font-normal leading-[16px] text-secondary dark:text-secondary-fixed-dim">
+                © 2024 OSPAT Intelligence. All rights reserved. Decision support only; not medical advice.
+            </span>
+        </div>
+        <nav class="flex flex-wrap gap-x-6 gap-y-2 md:ml-auto">
+            <a class="font-['Inter'] text-[11px] font-medium leading-[16px] text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors" href="#">Privacy Policy</a>
+            <a class="font-['Inter'] text-[11px] font-medium leading-[16px] text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors" href="#">Responsible Use</a>
+            <a class="font-['Inter'] text-[11px] font-medium leading-[16px] text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors" href="#">Terms of Service</a>
+            <a class="font-['Inter'] text-[11px] font-medium leading-[16px] text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors" href="#">Contact Support</a>
+        </nav>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+</body></html>

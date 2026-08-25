@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.*;
 
-@Service
+@Service("ollamaAIService")
 @Slf4j
 public class OllamaAIService implements AIService {
 
@@ -27,25 +27,22 @@ public class OllamaAIService implements AIService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private final HeuristicPolicyExtractor heuristicExtractor;
 
     public OllamaAIService(RestTemplateBuilder builder,
                             ObjectMapper objectMapper,
-                            HeuristicPolicyExtractor heuristicExtractor,
                             @Value("${hospitality.ai.ollama.connect-timeout-ms:3000}") long connectTimeout,
-                            @Value("${hospitality.ai.ollama.read-timeout-ms:12000}") long readTimeout) {
+                            @Value("${hospitality.ai.ollama.read-timeout-ms:15000}") long readTimeout) {
         this.restTemplate = builder
                 .setConnectTimeout(Duration.ofMillis(connectTimeout))
                 .setReadTimeout(Duration.ofMillis(readTimeout))
                 .build();
         this.objectMapper = objectMapper;
-        this.heuristicExtractor = heuristicExtractor;
     }
 
     @Override
     public ExtractedPolicyDto extractPolicyFromText(String rawText) {
         if (rawText == null || rawText.isBlank()) {
-            return heuristicExtractor.extract(rawText);
+            throw new IllegalArgumentException("Raw text must not be empty");
         }
 
         try {
@@ -72,26 +69,14 @@ public class OllamaAIService implements AIService {
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 JsonNode root = objectMapper.readTree(response.getBody());
                 String responseText = root.path("response").asText();
-                log.info("Ollama extraction raw JSON response: {}", responseText);
-
                 JsonNode parsed = objectMapper.readTree(responseText);
-                ExtractedPolicyDto dto = parseAndValidateExtraction(parsed, rawText);
-
-                // If key fields are missing or invalid, merge with heuristic extractor
-                if (dto.getInsurerName() == null || "NOT_AVAILABLE".equalsIgnoreCase(dto.getInsurerName())
-                        || dto.getCoverageLimit() == null || dto.getCoverageLimit().compareTo(BigDecimal.ZERO) <= 0) {
-                    log.warn("Ollama extraction lacked critical fields; merging with deterministic heuristic results");
-                    ExtractedPolicyDto fallback = heuristicExtractor.extract(rawText);
-                    mergeMissingFields(dto, fallback);
-                }
-
-                return dto;
+                return parseAndValidateExtraction(parsed, rawText);
             }
+            throw new RuntimeException("Unexpected response status from Ollama: " + response.getStatusCode());
         } catch (Exception e) {
-            log.warn("Ollama extraction unavailable or returned error ({}). Using deterministic heuristic fallback.", e.getMessage());
+            log.warn("Ollama extraction failed: {}", e.getMessage());
+            throw new RuntimeException("Ollama extraction failed: " + e.getMessage(), e);
         }
-
-        return heuristicExtractor.extract(rawText);
     }
 
     @Override
@@ -129,12 +114,11 @@ public class OllamaAIService implements AIService {
                     return sanitizeExplanation(explanation.trim());
                 }
             }
+            throw new RuntimeException("Empty response received from Ollama");
         } catch (Exception e) {
-            log.debug("Ollama explanation call fallback: {}", e.getMessage());
+            log.warn("Ollama match explanation failed: {}", e.getMessage());
+            throw new RuntimeException("Ollama match explanation failed: " + e.getMessage(), e);
         }
-
-        // Deterministic fallback explanation
-        return buildDeterministicHospitalExplanation(insurerName, hospitalName, matchResult);
     }
 
     @Override
@@ -143,7 +127,7 @@ public class OllamaAIService implements AIService {
         String base = String.format("Based on the provided policy data, your indicative coverage balance is ₹%s at %s. ",
                 remainingCoverage != null ? remainingCoverage.toPlainString() : "5,00,000",
                 hospitalName != null ? hospitalName : "the hospital");
-        
+
         switch (stg) {
             case "ADMISSION":
                 return base + "Ensure pre-authorization documentation is submitted to the hospital TPA desk with patient ID proof. Daily room rates should be checked against stated policy limits.";
@@ -160,7 +144,7 @@ public class OllamaAIService implements AIService {
 
     @Override
     public String getProviderName() {
-        return "Ollama (" + ollamaModel + ") with Deterministic Fallback";
+        return "Ollama (" + ollamaModel + ")";
     }
 
     private String buildExtractionPrompt(String rawText) {
@@ -215,7 +199,7 @@ public class OllamaAIService implements AIService {
             List<String> nets = new ArrayList<>();
             parsed.get("networkHospitals").forEach(n -> {
                 String val = cleanString(n.asText());
-                if (val != null && !val.isBlank()) nets.add(val);
+                if (val != null && !val.isBlank() && !"NOT_AVAILABLE".equalsIgnoreCase(val)) nets.add(val);
             });
             dto.setNetworkHospitals(nets);
         }
@@ -224,7 +208,7 @@ public class OllamaAIService implements AIService {
             List<String> exs = new ArrayList<>();
             parsed.get("exclusions").forEach(e -> {
                 String val = cleanString(e.asText());
-                if (val != null && !val.isBlank()) exs.add(val);
+                if (val != null && !val.isBlank() && !"NOT_AVAILABLE".equalsIgnoreCase(val)) exs.add(val);
             });
             dto.setExclusions(exs);
         }
@@ -233,7 +217,7 @@ public class OllamaAIService implements AIService {
             List<String> cs = new ArrayList<>();
             parsed.get("otherConstraints").forEach(c -> {
                 String val = cleanString(c.asText());
-                if (val != null && !val.isBlank()) cs.add(val);
+                if (val != null && !val.isBlank() && !"NOT_AVAILABLE".equalsIgnoreCase(val)) cs.add(val);
             });
             dto.setOtherConstraints(cs);
         }
@@ -241,33 +225,6 @@ public class OllamaAIService implements AIService {
         dto.setRawText(rawText);
         dto.setConfidence(BigDecimal.valueOf(0.95));
         return dto;
-    }
-
-    private void mergeMissingFields(ExtractedPolicyDto target, ExtractedPolicyDto source) {
-        if (target.getInsurerName() == null || "NOT_AVAILABLE".equalsIgnoreCase(target.getInsurerName())) {
-            target.setInsurerName(source.getInsurerName());
-        }
-        if (target.getPolicyType() == null || "NOT_AVAILABLE".equalsIgnoreCase(target.getPolicyType())) {
-            target.setPolicyType(source.getPolicyType());
-        }
-        if (target.getCoverageLimit() == null || target.getCoverageLimit().compareTo(BigDecimal.ZERO) <= 0) {
-            target.setCoverageLimit(source.getCoverageLimit());
-        }
-        if (target.getRoomLimit() == null || target.getRoomLimit().compareTo(BigDecimal.ZERO) <= 0) {
-            target.setRoomLimit(source.getRoomLimit());
-        }
-        if (target.getRoomCategory() == null || "NOT_AVAILABLE".equalsIgnoreCase(target.getRoomCategory())) {
-            target.setRoomCategory(source.getRoomCategory());
-        }
-        if (target.getNetworkHospitals().isEmpty()) {
-            target.setNetworkHospitals(source.getNetworkHospitals());
-        }
-        if (target.getExclusions().isEmpty()) {
-            target.setExclusions(source.getExclusions());
-        }
-        if (target.getOtherConstraints().isEmpty()) {
-            target.setOtherConstraints(source.getOtherConstraints());
-        }
     }
 
     private String cleanString(String input) {
@@ -280,33 +237,10 @@ public class OllamaAIService implements AIService {
     }
 
     private String sanitizeExplanation(String explanation) {
-        // Enforce safe terminology in AI output
         return explanation
                 .replace("fully covered", "within stated policy limits")
                 .replace("Fully covered", "Within stated policy limits")
                 .replace("guaranteed reimbursement", "potential reimbursement consideration")
                 .replace("claim approved", "pre-authorization submitted");
-    }
-
-    private String buildDeterministicHospitalExplanation(String insurerName, String hospitalName, HospitalMatchResultDto matchResult) {
-        int score = matchResult != null ? matchResult.getCompatibilityScore() : 0;
-        String hosp = hospitalName != null ? hospitalName : "This hospital";
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Based on provided policy data, %s scored a deterministic compatibility of %d%%. ", hosp, score));
-        
-        if (matchResult != null && Boolean.TRUE.equals(matchResult.getIsNetworkMatch())) {
-            sb.append("It is listed as an in-network facility under your policy schedule. ");
-        } else {
-            sb.append("Note that it is currently designated as out-of-network for cashless admission. ");
-        }
-
-        if (matchResult != null && Boolean.TRUE.equals(matchResult.getHasEligibleRoom())) {
-            sb.append("Room categories matching your stated daily limit are available. ");
-        } else {
-            sb.append("Available room categories may exceed stated daily limits, which could lead to proportionate out-of-pocket deductions. ");
-        }
-        sb.append("Final coverage and cashless pre-authorization must be verified directly with the hospital TPA desk and insurer.");
-        return sb.toString();
     }
 }

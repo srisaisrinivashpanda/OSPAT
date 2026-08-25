@@ -1,0 +1,316 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Care Journey - Admission | OSPAT Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-background": "#1b1b1d",
+                    "tertiary-fixed-dim": "#f7ba8a",
+                    "on-tertiary-fixed-variant": "#673d18",
+                    "surface-container-low": "#f6f3f5",
+                    "surface-bright": "#fcf8fb",
+                    "surface-dim": "#dcd9dc",
+                    "surface-muted": "#F9FAFB",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "status-warning": "#D97706",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#98cfe0",
+                    "surface-container": "#f0edef",
+                    "surface-container-highest": "#e4e2e4",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#c0c8cb",
+                    "on-secondary-fixed-variant": "#3d494b",
+                    "status-critical": "#D31130",
+                    "inverse-surface": "#303032",
+                    "on-primary-fixed-variant": "#0c4e5c",
+                    "secondary": "#556062",
+                    "on-surface": "#1b1b1d",
+                    "on-surface-variant": "#40484b",
+                    "on-tertiary-fixed": "#2f1500",
+                    "tertiary-container": "#673d18",
+                    "surface-variant": "#e4e2e4",
+                    "background": "#fcf8fb",
+                    "primary": "#003641",
+                    "secondary-container": "#d9e5e7",
+                    "surface-container-high": "#eae7ea",
+                    "primary-fixed": "#b4ebfc",
+                    "inverse-on-surface": "#f3f0f2",
+                    "surface-tint": "#2d6674",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#87bece",
+                    "on-tertiary-container": "#e5a97b",
+                    "primary-fixed-dim": "#98cfe0",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#bdc9cb",
+                    "surface": "#fcf8fb",
+                    "on-primary-fixed": "#001f26",
+                    "status-safe": "#1A8245",
+                    "primary-container": "#0d4e5c",
+                    "tertiary-fixed": "#ffdcc3",
+                    "secondary-fixed": "#d9e5e7",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-container": "#5b6668",
+                    "tertiary": "#4c2704",
+                    "outline": "#70787b",
+                    "on-secondary-fixed": "#121d1f",
+                    "border-subtle": "#E5E7EB"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px",
+                    "stack-sm": "8px",
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "container-max": "1200px",
+                    "unit": "8px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "display-hero": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "label-sm": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "metric-value": ["Manrope"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-hero": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "metric-value": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="w-full top-0 sticky z-50 bg-surface border-b border-surface-container-highest"><div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-[60px] max-w-container-max mx-auto"><div class="flex items-center"><a class="text-[16px] font-semibold text-primary tracking-tight font-headline-lg" href="#">OSPAT Intelligence</a></div><div class="hidden md:flex items-center gap-8 font-body-md text-[14px] leading-[20px]"><a class="text-on-surface-variant font-normal hover:text-primary transition-colors" href="#">Insurance</a><a class="text-on-surface-variant font-normal hover:text-primary transition-colors" href="#">Hospitals</a><a class="text-primary font-medium border-b-2 border-primary pb-1" href="#">Care Journey</a></div><div class="flex items-center gap-4"><div class="hidden md:block w-px h-6 bg-outline-variant mx-2"></div><button class="px-4 py-1.5 border border-outline-variant rounded-full font-body-md text-[12px] font-medium hover:bg-surface-container transition-colors">Get Help</button><div class="w-8 h-8 rounded-full overflow-hidden bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-white text-[18px]">person</span></div></div></div></nav>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg gap-10">
+<!-- Page Header & Context -->
+<header class="flex flex-col gap-6">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Your care journey</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">See where you are, what matters now, and what comes next.</p>
+</div>
+<!-- Context Row -->
+<div class="flex flex-wrap items-center gap-x-8 gap-y-4 bg-surface-container-lowest border border-outline-variant rounded-lg px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">person</span>
+<div>
+<div class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Patient</div>
+<div class="font-label-sm text-label-sm text-on-surface font-semibold">Demo User</div>
+</div>
+</div>
+<div class="hidden sm:block w-px h-8 bg-outline-variant"></div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">local_hospital</span>
+<div>
+<div class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Hospital</div>
+<div class="font-label-sm text-label-sm text-on-surface font-semibold flex items-center gap-2">
+                            Aster CMI Hospital
+                            <button class="text-primary hover:underline text-xs ml-2 font-medium">View hospital</button>
+</div>
+</div>
+</div>
+<div class="hidden md:block w-px h-8 bg-outline-variant"></div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">policy</span>
+<div>
+<div class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Policy</div>
+<div class="font-label-sm text-label-sm text-on-surface font-semibold flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-safe"></span>
+                            Active <span class="text-outline">·</span> In network
+                        </div>
+</div>
+</div>
+</div>
+</header>
+<!-- Timeline Nav -->
+<nav class="w-full relative py-2">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px bg-outline-variant -z-10"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/4 h-0.5 bg-primary -z-10"></div>
+<ul class="flex justify-between items-center w-full">
+<!-- Admission (Active) -->
+<li class="flex flex-col items-center gap-2 bg-surface px-2">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-white text-[14px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-primary">Admission</span>
+</li>
+<!-- Investigation -->
+<li class="flex flex-col items-center gap-2 bg-surface px-2 opacity-60">
+<div class="w-4 h-4 rounded-full bg-outline-variant ring-4 ring-surface"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Investigation</span>
+</li>
+<!-- Procedure -->
+<li class="flex flex-col items-center gap-2 bg-surface px-2 opacity-60 hidden sm:flex">
+<div class="w-4 h-4 rounded-full bg-outline-variant ring-4 ring-surface"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Procedure</span>
+</li>
+<!-- Recovery -->
+<li class="flex flex-col items-center gap-2 bg-surface px-2 opacity-60">
+<div class="w-4 h-4 rounded-full bg-outline-variant ring-4 ring-surface"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Recovery</span>
+</li>
+</ul>
+</nav>
+<!-- Stage Content Area -->
+<section class="flex flex-col gap-gutter">
+<div class="mb-2">
+<div class="font-label-caps text-label-caps text-primary uppercase tracking-wider mb-2">Stage 1 of 4 — Current stage</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Admission</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+                    Admission is the current stage of your care journey. The information below highlights the workflow items, policy considerations, and documents relevant to this stage.
+                </p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Left Col: Policy considerations -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 flex flex-col h-full shadow-[0px_4px_20px_rgba(13,78,92,0.04)]">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">assignment_late</span>
+<h3 class="font-label-sm text-label-sm font-bold text-on-surface">Policy considerations</h3>
+</div>
+<ul class="flex flex-col gap-0 divide-y divide-border-subtle flex-grow">
+<li class="py-4 flex justify-between items-center first:pt-0">
+<span class="font-body-md text-body-md text-on-surface-variant">Room limit</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">₹8,000/day</span>
+</li>
+<li class="py-4 flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Network</span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-safe"></span> In network
+                            </span>
+</li>
+<li class="py-4 flex justify-between items-center border-b-0 pb-0">
+<span class="font-body-md text-body-md text-on-surface-variant">Pre-authorization</span>
+<span class="font-label-sm text-label-sm font-semibold text-status-warning bg-surface-container-high px-2 py-1 rounded-DEFAULT">Required</span>
+</li>
+</ul>
+</div>
+<!-- Right Col: What matters now -->
+<div class="bg-primary-container text-on-primary-container rounded-xl p-6 flex flex-col h-full relative overflow-hidden">
+<!-- Subtle background decoration -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white opacity-5 rounded-full blur-2xl"></div>
+<div class="flex items-center gap-3 mb-6 relative z-10">
+<span class="material-symbols-outlined text-inverse-primary">check_circle</span>
+<h3 class="font-label-sm text-label-sm font-bold text-white">What matters now</h3>
+</div>
+<ul class="flex flex-col gap-4 relative z-10">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-inverse-primary fill text-[20px] mt-0.5">radio_button_unchecked</span>
+<span class="font-body-md text-body-md text-white font-medium">Initiate pre-authorization</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-inverse-primary fill text-[20px] mt-0.5">radio_button_unchecked</span>
+<span class="font-body-md text-body-md text-white font-medium">Verify room eligibility</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-inverse-primary fill text-[20px] mt-0.5">check_circle</span>
+<span class="font-body-md text-body-md text-white font-medium">Prepare required documents</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-inverse-primary fill text-[20px] mt-0.5">radio_button_unchecked</span>
+<span class="font-body-md text-body-md text-white font-medium">Complete admission process</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Full Width: Required Documents -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-6 w-full">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">description</span>
+<h3 class="font-label-sm text-label-sm font-bold text-on-surface">Required documents</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<tbody>
+<tr class="border-b border-border-subtle last:border-0 hover:bg-surface-muted transition-colors">
+<td class="py-4 pr-4 font-body-md text-body-md text-on-surface font-medium">Insurance policy</td>
+<td class="py-4 px-4 text-right sm:text-left">
+<span class="inline-flex items-center gap-1.5 font-label-sm text-label-sm text-status-safe bg-surface-container px-2.5 py-1 rounded-DEFAULT">
+<span class="material-symbols-outlined text-[16px]">task_alt</span> Processed
+                                    </span>
+</td>
+<td class="py-4 pl-4 text-right hidden sm:table-cell">
+<button class="text-primary font-label-sm text-label-sm hover:underline">View</button>
+</td>
+</tr>
+<tr class="border-b border-border-subtle last:border-0 hover:bg-surface-muted transition-colors">
+<td class="py-4 pr-4 font-body-md text-body-md text-on-surface font-medium">Admission forms</td>
+<td class="py-4 px-4 text-right sm:text-left">
+<span class="inline-flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-DEFAULT">
+<span class="material-symbols-outlined text-[16px]">file_download</span> Available
+                                    </span>
+</td>
+<td class="py-4 pl-4 text-right hidden sm:table-cell">
+<button class="text-primary font-label-sm text-label-sm hover:underline">Download</button>
+</td>
+</tr>
+<tr class="border-b border-border-subtle last:border-0 hover:bg-surface-muted transition-colors">
+<td class="py-4 pr-4 font-body-md text-body-md text-on-surface font-medium">Pre-authorization form</td>
+<td class="py-4 px-4 text-right sm:text-left">
+<span class="inline-flex items-center gap-1.5 font-label-sm text-label-sm text-status-warning bg-surface-container px-2.5 py-1 rounded-DEFAULT">
+<span class="material-symbols-outlined text-[16px]">hourglass_empty</span> Pending
+                                    </span>
+</td>
+<td class="py-4 pl-4 text-right hidden sm:table-cell">
+<button class="text-primary font-label-sm text-label-sm hover:underline">Action required</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Bottom Context: Coming Next -->
+<div class="bg-surface-muted rounded-xl p-6 border border-dashed border-outline-variant flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0 text-outline">
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm font-bold text-on-surface mb-1">Coming next: Investigation</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Information relevant to the next stage will appear here when the journey moves forward.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant w-full py-10"><div class="flex flex-col md:flex-row justify-between items-start w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-8"><div class="flex flex-col gap-2"><div class="text-[16px] leading-[24px] font-semibold text-primary font-headline-lg">OSPAT Intelligence</div><div class="text-on-surface-variant font-body-md text-[11px] font-normal">© 2024 OSPAT Intelligence. All rights reserved. Decision support only; not medical advice.</div></div><div class="flex flex-wrap gap-x-6 gap-y-2 font-body-md text-[11px] leading-[16px] text-on-surface-variant"><a class="font-medium hover:text-primary transition-colors" href="#">Privacy Policy</a><a class="font-medium hover:text-primary transition-colors" href="#">Responsible Use</a><a class="font-medium hover:text-primary transition-colors" href="#">Terms of Service</a><a class="font-medium hover:text-primary transition-colors" href="#">Contact Support</a></div></div></footer>
+
+
+
+
+
+
+</body></html>
