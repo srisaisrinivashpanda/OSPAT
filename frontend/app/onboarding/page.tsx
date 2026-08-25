@@ -135,12 +135,15 @@ export default function OnboardingPage() {
       setIsConfirming(true);
       setUploadError(null);
 
+      const cov = extractedData.coverageLimit ?? 1000000;
+      const room = extractedData.roomLimit ?? 8000;
+
       await api.confirmPolicy(extractedData.policyId, {
         insurerName: extractedData.insurerName || 'Star Health Allied Insurance',
         policyType: extractedData.policyType || 'Family Health Optima',
-        coverageLimit: extractedData.coverageLimit || 1000000,
-        remainingCoverage: extractedData.coverageLimit || 1000000,
-        roomLimit: extractedData.roomLimit || 8000,
+        coverageLimit: cov,
+        remainingCoverage: cov,
+        roomLimit: room,
         roomCategory: extractedData.roomCategory || 'Single Private Room',
         confirmed: true,
         exclusions: extractedData.exclusions || [],

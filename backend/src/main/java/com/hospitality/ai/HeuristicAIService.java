@@ -23,25 +23,26 @@ public class HeuristicAIService implements AIService {
 
     @Override
     public String generateHospitalMatchExplanation(String insurerName, String hospitalName, HospitalMatchResultDto matchResult) {
-        int score = matchResult != null ? matchResult.getCompatibilityScore() : 0;
-        String hosp = hospitalName != null ? hospitalName : "This hospital";
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Based on provided policy data, %s scored a deterministic compatibility of %d%%. ", hosp, score));
-
-        if (matchResult != null && Boolean.TRUE.equals(matchResult.getIsNetworkMatch())) {
-            sb.append("It is listed as an in-network facility under your policy schedule. ");
-        } else {
-            sb.append("Note that it is currently designated as out-of-network for cashless admission. ");
+        if (matchResult == null) {
+            return "Hospital compatibility evaluated based on standard policy parameters.";
         }
 
-        if (matchResult != null && Boolean.TRUE.equals(matchResult.getHasEligibleRoom())) {
-            sb.append("Room categories matching your stated daily limit are available. ");
+        boolean isNetwork = Boolean.TRUE.equals(matchResult.getIsNetworkMatch());
+        boolean hasRoom = Boolean.TRUE.equals(matchResult.getHasEligibleRoom());
+        boolean hasSpec = matchResult.getSpecialtyScore() != null && matchResult.getSpecialtyScore() > 0;
+
+        if (isNetwork && hasRoom) {
+            if (hasSpec) {
+                return "In-network facility with matching specialty care and room categories within your policy limit.";
+            }
+            return "Strong network compatibility and room categories within your policy limit.";
+        } else if (isNetwork && !hasRoom) {
+            return "In-network facility for cashless admission, but available room tariffs may exceed your daily limit.";
+        } else if (!isNetwork && hasRoom) {
+            return "Your policy supports available room categories, but this hospital is out-of-network for cashless admission.";
         } else {
-            sb.append("Available room categories may exceed stated daily limits, which could lead to proportionate out-of-pocket deductions. ");
+            return "Out-of-network facility where room tariffs exceed stated limits, requiring reimbursement filing.";
         }
-        sb.append("Final coverage and cashless pre-authorization must be verified directly with the hospital TPA desk and insurer.");
-        return sb.toString();
     }
 
     @Override

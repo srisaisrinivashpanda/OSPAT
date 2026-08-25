@@ -12,3 +12,5 @@ public class HospitalityApplication {
         SpringApplication.run(HospitalityApplication.class, args);
     }
 }
+
+

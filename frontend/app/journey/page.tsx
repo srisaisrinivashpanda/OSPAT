@@ -155,6 +155,9 @@ export default function CareJourneyPage() {
   const [completedDocs, setCompletedDocs] = useState<Record<string, boolean>>({});
   const [isAdvancing, setIsAdvancing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isIntroPlaying, setIsIntroPlaying] = useState(false);
+  const [introStep, setIntroStep] = useState<number>(0);
+  const [userName, setUserName] = useState<string>('');
 
   const fetchJourneyData = async () => {
     try {
@@ -166,8 +169,54 @@ export default function CareJourneyPage() {
       setJourney(jData);
       setPolicy(pData);
 
-      if (jData && jData.currentStage) {
-        setSelectedStage(jData.currentStage);
+      // Load user profile from localStorage if present
+      try {
+        const savedProfile = localStorage.getItem('ospat_user_profile');
+        if (savedProfile) {
+          const parsed = JSON.parse(savedProfile);
+          if (parsed.fullName && parsed.fullName.trim()) {
+            setUserName(parsed.fullName.trim());
+          }
+        }
+      } catch {
+        // ignore
+      }
+
+      const targetStage = ((jData && jData.currentStage) ? jData.currentStage : 'ADMISSION') as StageType;
+      const targetIndex = STAGES.findIndex((s) => s.id === targetStage);
+
+      let isFirstVisit = false;
+      try {
+        const seen = localStorage.getItem('ospat_journey_intro_seen');
+        const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        isFirstVisit = !seen && !prefersReducedMotion;
+      } catch {
+        isFirstVisit = false;
+      }
+
+      if (isFirstVisit && targetIndex > 0) {
+        setIsIntroPlaying(true);
+        setIntroStep(0);
+        setSelectedStage('ADMISSION');
+
+        let currentStep = 0;
+        const timer = setInterval(() => {
+          currentStep++;
+          if (currentStep <= targetIndex) {
+            setIntroStep(currentStep);
+            setSelectedStage(STAGES[currentStep].id);
+          } else {
+            clearInterval(timer);
+            setIsIntroPlaying(false);
+            setSelectedStage(targetStage);
+            try {
+              localStorage.setItem('ospat_journey_intro_seen', 'true');
+            } catch { }
+          }
+        }, 500);
+      } else {
+        setSelectedStage(targetStage);
+        setIntroStep(targetIndex);
       }
     } catch (e) {
       console.warn('Failed to load care journey data:', e);
@@ -215,6 +264,7 @@ export default function CareJourneyPage() {
 
   const currentStageIndex = STAGES.findIndex((s) => s.id === currentBackendStage);
   const selectedStageIndex = STAGES.findIndex((s) => s.id === selectedStage);
+  const activeTimelineProgIndex = isIntroPlaying ? introStep : currentStageIndex;
 
   return (
     <div className="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
@@ -224,11 +274,14 @@ export default function CareJourneyPage() {
         {/* Page Header & Context */}
         <header className="flex flex-col gap-6">
           <div>
-            <h1 className="font-display-hero text-3xl md:text-display-hero text-on-surface mb-2 font-bold tracking-tight">
+            <div className="font-label-caps text-xs text-primary uppercase tracking-wider font-bold mb-1">
               Your care journey
+            </div>
+            <h1 className="font-display-hero text-3xl md:text-display-hero text-on-surface font-bold tracking-tight">
+              Care stage roadmap
             </h1>
-            <p className="font-body-md text-on-surface-variant text-base md:text-lg">
-              See where you are, what matters now, and what comes next.
+            <p className="font-body-md text-on-surface-variant text-base md:text-lg mt-1">
+              Here&apos;s what to expect from admission through recovery — see where you are, what matters now, and what comes next.
             </p>
           </div>
 
@@ -241,7 +294,7 @@ export default function CareJourneyPage() {
                   Patient
                 </div>
                 <div className="font-label-sm text-sm text-on-surface font-semibold">
-                  {journey?.patientName || 'Demo User'}
+                  {userName || journey?.patientName || 'Rajesh Verma'}
                 </div>
               </div>
             </div>
@@ -285,54 +338,70 @@ export default function CareJourneyPage() {
           </div>
         </header>
 
-        {/* 4-Stage Timeline Nav (Inspection does not mutate backend stage) */}
-        <nav className="w-full relative py-4 bg-surface-container-lowest rounded-2xl border border-border-subtle p-6 card-shadow">
-          <div className="flex justify-between items-center w-full relative">
+        {/* 4-Stage Timeline Nav */}
+        <nav className="w-full relative py-6 bg-surface-container-lowest rounded-2xl border border-border-subtle px-4 sm:px-8 card-shadow">
+          <div className="flex items-center justify-between w-full">
             {STAGES.map((s, idx) => {
-              const isBackendCurrent = s.id === currentBackendStage;
+              const isProgCompleted = idx < activeTimelineProgIndex;
+              const isProgCurrent = idx === activeTimelineProgIndex;
               const isSelected = s.id === selectedStage;
-              const isPast = idx < currentStageIndex;
+              const isLast = idx === STAGES.length - 1;
+              const isSegmentFilled = idx < activeTimelineProgIndex;
 
               return (
-                <button
-                  key={s.id}
-                  onClick={() => setSelectedStage(s.id)}
-                  className={`flex flex-col items-center gap-2 group focus:outline-none transition-all px-2 md:px-4 ${
-                    isSelected ? 'scale-105' : 'opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <div
-                    className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-colors ${
-                      isBackendCurrent
-                        ? 'bg-primary text-white ring-4 ring-primary/20 shadow-md'
-                        : isPast
-                        ? 'bg-status-safe text-white'
-                        : 'bg-surface-container text-on-surface-variant border border-border-subtle'
-                    }`}
+                <React.Fragment key={s.id}>
+                  {/* Stage Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isIntroPlaying) {
+                        setSelectedStage(s.id);
+                      }
+                    }}
+                    className={`flex flex-col items-center gap-2 group focus:outline-none transition-all shrink-0 ${isSelected ? 'scale-105' : 'opacity-85 hover:opacity-100'
+                      }`}
                   >
-                    {isPast ? (
-                      <span className="material-symbols-outlined text-base">check</span>
-                    ) : (
-                      s.index
-                    )}
-                  </div>
+                    <div
+                      className={`w-9 h-9 md:w-11 md:h-11 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all duration-300 ${isProgCurrent
+                          ? 'bg-primary text-white ring-4 ring-primary/20 shadow-md scale-105'
+                          : isProgCompleted
+                            ? 'bg-status-safe text-white shadow-xs'
+                            : 'bg-surface-container-lowest text-on-surface-variant border-2 border-border-subtle'
+                        }`}
+                    >
+                      {isProgCompleted ? (
+                        <span className="material-symbols-outlined text-base font-bold">check</span>
+                      ) : (
+                        s.index
+                      )}
+                    </div>
 
-                  <span
-                    className={`font-label-sm text-xs md:text-sm ${
-                      isSelected
-                        ? 'text-primary font-bold border-b-2 border-primary pb-0.5'
-                        : 'text-on-surface-variant font-medium'
-                    }`}
-                  >
-                    {s.label}
-                  </span>
-
-                  {isBackendCurrent && (
-                    <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">
-                      Current
+                    <span
+                      className={`font-label-sm text-xs md:text-sm transition-colors text-center ${isSelected
+                          ? 'text-primary font-bold border-b-2 border-primary pb-0.5'
+                          : 'text-on-surface-variant font-medium'
+                        }`}
+                    >
+                      {s.label}
                     </span>
+
+                    {isProgCurrent && (
+                      <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">
+                        {isIntroPlaying ? 'Intro' : 'Current'}
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Connecting Line Segment between adjacent steps */}
+                  {!isLast && (
+                    <div className="flex-grow mx-2 md:mx-4 h-1 bg-surface-container rounded-full relative overflow-hidden mb-6 hidden sm:block">
+                      <div
+                        className={`h-full bg-status-safe transition-all duration-500 ease-out ${isSegmentFilled ? 'w-full' : 'w-0'
+                          }`}
+                      />
+                    </div>
                   )}
-                </button>
+                </React.Fragment>
               );
             })}
           </div>
@@ -378,13 +447,12 @@ export default function CareJourneyPage() {
                   <li key={i} className="py-3 flex justify-between items-center text-xs">
                     <span className="text-on-surface-variant font-medium">{item.label}</span>
                     <span
-                      className={`font-semibold px-2.5 py-1 rounded-full ${
-                        item.status === 'safe'
+                      className={`font-semibold px-2.5 py-1 rounded-full ${item.status === 'safe'
                           ? 'bg-status-safe/10 text-status-safe'
                           : item.status === 'warning'
-                          ? 'bg-status-warning/10 text-status-warning'
-                          : 'bg-surface-container text-on-surface'
-                      }`}
+                            ? 'bg-status-warning/10 text-status-warning'
+                            : 'bg-surface-container text-on-surface'
+                        }`}
                     >
                       {item.value}
                     </span>
@@ -410,9 +478,8 @@ export default function CareJourneyPage() {
                       className="flex items-start gap-3 cursor-pointer select-none group"
                     >
                       <span
-                        className={`material-symbols-outlined text-[18px] mt-0.5 transition-colors ${
-                          isChecked ? 'text-status-safe' : 'text-inverse-primary group-hover:text-white'
-                        }`}
+                        className={`material-symbols-outlined text-[18px] mt-0.5 transition-colors ${isChecked ? 'text-status-safe' : 'text-inverse-primary group-hover:text-white'
+                          }`}
                       >
                         {isChecked ? 'check_box' : 'check_box_outline_blank'}
                       </span>
@@ -442,9 +509,8 @@ export default function CareJourneyPage() {
                     className="p-3 bg-surface rounded-xl border border-border-subtle flex items-center gap-3 cursor-pointer hover:bg-surface-container transition-colors"
                   >
                     <span
-                      className={`material-symbols-outlined text-[20px] ${
-                        isDocChecked ? 'text-status-safe' : 'text-on-surface-variant'
-                      }`}
+                      className={`material-symbols-outlined text-[20px] ${isDocChecked ? 'text-status-safe' : 'text-on-surface-variant'
+                        }`}
                     >
                       {isDocChecked ? 'check_circle' : 'radio_button_unchecked'}
                     </span>
@@ -482,26 +548,37 @@ export default function CareJourneyPage() {
             )}
           </div>
 
-          {/* Chronological Audit Trail History */}
+          {/* Chronological Audit Trail History (Collapsed by Default) */}
           {journey?.events && journey.events.length > 0 && (
             <div className="bg-surface-container-lowest rounded-2xl border border-border-subtle p-6 card-shadow">
-              <h3 className="font-headline-lg text-base text-primary font-bold mb-4 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">history</span>
-                Journey Transition History
-              </h3>
-              <div className="space-y-2">
-                {journey.events.map((ev) => (
-                  <div key={ev.id} className="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center text-xs">
-                    <div>
-                      <span className="font-semibold text-primary">{ev.stage}</span>
-                      {ev.description && <span className="text-on-surface-variant ml-2">— {ev.description}</span>}
-                    </div>
-                    <span className="text-on-surface-variant text-[11px]">
-                      {new Date(ev.timestamp).toLocaleString()}
+              <details className="group">
+                <summary className="flex justify-between items-center cursor-pointer list-none font-headline-lg text-base text-primary font-bold">
+                  <span className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary">history</span>
+                    Journey history
+                    <span className="text-xs font-normal text-on-surface-variant ml-2">
+                      ({journey.events.length} recorded transition{journey.events.length === 1 ? '' : 's'})
                     </span>
-                  </div>
-                ))}
-              </div>
+                  </span>
+                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant group-open:rotate-180 transition-transform">
+                    expand_more
+                  </span>
+                </summary>
+
+                <div className="mt-4 pt-4 border-t border-border-subtle space-y-2">
+                  {journey.events.map((ev) => (
+                    <div key={ev.id} className="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center text-xs">
+                      <div>
+                        <span className="font-semibold text-primary">{ev.stage}</span>
+                        {ev.description && <span className="text-on-surface-variant ml-2">— {ev.description}</span>}
+                      </div>
+                      <span className="text-on-surface-variant text-[11px]">
+                        {new Date(ev.timestamp).toLocaleString()}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </details>
             </div>
           )}
         </section>

@@ -1,22 +1,73 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import TopNavBar from '@/components/layout/TopNavBar';
 import GlobalFooter from '@/components/layout/GlobalFooter';
 import { api } from '@/lib/api/apiClient';
 import { PolicyResponseDto } from '@/lib/types';
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [policy, setPolicy] = useState<PolicyResponseDto | null>(null);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [smsAlerts, setSmsAlerts] = useState(true);
-  const [showSignOutNotice, setShowSignOutNotice] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   const [userProfile, setUserProfile] = useState<{ fullName: string; email: string; phone: string }>({
     fullName: 'Demo User',
     email: 'demo.patient@ospat-intelligence.health',
     phone: '+91 98765 43210',
   });
+
+  const handleSignOut = () => {
+    if (isSigningOut) return;
+    setIsSigningOut(true);
+    try {
+      // 1. Remove all client-side OSPAT session keys specifically without wiping unrelated browser storage
+      const OSPAT_STORAGE_KEYS = [
+        'ospat_user_profile',
+        'ospat_journey_intro_seen',
+      ];
+      OSPAT_STORAGE_KEYS.forEach((key) => {
+        try {
+          localStorage.removeItem(key);
+        } catch {
+          // ignore
+        }
+      });
+
+      // Also clean up any dynamic ospat_ prefixed keys
+      if (typeof window !== 'undefined') {
+        try {
+          Object.keys(localStorage).forEach((k) => {
+            if (k.startsWith('ospat_')) localStorage.removeItem(k);
+          });
+        } catch {
+          // ignore
+        }
+        try {
+          Object.keys(sessionStorage).forEach((k) => {
+            if (k.startsWith('ospat_')) sessionStorage.removeItem(k);
+          });
+        } catch {
+          // ignore
+        }
+      }
+
+      // Reset client state
+      setUserProfile({
+        fullName: 'Demo User',
+        email: 'demo.patient@ospat-intelligence.health',
+        phone: '+91 98765 43210',
+      });
+    } catch (e) {
+      console.warn('Error during client sign out cleanup:', e);
+    } finally {
+      // 2. Redirect to landing page /
+      router.push('/');
+    }
+  };
 
   useEffect(() => {
     async function loadProfileData() {
@@ -199,10 +250,19 @@ export default function ProfilePage() {
                 Sign out of your OSPAT Intelligence session on this device.
               </p>
               <button
-                onClick={() => setShowSignOutNotice(true)}
-                className="px-6 py-2 border border-status-critical/40 text-status-critical rounded-full hover:bg-error-container/30 transition-colors font-label-sm text-xs font-semibold"
+                type="button"
+                onClick={handleSignOut}
+                disabled={isSigningOut}
+                className="px-6 py-2 border border-status-critical/40 text-status-critical rounded-full hover:bg-error-container/30 transition-colors font-label-sm text-xs font-semibold disabled:opacity-50 inline-flex items-center gap-2"
               >
-                Sign out
+                {isSigningOut ? (
+                  <>
+                    <span className="w-3.5 h-3.5 border-2 border-status-critical border-t-transparent rounded-full animate-spin"></span>
+                    <span>Signing out...</span>
+                  </>
+                ) : (
+                  <span>Sign out</span>
+                )}
               </button>
             </div>
           </section>
@@ -210,27 +270,6 @@ export default function ProfilePage() {
       </main>
 
       <GlobalFooter />
-
-      {/* Sign Out Modal */}
-      {showSignOutNotice && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-on-background/40 backdrop-blur-sm">
-          <div className="bg-surface-container-lowest rounded-3xl p-8 max-w-sm w-full border border-border-subtle shadow-2xl text-center">
-            <div className="w-12 h-12 rounded-full bg-status-critical/10 text-status-critical flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-2xl">logout</span>
-            </div>
-            <h3 className="font-headline-lg text-lg font-bold text-primary mb-2">Signed Out</h3>
-            <p className="text-xs text-on-surface-variant mb-6">
-              You have been safely signed out. You can sign back in anytime.
-            </p>
-            <button
-              onClick={() => setShowSignOutNotice(false)}
-              className="bg-primary-container text-on-primary px-6 py-2 rounded-full text-xs font-semibold hover:bg-primary transition-colors w-full"
-            >
-              Done
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

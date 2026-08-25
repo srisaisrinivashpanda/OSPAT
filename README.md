@@ -130,9 +130,12 @@ export AI_PROVIDER=heuristic
 | `GEMINI_READ_TIMEOUT_MS` | `20000` | HTTP read timeout in milliseconds |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama local endpoint |
 | `OLLAMA_MODEL` | `qwen2.5:7b` | Ollama model identifier |
-| `DATABASE_URL` | `jdbc:postgresql://localhost:5432/hospitality_db` | PostgreSQL JDBC connection URL |
+| `DATABASE_URL` | `jdbc:postgresql://localhost:5432/hospitality_db` | PostgreSQL / Supabase JDBC connection URL |
 | `DATABASE_USERNAME` | `postgres` | Database username |
 | `DATABASE_PASSWORD` | `pass` | Database password |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:3000,http://localhost:3001` | Whitelisted CORS frontend origins |
+| `DB_POOL_MAX_SIZE` | `10` | Maximum HikariCP connection pool size |
+| `DB_POOL_MIN_IDLE` | `2` | Minimum idle pool connections |
 
 ---
 
@@ -154,7 +157,15 @@ docker compose up -d
 cd backend
 mvn spring-boot:run
 ```
-*The backend starts at `http://localhost:8080` and automatically runs Flyway migrations `V1__initial_schema.sql` and `V2__seed_data.sql`.*
+*The backend starts at `http://localhost:8080` and automatically runs Flyway migrations `V1__initial_schema.sql`, `V2__seed_data.sql`, and `V3__curated_public_hospitals.sql`.*
+
+---
+
+## ☁️ Hosted Deployment (Supabase PostgreSQL)
+
+Hospitality is 100% cloud-ready with **Supabase PostgreSQL**. For full step-by-step instructions on setting up Supabase, obtaining JDBC connection strings, configuring cloud environment variables, and connecting Next.js, see:
+
+📖 **[Supabase PostgreSQL Deployment Guide](DEPLOYMENT_SUPABASE.md)**
 
 ---
 
@@ -170,6 +181,7 @@ mvn test
 
 ## 📖 Documentation Links
 
+- 🚀 [Supabase PostgreSQL Deployment Guide](DEPLOYMENT_SUPABASE.md)
 - 🏛️ [System Architecture & Math Models](docs/architecture.md)
 - 🔌 [REST API Specifications & Schemas](docs/api.md)
 - 🎯 [3-Minute Hackathon Demo Script](docs/demo.md)
@@ -180,3 +192,4 @@ mvn test
 ## ⚖️ Safety & Regulatory Disclaimer
 
 > **IMPORTANT:** Hospitality is strictly an informational decision-support tool. It does **not** diagnose medical conditions, recommend clinical therapies, or guarantee insurance reimbursement. All compatibility calculations are indicative based on user-provided policy data. Always verify cashless pre-authorization with the hospital TPA desk and your insurance provider.
+
